@@ -1,19 +1,20 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { fileURLToPath, URL } from 'node:url';
 
-
-
-
-
-export default defineConfig({
-  build: {
-    outDir:'docs',
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        
-      },
-    },
-    
+const viteConfig = defineConfig({
+  base: '/',
+  server: {
+    host: 'localhost',
+    port: 3000,
+    open: false,
   },
-})
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+});
+
+export default viteConfig;
