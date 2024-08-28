@@ -34,7 +34,7 @@ testing123
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![PocketBase](https://camo.githubusercontent.com/ba55fad1ead412d5eab00a23a5d009ab232bc0ab24d194f72ea78b9ae3d75b4f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f506f636b6574426173652d4238444245343f7374796c653d666f722d7468652d6261646765266c6f676f3d506f636b657442617365266c6f676f436f6c6f723d7768697465)
+![PocketBase](https://img.shields.io/badge/pocketbase-%236CFF.svg?style=for-the-badge&logo=pocketbase&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
 
 ### 프로그래밍 언어
