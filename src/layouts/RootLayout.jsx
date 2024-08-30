@@ -1,21 +1,18 @@
-// import { Outlet, useNavigation } from 'react-router-dom';
-// import { AppFooter, AppHeader, AppNav, AppSpinner } from '@/components';
+import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Link } from 'react-router-dom';
 
-// function RootLayout() {
-//   const navigation = useNavigation();
+function RootLayout() {
+  return (
+    <main className="h-screen bg-black flex justify-center items-center flex-col text-white">
+      <Link to="/" className="absolute top-10 left-10">
+        시작페이지
+      </Link>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
+    </main>
+  );
+}
 
-//   const isLoading = navigation.state === 'loading';
-
-//   return (
-//     <div className="Layout h-screen bg-indigo-50/30 flex flex-col">
-//       <AppHeader />
-//       <AppNav />
-//       <main className="flex-1 m-4">
-//         {isLoading ? <AppSpinner /> : <Outlet />}
-//       </main>
-//       <AppFooter />
-//     </div>
-//   );
-// }
-
-// export default RootLayout;
+export default RootLayout;

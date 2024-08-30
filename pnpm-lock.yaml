@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      autoprefixer:
+        specifier: ^10.4.20
+        version: 10.4.20(postcss@8.4.41)
       axios:
         specifier: ^1.7.5
         version: 1.7.5
@@ -17,6 +20,15 @@ importers:
       pocketbase:
         specifier: ^0.21.4
         version: 0.21.4
+      postcss:
+        specifier: ^8.4.41
+        version: 8.4.41
+      postcss-import:
+        specifier: ^16.1.0
+        version: 16.1.0(postcss@8.4.41)
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -32,6 +44,9 @@ importers:
       react-router-dom:
         specifier: ^6.26.1
         version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tailwindcss:
+        specifier: ^3.4.10
+        version: 3.4.10
       use-immer:
         specifier: ^0.10.0
         version: 0.10.0(immer@10.1.1)(react@18.3.1)
@@ -54,9 +69,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.2(@types/node@22.5.0))
-      autoprefixer:
-        specifier: ^10.4.20
-        version: 10.4.20(postcss@8.4.41)
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -72,21 +84,9 @@ importers:
       globals:
         specifier: ^15.9.0
         version: 15.9.0
-      postcss:
-        specifier: ^8.4.41
-        version: 8.4.41
-      postcss-import:
-        specifier: ^16.1.0
-        version: 16.1.0(postcss@8.4.41)
-      prettier:
-        specifier: ^3.1.1
-        version: 3.3.3
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
-      tailwindcss:
-        specifier: ^3.4.10
-        version: 3.4.10
       vite:
         specifier: ^5.0.8
         version: 5.4.2(@types/node@22.5.0)

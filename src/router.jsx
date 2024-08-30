@@ -1,59 +1,47 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { configRoutes, getNavigationItems } from '@/utils';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from 'react-router-dom';
+import { getNavigationItems } from '@/utils';
 import RootLayout from '@/layouts/RootLayout';
+import { lazy } from 'react';
 
-// import HomePage from '@/pages/Home';
-// import {
-//   Component as NoteDetail,
-//   loader as noteDetailLoader,
-// } from '@/pages/Notes/NoteDetail';
+import Home from './pages/Home';
+import Login from './pages/login';
+import Signup from './pages/Signup';
 
-/**@type {import('react-router-dom').RouteObject[]} */
-// const navigation = [
-//   {
-//     text: '홈',
-//     path: '',
-//     // display: false,
-//     element: <HomePage />,
-//   },
-//   {
-//     text: '칸반보드',
-//     path: '/kanbanboard',
-//     lazy: () => import('@/pages/KanbanBoard'),
-//   },
-//   {
-//     text: '노트리스트',
-//     path: '/notes',
-//     lazy: () => import('@/pages/Notes/NoteList'),
-//   },
-//   {
-//     text: '노트 디테일',
-//     path: '/notes/:noteId',
-//     display: false,
-//     lazy: () => import('@/pages/Notes/NoteDetail'),
-//   },
-//   {
-//     text: '노트 수정',
-//     path: '/notes/:noteId/edit',
-//     display: false,
-//     lazy: () => import('@/pages/Notes/EditNote'),
-//   },
-//   {
-//     text: '노트 추가',
-//     path: '/notes/new',
-//     lazy: () => import('@/pages/Notes/NewNote'),
-//   },
-// ];
+const Main = lazy(() => import('@/pages/Main/Main'));
+const Chat = lazy(() => import('@/pages/Chat'));
+const MyPage = lazy(() => import('@/pages/MyPage'));
 
 /**@type {import('react-router-dom').RouteObject[]} */
-export const routes = [
+const navigation = [
   {
-    path: '/',
-    element: <RootLayout />,
-    children: configRoutes(navigation),
+    text: '메인',
+    path: '/main',
+  },
+  {
+    text: '채팅',
+    path: '/chat',
+  },
+  {
+    text: '마이페이지',
+    path: '/mypage',
   },
 ];
 
+/**@type {import('react-router-dom').RouteObject[]} */
+export const routes = createRoutesFromElements(
+  <Route path="/" element={<RootLayout />}>
+    <Route index element={<Home />} />
+    <Route path="/main" element={<Main />} />
+    <Route path="/chat" element={<Chat />} />
+    <Route path="/mypage" element={<MyPage />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/signup" element={<Signup />} />
+  </Route>
+);
 const router = createBrowserRouter(routes, {
   basename: import.meta.env.BASE_URL,
 });
