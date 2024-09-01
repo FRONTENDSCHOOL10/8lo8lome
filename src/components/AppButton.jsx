@@ -10,6 +10,7 @@ AppButton.propTypes = {
   children: node.isRequired,
   buttonProps: object,
   iconProps: object,
+  isFilled: bool,
 };
 
 function AppButton({
@@ -21,6 +22,7 @@ function AppButton({
   children,
   buttonProps = null,
   iconProps = null,
+  isFilled = true,
   ...restProps
 }) {
   let type = 'button';
@@ -29,8 +31,7 @@ function AppButton({
   if (reset) type = 'reset';
 
   let buttonRestProps = {};
-  let buttonClassName = '';
-
+  let buttonClassName = className;
   if (buttonProps) {
     const { className: buttonClass, ...rest } = buttonProps;
     buttonClassName = buttonClass || '';
@@ -46,14 +47,21 @@ function AppButton({
     iconRestProps = rest;
   }
 
-  const buttonBaseClasses =
-    'opacity-90 hover:opacity-100 flex gap-2 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold px-6 py-2 border-0 disabled:bg-slate-500';
+  let buttonBaseClasses =
+    'opacity-90 hover:opacity-100 flex items-center justify-center rounded-md text-sm py-2 border disabled:bg-slate-500 w-full ';
+
+  buttonBaseClasses = isFilled
+    ? buttonBaseClasses +
+      ' py-3 border-none bg-primary text-black font-semibold'
+    : buttonBaseClasses +
+      ' border-solid border-white bg-transparent text-white';
+
   const buttonClasses = `${buttonBaseClasses} ${buttonClassName}`.trim();
 
   const iconBaseClasses = 'inline-flex text-white text-base';
   const iconClasses = `${iconBaseClasses} ${iconClassName}`.trim();
 
-  const wrapperClasses = `flex gap-1 w-full ${className}`.trim();
+  const wrapperClasses = `flex gap-1 w-full`;
 
   return (
     <div className={wrapperClasses} {...restProps}>
