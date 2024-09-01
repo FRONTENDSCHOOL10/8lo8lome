@@ -1,17 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import { AppSpinner } from '@/components';
 
 function RootLayout() {
   return (
-    <main className="h-screen bg-black flex justify-center items-center flex-col text-white">
-      <Link to="/" className="absolute top-10 left-10">
-        시작페이지
-      </Link>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
-      </Suspense>
-    </main>
+    <div className="min-h-screen bg-black flex justify-center items-center flex-col text-white">
+      <main className="w-full relative pt-[44px] pb-[55px] box-border">
+        <Suspense fallback={<AppSpinner />}>
+          <Outlet />
+        </Suspense>
+      </main>
+    </div>
   );
 }
 
