@@ -1,6 +1,6 @@
 // import { AppDivider, AppLink } from '@/components';
 import { Helmet } from 'react-helmet-async';
-import GymList from './health/GymList';
+import GymList from './GymList';
 import { AppNav } from '@/components';
 
 export default function Main() {
