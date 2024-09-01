@@ -8,6 +8,7 @@ export default {
         black: '#1e1e1e',
         white: '#ffffff',
         subBg: '#2A2A2A',
+        warning: '#fd0000',
       },
     },
   },
