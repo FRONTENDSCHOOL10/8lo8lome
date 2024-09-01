@@ -9,24 +9,28 @@ AppInput.propTypes = {
   passwordConfirm: bool,
   isHiddenLabel: bool,
   onChange: func,
+  className: string,
+  checkbox: bool,
 };
 
 function AppInput({
   label,
   email = false,
   password = false,
+  checkbox = false,
   isHiddenLabel = false,
   onChange,
+  className,
   ...restProps
 }) {
   const id = useId();
-
   // ----------------------------------------------------------------
 
   const [type, setType] = useState(() => {
     let type = 'text';
     if (email) type = 'email';
     if (password) type = 'password';
+    if (checkbox) type = 'checkbox';
     return type;
   });
 
@@ -40,7 +44,7 @@ function AppInput({
     onChange?.(value);
   }, 200);
 
-  const isInputed = inputValue.trim().length > 0;
+  // const isInputed = inputValue.trim().length > 0;
 
   // ----------------------------------------------------------------
 
@@ -66,30 +70,47 @@ function AppInput({
     renderVisibleButton = (
       <button
         type="button"
-        className=" "
+        className="border border-1 border-green-500 p-2 absolute right-0"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
       >
-        {isVisible}
+        {isVisible ? '숨김' : '보기'}
       </button>
     );
   }
 
-  // ----------------------------------------------------------------
+  let inputBaseClass =
+    'bg-transparent border border-solid border-white rounded-md p-2 w-full';
+  let labelBaseClass = '';
+  if (className) {
+    inputBaseClass = `${inputBaseClass} ${className}`;
+  }
+  if (type == 'checkbox') {
+    inputBaseClass = 'w-5 h-5 rounded-lg';
+    labelBaseClass = 'text-red-100';
+  }
+
+  const wrapperClass = 'relative w-full';
+  // ----------------------------------------------------------------4
 
   return (
-    <div className={`${isInputed}`}>
-      <label htmlFor={id} className={isHiddenLabel ? 'sr-only' : ''}>
-        {label}
-      </label>
+    <div className={wrapperClass}>
       <input
         type={type}
         id={id}
+        name={id}
         defaultValue={inputValue}
         onChange={handleChange}
+        className={inputBaseClass}
         {...restProps}
       />
+      <label
+        htmlFor={id}
+        className={isHiddenLabel ? 'sr-only' : labelBaseClass}
+      >
+        {label}
+      </label>
       {renderVisibleButton}
     </div>
   );
