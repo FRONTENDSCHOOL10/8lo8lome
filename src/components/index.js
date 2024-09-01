@@ -9,3 +9,4 @@ export { default as AppInput } from './AppInput.jsx';
 export { default as AppForm } from './AppForm.jsx';
 export { default as AppLink } from './AppLink.jsx';
 export { default as AppNav } from './AppNav.jsx';
+export { default as AppAuthMessage } from './AppAuthMessage.jsx';
