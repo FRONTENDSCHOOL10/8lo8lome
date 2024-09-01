@@ -11,6 +11,7 @@ AppInput.propTypes = {
   onChange: func,
   className: string,
   checkbox: bool,
+  radio: bool,
 };
 
 function AppInput({
@@ -18,6 +19,7 @@ function AppInput({
   email = false,
   password = false,
   checkbox = false,
+  radio = false,
   isHiddenLabel = false,
   onChange,
   className,
@@ -25,21 +27,21 @@ function AppInput({
 }) {
   const id = useId();
   // ----------------------------------------------------------------
-
   const [type, setType] = useState(() => {
     let type = 'text';
     if (email) type = 'email';
     if (password) type = 'password';
     if (checkbox) type = 'checkbox';
+    if (radio) type = 'radio';
+
     return type;
   });
 
   // ----------------------------------------------------------------
 
   const [inputValue, setInputValue] = useState('');
-
   const handleChange = throttle((e) => {
-    const value = e.target.value;
+    const value = checkbox || radio ? e : e.target.value;
     setInputValue(value);
     onChange?.(value);
   }, 200);
@@ -90,7 +92,11 @@ function AppInput({
     inputBaseClass = 'w-5 h-5 rounded-lg';
     labelBaseClass = 'text-red-100';
   }
-
+  if (type === 'radio') {
+    inputBaseClass = ' appearance-none opacity-0';
+    labelBaseClass =
+      'flex items-center justify-center border p-5 border border-solid border-white rounded-md';
+  }
   const wrapperClass = 'relative w-full';
   // ----------------------------------------------------------------4
 
