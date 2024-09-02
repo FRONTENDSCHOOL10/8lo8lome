@@ -1,20 +1,23 @@
 import { memo } from 'react';
-import { node } from 'prop-types';
+import { node, string } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 AppHeader.propTypes = {
+  className: string,
   children: node.isRequired,
 };
 
-function AppHeader({ children }) {
+function AppHeader({ className, children }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
+  let headerBaseClass = `flex p-6 bg-subBg font-bold text-[20px] w-full mt-10 ${className}`;
+
   return (
-    <header className="flex p-6 bg-subBg font-bold text-[20px]  w-full ">
+    <header className={headerBaseClass}>
       <button type="button" onClick={handleGoBack}>
         {'<'}
       </button>
