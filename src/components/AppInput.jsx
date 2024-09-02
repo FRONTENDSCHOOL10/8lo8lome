@@ -1,6 +1,7 @@
 import { memo, useId, useState } from 'react';
 import { bool, func, string } from 'prop-types';
 import { throttle } from '@/utils';
+import { useEffect } from 'react';
 
 AppInput.propTypes = {
   label: string.isRequired,
@@ -12,6 +13,7 @@ AppInput.propTypes = {
   className: string,
   checkbox: bool,
   radio: bool,
+  isChecked: bool,
 };
 
 function AppInput({
@@ -21,6 +23,7 @@ function AppInput({
   checkbox = false,
   radio = false,
   isHiddenLabel = false,
+  isChecked = false,
   onChange,
   className,
   ...restProps
@@ -38,13 +41,40 @@ function AppInput({
   });
 
   // ----------------------------------------------------------------
+  let INITIAL_CLASS =
+    "inline-block bg-[url('../assets/unchecked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]";
 
+  const [customCheckboxClass, setCustomCheckboxClass] = useState(
+    checkbox ? INITIAL_CLASS : ''
+  );
+  const [checkedRadioClass, setCheckedRadioClass] = useState('');
   const [inputValue, setInputValue] = useState('');
+
   const handleChange = throttle((e) => {
-    const value = checkbox || radio ? e : e.target.value;
+    const value = checkbox || radio ? e.target : e.target.value;
     setInputValue(value);
     onChange?.(value);
   }, 200);
+
+  useEffect(() => {
+    if (checkbox) {
+      setCustomCheckboxClass(
+        isChecked
+          ? "inline-block bg-[url('../assets/checked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]"
+          : "inline-block bg-[url('../assets/unchecked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]"
+      );
+    }
+  }, [isChecked, checkbox]);
+
+  useEffect(() => {
+    if (radio) {
+      setCheckedRadioClass(
+        isChecked
+          ? 'border-transparent text-black bg-primary font-bold'
+          : 'border border-solid border-white'
+      );
+    }
+  }, [isChecked, radio]);
 
   // const isInputed = inputValue.trim().length > 0;
 
@@ -72,7 +102,7 @@ function AppInput({
     renderVisibleButton = (
       <button
         type="button"
-        className="border border-1 border-green-500 p-2 absolute right-0"
+        className="border border-1 border-green-500 p-2 absolute right-0 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
@@ -83,19 +113,19 @@ function AppInput({
   }
 
   let inputBaseClass =
-    'bg-transparent border border-solid border-white rounded-md p-2 w-full';
-  let labelBaseClass = '';
+    'bg-transparent border border-solid border-white rounded-md p-3 w-full';
+  let labelBaseClass = 'flex items-center gap-1';
+
   if (className) {
     inputBaseClass = `${inputBaseClass} ${className}`;
   }
   if (type == 'checkbox') {
-    inputBaseClass = 'w-5 h-5 rounded-lg';
-    labelBaseClass = 'text-red-100';
+    inputBaseClass = 'hidden ';
+    labelBaseClass = `${labelBaseClass} text-[12px]`;
   }
   if (type === 'radio') {
-    inputBaseClass = ' appearance-none opacity-0';
-    labelBaseClass =
-      'flex items-center justify-center border p-5 border border-solid border-white rounded-md';
+    inputBaseClass = 'hidden ';
+    labelBaseClass = `${labelBaseClass} justify-center  p-5 rounded-md text-[14px] ${checkedRadioClass}`;
   }
   const wrapperClass = 'relative w-full';
   // ----------------------------------------------------------------4
@@ -109,12 +139,16 @@ function AppInput({
         defaultValue={inputValue}
         onChange={handleChange}
         className={inputBaseClass}
+        checked={type === 'checkbox' ? isChecked : undefined}
         {...restProps}
       />
       <label
         htmlFor={id}
         className={isHiddenLabel ? 'sr-only' : labelBaseClass}
       >
+        {type == 'checkbox' ? (
+          <span className={customCheckboxClass}></span>
+        ) : null}
         {label}
       </label>
       {renderVisibleButton}
