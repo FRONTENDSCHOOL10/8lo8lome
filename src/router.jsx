@@ -8,12 +8,14 @@ import RootLayout from '@/layouts/RootLayout';
 import { lazy } from 'react';
 
 import Home from './pages/Home';
-import Login from './pages/login';
-import Signup from './pages/Signup';
+import Login from './pages/Login/Login';
+import Signup from './pages/Signup/Signup';
+import FindPassword from './pages/Login/FindPassword';
+import FindId from './pages/Login/FindId';
 
 const Main = lazy(() => import('@/pages/Main/Main'));
-const Chat = lazy(() => import('@/pages/Chat'));
-const MyPage = lazy(() => import('@/pages/MyPage'));
+const Chat = lazy(() => import('@/pages/Chat/Chat'));
+const MyPage = lazy(() => import('@/pages/MyPage/MyPage'));
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -39,6 +41,8 @@ export const routes = createRoutesFromElements(
     <Route path="/chat" element={<Chat />} />
     <Route path="/mypage" element={<MyPage />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/findId" element={<FindId />} />
+    <Route path="/findPassword" element={<FindPassword />} />
     <Route path="/signup" element={<Signup />} />
   </Route>
 );
