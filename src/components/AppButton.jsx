@@ -48,7 +48,7 @@ function AppButton({
   }
 
   let buttonBaseClasses =
-    'opacity-90 hover:opacity-100 flex items-center justify-center rounded-md text-sm py-2 border disabled:bg-slate-500 w-full ';
+    'opacity-100 flex items-center justify-center rounded-md text-sm py-2 border disabled:opacity-50 w-full ';
 
   buttonBaseClasses = isFilled
     ? buttonBaseClasses +
