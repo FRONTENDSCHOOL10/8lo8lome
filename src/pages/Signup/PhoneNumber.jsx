@@ -32,7 +32,6 @@ export function PhoneNumber() {
           inputMode="numeric"
           pattern="[0-9]*"
           required
-          autocomplete="tel"
         />
         <AppButton
           isFilled={false}
@@ -52,7 +51,6 @@ export function PhoneNumber() {
           isHiddenLabel
           className={'w-full mt-5'}
           onChange={handleVerificationCodeCheck}
-          autocomplete="one-time-code"
         />
       )}
     </article>

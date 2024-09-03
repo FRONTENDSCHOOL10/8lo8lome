@@ -21,7 +21,6 @@ export function PasswordConfirm() {
           className={'w-full'}
           onChange={handlePasswordConfirmCheck}
           required
-          autocomplete="new-password"
         />
       </fieldset>
       {passwordConfirm && (

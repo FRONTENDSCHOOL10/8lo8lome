@@ -18,7 +18,6 @@ export function Email() {
           isHiddenLabel
           className="min-w-[200px]"
           onChange={handleEmailChange}
-          autocomplete="email"
           required
         />
         <AppButton isFilled={false}>중복확인</AppButton>

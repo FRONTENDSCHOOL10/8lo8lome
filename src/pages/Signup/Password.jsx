@@ -19,7 +19,6 @@ export function Password() {
           className={'w-full'}
           onChange={handlePasswordCheck}
           required
-          autocomplete="password"
         />
       </fieldset>
       {passwordVerification && (

@@ -17,7 +17,6 @@ export function Nickname() {
           className="min-w-[200px]"
           onChange={handleNickNameChange}
           required
-          autocomplete="nickname"
         />
         <AppButton isFilled={false}>중복확인</AppButton>
       </fieldset>
