@@ -1,4 +1,5 @@
 import { AppNav } from '@/components';
+import Header from './Header';
 import { Helmet } from 'react-helmet-async';
 
 export default function MyPage() {
@@ -25,6 +26,7 @@ export default function MyPage() {
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
       <h1 className="text-3xl">마이페이지입니다</h1>
+      <Header></Header>
       <AppNav></AppNav>
     </>
   );
