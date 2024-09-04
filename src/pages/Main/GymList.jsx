@@ -40,17 +40,21 @@ const list = [
 export default function GymList() {
   return (
     <section className="bg-black p-4">
-      <div className="flex justify-between">
-        <h1 className="text-white">내 주변 헬스장</h1>
-        <span>필터</span>
+      <div className="flex justify-between items-center">
+        <h1 className="text-white text-lg">내 주변 헬스장</h1>
+        <svg role="icon" aria-label="검색 필터" className="w-5 h-5 fill-white">
+          <use href="/public/assets/sprite.svg#filter-click" />
+        </svg>
       </div>
 
-      <div>
-        <span>🚩</span>
-        <span>현재 위치로 찾기</span>
+      <div className="flex gap-1 items-center pt-2 pb-3">
+        <svg role="icon" aria-label="현재 위치로 검색하기" className="w-5 h-5">
+          <use href="/public/assets/sprite.svg#locate" />
+        </svg>
+        <span className="text-sm">현재 위치로 찾기</span>
       </div>
 
-      <ul className="flex">
+      <ul className="flex text-xs pb-3">
         <li>
           <span className="whitespace-nowrap">별점 4점</span>
           <span>&nbsp;|&nbsp;</span>
@@ -65,7 +69,6 @@ export default function GymList() {
         </li>
         <li>
           <span>WIFI</span>
-          <span>&nbsp;|&nbsp;</span>
         </li>
       </ul>
 
@@ -75,20 +78,44 @@ export default function GymList() {
             <li key={item.id}>
               <a
                 href=""
-                className="text-white flex gap-2
-            bg-subBg rounded-lg p-5"
+                className="text-white flex gap-[0.625rem]
+            bg-subBg rounded-md p-[0.625rem]"
               >
-                <img src={item.image} alt="" width={120} height={120} />
+                <img
+                  src={item.image}
+                  alt="헬스장 사진"
+                  width={112}
+                  height={78}
+                />
 
-                <div>
-                  <div className="flex justify-between">
-                    <h2>{item.title}</h2>
-                    <p>❤️</p>
+                <div className="flex flex-col w-full">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-base">{item.title}</h2>
+                    <svg
+                      role="icon"
+                      aria-label="헬스장 정보 찜하기"
+                      className="w-5 h-5 fill-white"
+                    >
+                      <use href="/public/assets/sprite.svg#heart-unclick" />
+                    </svg>
                   </div>
-                  <p>가격 : {item.price.toLocaleString()}원</p>
-                  <div className="flex justify-between">
+
+                  <p className="text-xs">
+                    가격 : {item.price.toLocaleString()}원
+                  </p>
+                  <div className="flex justify-between text-[0.625rem] pt-4">
                     <p>{item.range}km</p>
-                    <p>⭐ {item.rating}</p>
+                    <div className="flex items-center gap-1">
+                      <svg
+                        role="icon"
+                        aria-label="별점"
+                        className="w-3 h-3 fill-yellow-300"
+                      >
+                        <use href="/public/assets/sprite.svg#star" />
+                      </svg>
+
+                      <p>{item.rating}</p>
+                    </div>
                   </div>
                 </div>
               </a>

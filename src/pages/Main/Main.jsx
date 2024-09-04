@@ -1,9 +1,8 @@
 // import { AppDivider, AppLink } from '@/components';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import SearchBar from './SearchBar';
 import GymList from './GymList';
-import { AppNav } from '@/components';
+import { AppNav, AppInput } from '@/components';
 
 export default function Main() {
   return (
@@ -29,11 +28,38 @@ export default function Main() {
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
 
-      <SearchBar />
+      <header className="flex items-center gap-1 m-4">
+        <form action="" className="flex items-center grow gap-3 p-2">
+          <label htmlFor="search" className="sr-only">
+            검색
+          </label>
+          <input
+            id="search"
+            type="text"
+            placeholder="검색어를 입력해 주세요."
+            className="bg-transparent outline-none grow text-sm"
+          />
+          <button type="submit" aria-label="검색">
+            <svg
+              role="icon"
+              aria-label="검색하기"
+              className="w-6 h-6 fill-white"
+            >
+              <use href="/public/assets/sprite.svg#search" />
+            </svg>
+          </button>
+        </form>
 
-      <Link to={'/map'} aria-label="지도로 보기">
-        지도🗺️
-      </Link>
+        <Link to={'/map'} aria-label="지도로 보기">
+          <svg
+            role="icon"
+            aria-label="지도로 보기"
+            className="w-[1.4375rem] h-[1.4375rem] fill-white"
+          >
+            <use href="/public/assets/sprite.svg#map2" />
+          </svg>
+        </Link>
+      </header>
 
       <GymList />
       <AppNav />
