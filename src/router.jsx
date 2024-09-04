@@ -12,6 +12,8 @@ import Login from '@/pages/Login/Login';
 import Signup from '@/pages/Signup/Signup';
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
+import Map from './pages/Main/Map';
+import Gym from './pages/Main/Gym';
 
 const Main = lazy(() => import('@/pages/Main/Main'));
 const Chat = lazy(() => import('@/pages/Chat/Chat'));
@@ -38,6 +40,8 @@ export const routes = createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
     <Route index element={<Home />} />
     <Route path="/main" element={<Main />} />
+    <Route path="/map" element={<Map />} />
+    <Route path="/gym" element={<Gym />} />
     <Route path="/chat" element={<Chat />} />
     <Route path="/mypage" element={<MyPage />} />
     <Route path="/login" element={<Login />} />
