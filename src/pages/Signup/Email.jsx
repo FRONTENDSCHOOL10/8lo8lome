@@ -2,10 +2,17 @@ import { AppAuthMessage, AppButton, AppInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function Email() {
-  const { handleEmailChange, emailVerification } = useSignupStore((s) => ({
-    handleEmailChange: s.handleMethod.handleEmailChange,
-    emailVerification: s.authMessages.emailVerification,
-  }));
+  const { handleEmailChange, handleEmailCheck, emailValidation } =
+    useSignupStore((s) => ({
+      handleEmailChange: s.handleMethod.handleEmailChange,
+      handleEmailCheck: s.handleMethod.handleEmailCheck,
+      emailValidation: s.emailValidation,
+    }));
+
+  const { isEmailButtonDisabled, message } = emailValidation;
+
+  const warning =
+    message.includes('유효한 이메일') || message.includes('이미 가입');
 
   return (
     <article>
@@ -20,11 +27,17 @@ export function Email() {
           onChange={handleEmailChange}
           required
         />
-        <AppButton isFilled={false}>중복확인</AppButton>
+        <AppButton
+          isFilled={false}
+          onClick={handleEmailCheck}
+          disabled={isEmailButtonDisabled} // 유효한 이메일 형식일 때만 버튼 활성화
+        >
+          중복확인
+        </AppButton>
       </fieldset>
-      {emailVerification && (
-        <AppAuthMessage>이메일 양식이 맞지 않습니다.</AppAuthMessage>
-      )}
+
+      {/* 단일 AppAuthMessage 사용 */}
+      {message && <AppAuthMessage warning={warning}>{message}</AppAuthMessage>}
     </article>
   );
 }

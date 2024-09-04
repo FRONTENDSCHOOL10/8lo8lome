@@ -9,7 +9,6 @@ import { PasswordConfirm } from './PasswordConfirm';
 import { Gender } from './Gender.jsx';
 import { Age } from './Age.jsx';
 import { AgreementTerms } from './AgreementTerms.jsx';
-// import { getData } from '@/api/axios.js';
 
 export default function Signup() {
   const { isSignupButtonDisabled, handleSignupButtonClick } = useSignupStore(
@@ -19,14 +18,6 @@ export default function Signup() {
     })
   );
 
-  // const handleGetData = async () => {
-  //   try {
-  //     const data = await getData('users');
-  //     console.log('Fetched Data:', data.items);
-  //   } catch (error) {
-  //     console.error('Failed to fetch data:', error);
-  //   }
-  // };
   return (
     <>
       <Helmet>
@@ -63,9 +54,6 @@ export default function Signup() {
           회원가입
         </AppButton>
       </form>
-      {/* <button onClick={handleGetData} type="button">
-        데이터 가져오기
-      </button> */}
     </>
   );
 }

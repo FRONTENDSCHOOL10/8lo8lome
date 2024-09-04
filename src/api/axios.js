@@ -8,8 +8,8 @@ const BASE_URL = import.meta.env.VITE_PB;
 export const getData = async (resource, id = '') => {
   try {
     const url = id
-      ? `${BASE_URL}api/collections/${resource}/records/${id}`
-      : `${BASE_URL}api/collections/${resource}/records`;
+      ? `${BASE_URL}/api/collections/${resource}/records/${id}`
+      : `${BASE_URL}/api/collections/${resource}/records`;
     const response = await axios.get(url);
 
     return response.data;
