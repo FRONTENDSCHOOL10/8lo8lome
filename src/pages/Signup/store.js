@@ -73,28 +73,48 @@ export const useSignupStore = create((set) => {
 
   const handleNickNameChange = (value) => {
     const isValid = NINKNAME_REG.test(value);
-    if (isValid) {
+
+    set(
+      produce((draft) => {
+        draft.user.nickName = value;
+        draft.nickNameValidation.isNickNameButtonDisabled = !isValid;
+
+        // 닉네임이 변경되면 중복 확인 메시지 초기화
+        if (draft.authMessages.isNickNameExists) {
+          draft.authMessages.isNickNameExists = '';
+        }
+
+        // 닉네임 변경 시 버튼 상태 업데이트
+        updateSignupButtonState(draft);
+      })
+    );
+  };
+  const handleNickNameCheck = async () => {
+    const userNickName = useSignupStore.getState().user.nickName;
+
+    // 닉네임이 유효할 때만 중복 확인을 진행
+    if (NINKNAME_REG.test(userNickName)) {
+      const data = await getData('users');
+      const result = data.items.find((item) => item.nickName === userNickName);
+
       set(
         produce((draft) => {
-          draft.user.nickName = value;
-          draft.nickNameValidation.isNickNameButtonDisabled = !isValid;
+          draft.authMessages.isNickNameExists = result
+            ? '이미 존재하는 닉네임입니다.'
+            : '사용 가능한 닉네임입니다.';
+
+          // 중복 확인 후 버튼 상태 업데이트
           updateSignupButtonState(draft);
         })
       );
+    } else {
+      set(
+        produce((draft) => {
+          draft.authMessages.isNickNameExists =
+            '유효한 닉네임을 입력해 주세요.';
+        })
+      );
     }
-  };
-
-  const handleNickNameCheck = async () => {
-    const user = useSignupStore.getState().user;
-    const data = await getData('users');
-    const result = data.items.find((item) => item.nickName === user.nickName);
-    set(
-      produce((draft) => {
-        draft.authMessages.isNickNameExists = result
-          ? '이미 존재하는 닉네임입니다.'
-          : '사용 가능한 닉네임입니다.';
-      })
-    );
   };
 
   const handleEmailChange = (value) => {
