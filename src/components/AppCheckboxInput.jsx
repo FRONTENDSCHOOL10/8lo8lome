@@ -58,7 +58,7 @@ function AppCheckboxInput({
       />
       <label
         htmlFor={id}
-        className={`flex items-center gap-1 text-[12px] focus:ring-1 focus:ring-primary ${className || ''}`}
+        className={`flex items-center gap-1 text-[12px] focus-visible:ring-1 focus-visible:ring-primary ${className || ''}`}
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >
