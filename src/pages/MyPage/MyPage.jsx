@@ -1,5 +1,7 @@
 import { AppNav } from '@/components';
 import Header from './Header';
+import MyCoupon from './MyCoupon';
+import Profile from './Profile';
 import { Helmet } from 'react-helmet-async';
 
 export default function MyPage() {
@@ -27,6 +29,8 @@ export default function MyPage() {
       </Helmet>
       <h1 className="text-3xl">마이페이지입니다</h1>
       <Header></Header>
+      <Profile></Profile>
+      <MyCoupon></MyCoupon>
       <AppNav></AppNav>
     </>
   );
