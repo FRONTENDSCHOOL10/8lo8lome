@@ -1,4 +1,4 @@
-import { AppAuthMessage, AppButton, AppInput } from '@/components';
+import { AppButton, AppInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function PhoneNumber() {
@@ -6,17 +6,16 @@ export function PhoneNumber() {
     handlePhoneNumberChange,
     handlePhoneNumberCheck,
     handleVerificationCodeCheck,
-    phoneNumberVerification,
-    isPhoneNumberButtonDisabled,
-    isVerificationCodeButtonDisabled,
+    phoneNumberValidation,
   } = useSignupStore((s) => ({
     handlePhoneNumberChange: s.handleMethod.handlePhoneNumberChange,
     handlePhoneNumberCheck: s.handleMethod.handlePhoneNumberCheck,
     handleVerificationCodeCheck: s.handleMethod.handleVerificationCodeCheck,
-    phoneNumberVerification: s.authMessages.phoneNumberVerification,
-    isPhoneNumberButtonDisabled: s.isPhoneNumberButtonDisabled,
-    isVerificationCodeButtonDisabled: s.isVerificationCodeButtonDisabled,
+    phoneNumberValidation: s.phoneNumberValidation,
   }));
+
+  const { isVerificationCodeInput, isVerificationCodeButtonDisabled } =
+    phoneNumberValidation;
 
   return (
     <article>
@@ -36,15 +35,12 @@ export function PhoneNumber() {
         <AppButton
           isFilled={false}
           onClick={handlePhoneNumberCheck}
-          disabled={isPhoneNumberButtonDisabled}
+          disabled={isVerificationCodeButtonDisabled}
         >
           인증받기
         </AppButton>
       </fieldset>
-      {phoneNumberVerification && (
-        <AppAuthMessage>전화번호 양식이 맞지 않습니다.</AppAuthMessage>
-      )}
-      {isVerificationCodeButtonDisabled && (
+      {isVerificationCodeInput && (
         <AppInput
           label="인증번호"
           placeholder="인증번호"

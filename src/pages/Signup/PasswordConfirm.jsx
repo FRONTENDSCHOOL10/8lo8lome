@@ -2,10 +2,10 @@ import { AppAuthMessage, AppInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function PasswordConfirm() {
-  const { handlePasswordConfirmCheck, passwordConfirm } = useSignupStore(
+  const { handlePasswordConfirmChange, confirmPassword } = useSignupStore(
     (s) => ({
-      handlePasswordConfirmCheck: s.handleMethod.handlePasswordConfirmCheck,
-      passwordConfirm: s.authMessages.passwordConfirm,
+      handlePasswordConfirmChange: s.handleMethod.handlePasswordConfirmChange,
+      confirmPassword: s.authMessages.confirmPassword,
     })
   );
 
@@ -19,12 +19,12 @@ export function PasswordConfirm() {
           isHiddenLabel
           password
           className={'w-full'}
-          onChange={handlePasswordConfirmCheck}
+          onChange={handlePasswordConfirmChange}
           required
         />
       </fieldset>
-      {passwordConfirm && (
-        <AppAuthMessage>비밀번호가 일치하지 않습니다.</AppAuthMessage>
+      {confirmPassword && (
+        <AppAuthMessage warning>비밀번호가 일치하지 않습니다.</AppAuthMessage>
       )}
     </article>
   );

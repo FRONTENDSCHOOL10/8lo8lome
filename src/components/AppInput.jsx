@@ -101,22 +101,30 @@ function AppInput({
   let renderVisibleButton = null;
 
   if (type === 'password' || (type === 'text' && isVisible)) {
+    const IsPasswordShow = isVisible ? (
+      <use href="../assets/sprite.svg#eye-off" />
+    ) : (
+      <use href="../assets/sprite.svg#eye-on" />
+    );
+
     renderVisibleButton = (
       <button
         type="button"
-        className="border border-1 border-green-500 p-2 absolute right-0 h-full"
+        className="p-2 absolute right-1 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
       >
-        {isVisible ? '숨김' : '보기'}
+        <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+          {IsPasswordShow}
+        </svg>
       </button>
     );
   }
 
   let inputBaseClass =
     'bg-transparent border border-solid border-white rounded-md p-3 w-full';
-  let labelBaseClass = 'flex items-center gap-1';
+  let labelBaseClass = 'flex items-center gap-1 focus-within:border-primary';
 
   if (className) {
     inputBaseClass = `${inputBaseClass} ${className}`;
@@ -130,7 +138,15 @@ function AppInput({
     labelBaseClass = `${labelBaseClass} justify-center p-5 rounded-md text-[14px] ${checkedRadioClass}`;
   }
   const wrapperClass = 'relative w-full';
-  // ----------------------------------------------------------------4
+  // ----------------------------------------------------------------
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      // Enter 또는 Spacebar 키를 감지
+      e.preventDefault(); // 기본 동작 방지
+      document.getElementById(id).click(); // 해당 input 요소 클릭 트리거
+    }
+  };
 
   return (
     <div className={wrapperClass}>
@@ -148,6 +164,8 @@ function AppInput({
       <label
         htmlFor={id}
         className={isHiddenLabel ? 'sr-only' : labelBaseClass}
+        tabIndex="0"
+        onKeyPress={handleKeyPress}
       >
         {type === 'checkbox' ? (
           <span className={customCheckboxClass}></span>
