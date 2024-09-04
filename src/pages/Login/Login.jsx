@@ -1,4 +1,4 @@
-import { AppButton, AppHeader, AppInput } from '@/components';
+import { AppButton, AppHeader, AppCheckboxInput } from '@/components';
 import { AuthLinks } from './AuthLinks';
 import { Email } from './Email';
 import { Password } from './Password';
@@ -62,11 +62,12 @@ export default function Login() {
           <form action="" className="my-20 flex flex-col gap-4">
             <Email />
             <Password />
-            <AppInput
+            <AppCheckboxInput
               label="자동 로그인"
-              checkbox
               isChecked={autoLogin}
               onChange={handleAutoLoginCheck}
+              unCheckedSvgId="checkmark-circle-unclick"
+              checkedSvgId="checkmark-circle-click"
             />
           </form>
           <AppButton submit className="mb-[48px]" onClick={handleLogin}>
