@@ -20,7 +20,6 @@ export const getData = async (resource, id = '') => {
 
 // POST 요청 함수
 export const createData = async (resource, data) => {
-  console.log(data);
   try {
     const url = `${BASE_URL}/api/collections/${resource}/records`; // 모든 레코드를 생성하는 엔드포인트
     const response = await axios.post(url, data, {
