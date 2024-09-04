@@ -30,6 +30,7 @@ export function AgreementTerms() {
           isChecked={allChecked}
           onChange={handleAllCheck}
           required
+          unCheckedSvgId="checkmark-circle-unclick"
         />
         <ul className="mt-3 flex flex-col gap-1">
           <li>
@@ -41,6 +42,7 @@ export function AgreementTerms() {
               onChange={handleCheckboxChange}
               className="text-[12px]"
               required
+              unCheckedSvgId="checkmark-circle-unclick"
             />
           </li>
           <li>
@@ -51,6 +53,7 @@ export function AgreementTerms() {
               isChecked={terms}
               onChange={handleCheckboxChange}
               required
+              unCheckedSvgId="checkmark-circle-unclick"
             />
           </li>
           <li>
@@ -62,6 +65,7 @@ export function AgreementTerms() {
               isChecked={privacy}
               onChange={handleCheckboxChange}
               required
+              unCheckedSvgId="checkmark-circle-unclick"
             />
           </li>
           <li>
@@ -72,6 +76,7 @@ export function AgreementTerms() {
               isChecked={thirdParty}
               onChange={handleCheckboxChange}
               required
+              unCheckedSvgId="checkmark-circle-unclick"
             />
             <ul className="pl-4 mt-2 border-l flex flex-col gap-1">
               <li>
@@ -81,6 +86,7 @@ export function AgreementTerms() {
                   name="thirdPartyOptional"
                   isChecked={thirdPartyOptional}
                   onChange={handleCheckboxChange}
+                  unCheckedSvgId="checkmark-circle-unclick"
                 />
               </li>
               <li>
@@ -90,6 +96,7 @@ export function AgreementTerms() {
                   name="marketingOptional"
                   isChecked={marketingOptional}
                   onChange={handleCheckboxChange}
+                  unCheckedSvgId="checkmark-circle-unclick"
                 />
               </li>
               <li>
@@ -99,6 +106,7 @@ export function AgreementTerms() {
                   name="smsOptional"
                   isChecked={smsOptional}
                   onChange={handleCheckboxChange}
+                  unCheckedSvgId="checkmark-circle-unclick"
                 />
               </li>
             </ul>
