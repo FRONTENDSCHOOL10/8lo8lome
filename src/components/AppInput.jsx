@@ -101,15 +101,25 @@ function AppInput({
   let renderVisibleButton = null;
 
   if (type === 'password' || (type === 'text' && isVisible)) {
+    const IsPasswordShow = isVisible ? (
+      <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+        <use href="../assets/sprite.svg#eye-off" />
+      </svg>
+    ) : (
+      <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+        <use href="../assets/sprite.svg#eye-on" />
+      </svg>
+    );
+
     renderVisibleButton = (
       <button
         type="button"
-        className="border border-1 border-green-500 p-2 absolute right-0 h-full"
+        className="p-2 absolute right-1 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
       >
-        {isVisible ? '숨김' : '보기'}
+        {IsPasswordShow}
       </button>
     );
   }
