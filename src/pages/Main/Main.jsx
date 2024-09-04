@@ -1,5 +1,7 @@
 // import { AppDivider, AppLink } from '@/components';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import SearchBar from './SearchBar';
 import GymList from './GymList';
 import { AppNav } from '@/components';
 
@@ -26,6 +28,13 @@ export default function Main() {
         />
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
+
+      <SearchBar />
+
+      <Link to={'/map'} aria-label="지도로 보기">
+        지도🗺️
+      </Link>
+
       <GymList />
       <AppNav />
     </>

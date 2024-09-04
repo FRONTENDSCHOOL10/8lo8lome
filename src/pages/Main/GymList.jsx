@@ -40,27 +40,58 @@ const list = [
 export default function GymList() {
   return (
     <section className="bg-black p-4">
-      <h1 className="text-white">내 주변 헬스장</h1>
+      <div className="flex justify-between">
+        <h1 className="text-white">내 주변 헬스장</h1>
+        <span>필터</span>
+      </div>
+
+      <div>
+        <span>🚩</span>
+        <span>현재 위치로 찾기</span>
+      </div>
+
+      <ul className="flex">
+        <li>
+          <span className="whitespace-nowrap">별점 4점</span>
+          <span>&nbsp;|&nbsp;</span>
+        </li>
+        <li>
+          <span>월 5만원</span>
+          <span>&nbsp;|&nbsp;</span>
+        </li>
+        <li>
+          <span>주차장</span>
+          <span>&nbsp;|&nbsp;</span>
+        </li>
+        <li>
+          <span>WIFI</span>
+          <span>&nbsp;|&nbsp;</span>
+        </li>
+      </ul>
+
       <ul className="flex flex-col gap-4">
         {list.map((item) => {
           return (
-            <li
-              key={item.id}
-              className="text-white flex
-            justify-between
+            <li key={item.id}>
+              <a
+                href=""
+                className="text-white flex gap-2
             bg-subBg rounded-lg p-5"
-            >
-              <a href="">
+              >
                 <img src={item.image} alt="" width={120} height={120} />
-              </a>
-              <div>
-                <h2>{item.title}</h2>
-                <p>가격 : {item.price.toLocaleString()}원</p>
-                <div className="flex justify-between">
-                  <p>{item.range}km</p>
-                  <p>⭐ {item.rating}</p>
+
+                <div>
+                  <div className="flex justify-between">
+                    <h2>{item.title}</h2>
+                    <p>❤️</p>
+                  </div>
+                  <p>가격 : {item.price.toLocaleString()}원</p>
+                  <div className="flex justify-between">
+                    <p>{item.range}km</p>
+                    <p>⭐ {item.rating}</p>
+                  </div>
                 </div>
-              </div>
+              </a>
             </li>
           );
         })}
