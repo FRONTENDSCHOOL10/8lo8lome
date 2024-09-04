@@ -7,11 +7,11 @@ import { getNavigationItems } from '@/utils';
 import RootLayout from '@/layouts/RootLayout';
 import { lazy } from 'react';
 
-import Home from './pages/Home';
-import Login from './pages/Login/Login';
-import Signup from './pages/Signup/Signup';
-import FindPassword from './pages/Login/FindPassword';
-import FindId from './pages/Login/FindId';
+import Home from '@/pages/Home';
+import Login from '@/pages/Login/Login';
+import Signup from '@/pages/Signup/Signup';
+import FindPassword from '@/pages/Login/FindPassword/FindPassword';
+import FindId from '@/pages/Login/FindId/FindId';
 
 const Main = lazy(() => import('@/pages/Main/Main'));
 const Chat = lazy(() => import('@/pages/Chat/Chat'));
