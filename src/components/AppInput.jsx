@@ -1,7 +1,6 @@
 import { memo, useId, useState } from 'react';
 import { bool, func, string } from 'prop-types';
 import { throttle } from '@/utils';
-import { useEffect } from 'react';
 
 AppInput.propTypes = {
   label: string.isRequired,
@@ -14,6 +13,11 @@ AppInput.propTypes = {
   radio: bool,
   isChecked: bool,
   required: bool,
+  svgCheckedColor: string,
+  checkedSvgId: string,
+  unCheckedSvgId: string,
+  checkedColor: string,
+  unCheckedColor: string,
 };
 
 function AppInput({
@@ -27,10 +31,15 @@ function AppInput({
   radio = false,
   isChecked = false,
   required = false,
+  checkedSvgId = '',
+  unCheckedSvgId = '',
+  checkedColor = 'text-primary',
+  unCheckedColor = 'text-white',
   ...restProps
 }) {
   const id = useId();
   // ----------------------------------------------------------------
+  // 타입 지정
   const [type, setType] = useState(() => {
     let type = 'text';
     if (email) type = 'email';
@@ -42,13 +51,27 @@ function AppInput({
   });
 
   // ----------------------------------------------------------------
-  let INITIAL_CLASS =
-    "inline-block bg-[url('../assets/unchecked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]";
 
-  const [customCheckboxClass, setCustomCheckboxClass] = useState(
-    checkbox ? INITIAL_CLASS : ''
-  );
-  const [checkedRadioClass, setCheckedRadioClass] = useState('');
+  // SVG 색상 설정
+  const svgColor = checkbox ? (isChecked ? checkedColor : unCheckedColor) : '';
+  // SVG ID 선택
+  const svgIdToUse = checkbox && unCheckedSvgId ? unCheckedSvgId : checkedSvgId;
+  // SVG 렌더링
+  const svg = svgIdToUse ? (
+    <svg
+      className={`w-5 h-5 ${svgColor}`}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+    >
+      <use href={`../assets/sprite.svg#${svgIdToUse}`} />
+    </svg>
+  ) : null;
+
+  const checkedRadioClass = radio
+    ? isChecked
+      ? 'border-transparent text-black bg-primary font-bold'
+      : 'border border-solid border-white'
+    : '';
 
   const [inputValue, setInputValue] = useState('');
 
@@ -58,30 +81,8 @@ function AppInput({
     onChange?.(value);
   }, 200);
 
-  useEffect(() => {
-    if (checkbox) {
-      setCustomCheckboxClass(
-        isChecked
-          ? "inline-block bg-[url('../assets/checked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]"
-          : "inline-block bg-[url('../assets/unchecked.svg')] bg-no-repeat bg-cover w-[20px] h-[20px]"
-      );
-    }
-  }, [isChecked, checkbox]);
-
-  useEffect(() => {
-    if (radio) {
-      setCheckedRadioClass(
-        isChecked
-          ? 'border-transparent text-black bg-primary font-bold'
-          : 'border border-solid border-white'
-      );
-    }
-  }, [isChecked, radio]);
-
-  // const isInputed = inputValue.trim().length > 0;
-
   // ----------------------------------------------------------------
-
+  // 비밀번호 보기 버튼 표시
   const [isVisible, setIsVisible] = useState(false);
 
   const visibleLabel = `패스워드 ${isVisible ? '감춤' : '표시'}`;
@@ -96,17 +97,10 @@ function AppInput({
     }
   };
 
-  // ----------------------------------------------------------------
-
   let renderVisibleButton = null;
 
   if (type === 'password' || (type === 'text' && isVisible)) {
-    const IsPasswordShow = isVisible ? (
-      <use href="../assets/sprite.svg#eye-off" />
-    ) : (
-      <use href="../assets/sprite.svg#eye-on" />
-    );
-
+    const passwordSvgId = isVisible ? 'eye-off' : 'eye-on';
     renderVisibleButton = (
       <button
         type="button"
@@ -116,11 +110,12 @@ function AppInput({
         onClick={handleToggle}
       >
         <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
-          {IsPasswordShow}
+          <use href={`../assets/sprite.svg#${passwordSvgId}`} />
         </svg>
       </button>
     );
   }
+  // ----------------------------------------------------------------
 
   let inputBaseClass =
     'bg-transparent border border-solid border-white rounded-md p-3 w-full';
@@ -138,16 +133,19 @@ function AppInput({
     labelBaseClass = `${labelBaseClass} justify-center p-5 rounded-md text-[14px] ${checkedRadioClass}`;
   }
   const wrapperClass = 'relative w-full';
+
   // ----------------------------------------------------------------
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      // Enter 또는 Spacebar 키를 감지
-      e.preventDefault(); // 기본 동작 방지
-      document.getElementById(id).click(); // 해당 input 요소 클릭 트리거
+      e.preventDefault();
+      document.getElementById(id).click();
     }
   };
 
+  // ----------------------------------------------------------------
+
+  // 실제 return되는 jsx
   return (
     <div className={wrapperClass}>
       <input
@@ -157,7 +155,7 @@ function AppInput({
         defaultValue={inputValue}
         onChange={handleChange}
         className={inputBaseClass}
-        checked={type === 'checkbox' ? isChecked : undefined}
+        checked={isChecked}
         required={required}
         {...restProps}
       />
@@ -167,10 +165,8 @@ function AppInput({
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >
-        {type === 'checkbox' ? (
-          <span className={customCheckboxClass}></span>
-        ) : null}
-        {label}
+        {svg}
+        <span className={isHiddenLabel ? 'sr-only' : ''}>{label}</span>
       </label>
       {renderVisibleButton}
     </div>
