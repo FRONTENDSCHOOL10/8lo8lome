@@ -1,4 +1,4 @@
-import { AppAuthMessage, AppButton, AppInput } from '@/components';
+import { AppAuthMessage, AppButton, AppEmailInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function Email() {
@@ -18,10 +18,9 @@ export function Email() {
     <article>
       <h2 className="sr-only">이메일 입력</h2>
       <fieldset className="flex gap-2">
-        <AppInput
+        <AppEmailInput
           label="이메일"
           placeholder="이메일"
-          email
           isHiddenLabel
           className="min-w-[200px]"
           onChange={handleEmailChange}
@@ -30,13 +29,11 @@ export function Email() {
         <AppButton
           isFilled={false}
           onClick={handleEmailCheck}
-          disabled={isEmailButtonDisabled} // 유효한 이메일 형식일 때만 버튼 활성화
+          disabled={isEmailButtonDisabled}
         >
           중복확인
         </AppButton>
       </fieldset>
-
-      {/* 단일 AppAuthMessage 사용 */}
       {message && <AppAuthMessage warning={warning}>{message}</AppAuthMessage>}
     </article>
   );

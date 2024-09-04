@@ -1,4 +1,4 @@
-import { AppButton, AppInput } from '@/components';
+import { AppButton, AppTextInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function PhoneNumber() {
@@ -21,7 +21,7 @@ export function PhoneNumber() {
     <article>
       <h2 className="sr-only">전화번호 입력</h2>
       <fieldset className="flex gap-2">
-        <AppInput
+        <AppTextInput
           label="전화번호"
           placeholder="전화번호"
           isHiddenLabel
@@ -41,7 +41,7 @@ export function PhoneNumber() {
         </AppButton>
       </fieldset>
       {isVerificationCodeInput && (
-        <AppInput
+        <AppTextInput
           label="인증번호"
           placeholder="인증번호"
           isHiddenLabel
