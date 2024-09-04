@@ -2,10 +2,12 @@ import { AppAuthMessage, AppInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function Password() {
-  const { handlePasswordCheck, passwordVerification } = useSignupStore((s) => ({
-    handlePasswordCheck: s.handleMethod.handlePasswordCheck,
-    passwordVerification: s.authMessages.passwordVerification,
-  }));
+  const { handlePasswordChange, passwordVerification } = useSignupStore(
+    (s) => ({
+      handlePasswordChange: s.handleMethod.handlePasswordChange,
+      passwordVerification: s.authMessages.passwordVerification,
+    })
+  );
 
   return (
     <article>
@@ -17,12 +19,12 @@ export function Password() {
           isHiddenLabel
           password
           className={'w-full'}
-          onChange={handlePasswordCheck}
+          onChange={handlePasswordChange}
           required
         />
       </fieldset>
       {passwordVerification && (
-        <AppAuthMessage>
+        <AppAuthMessage warning>
           비밀번호 양식은 문자와 숫자 8글자 이상입니다.
         </AppAuthMessage>
       )}

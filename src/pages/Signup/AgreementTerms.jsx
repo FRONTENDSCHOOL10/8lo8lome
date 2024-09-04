@@ -2,10 +2,15 @@ import { AppInput } from '@/components';
 import { useSignupStore } from './store';
 
 export function AgreementTerms() {
+  const { handleAllCheck, handleCheckboxChange, allChecked, agreementTerms } =
+    useSignupStore((s) => ({
+      handleAllCheck: s.handleMethod.handleAllCheck,
+      handleCheckboxChange: s.handleMethod.handleCheckboxChange,
+      allChecked: s.allChecked,
+      agreementTerms: s.user.agreementTerms,
+    }));
+
   const {
-    handleAllCheck,
-    handleCheckboxChange,
-    allChecked,
     over14,
     terms,
     privacy,
@@ -13,18 +18,7 @@ export function AgreementTerms() {
     thirdPartyOptional,
     marketingOptional,
     smsOptional,
-  } = useSignupStore((s) => ({
-    handleAllCheck: s.handleMethod.handleAllCheck,
-    handleCheckboxChange: s.handleMethod.handleCheckboxChange,
-    allChecked: s.allChecked,
-    over14: s.user.agreementTerms.over14,
-    terms: s.user.agreementTerms.terms,
-    privacy: s.user.agreementTerms.privacy,
-    thirdParty: s.user.agreementTerms.thirdParty,
-    thirdPartyOptional: s.user.agreementTerms.thirdPartyOptional,
-    marketingOptional: s.user.agreementTerms.marketingOptional,
-    smsOptional: s.user.agreementTerms.smsOptional,
-  }));
+  } = agreementTerms;
 
   return (
     <section>

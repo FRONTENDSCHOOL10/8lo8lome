@@ -1,22 +1,40 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { getRandomMinMax } from '@/utils';
-import { createData } from '@/api/axios';
+import { createData, getData } from '@/api/axios';
+import {
+  NINKNAME_REG,
+  EMAIL_REG,
+  PHONENUMBER_REG,
+  PASSWORD_REG,
+} from '@/constant.js';
 
 export const useSignupStore = create((set) => {
   const INITIAL_STATE = {
+    emailValidation: {
+      isEmailButtonDisabled: true,
+      message: '',
+    },
+    nickNameValidation: {
+      isNickNameButtonDisabled: true,
+    },
+    phoneNumberValidation: {
+      isVerificationCodeButtonDisabled: true,
+      isVerificationCodeInput: false,
+      verificationCode: null,
+    },
     authMessages: {
-      emailVerification: false,
       phoneNumberVerification: false,
       passwordVerification: false,
-      passwordConfirm: false,
+      confirmPassword: false,
+      isNickNameExists: '',
     },
     user: {
       nickName: '',
-      password: '',
-      confirmPassword: '',
-      phoneNumber: '',
       email: '',
+      password: '',
+      passwordConfirm: '',
+      phoneNumber: '',
       gender: '',
       age: '',
       agreementTerms: {
@@ -30,148 +48,203 @@ export const useSignupStore = create((set) => {
       },
     },
     allChecked: false,
-    isVerificationCodeButtonDisabled: false,
-    isPhoneNumberButtonDisabled: true,
     isSignupButtonDisabled: true,
-    verificationCode: null,
-    isVerificationCode: false,
   };
 
   const updateSignupButtonState = (draft) => {
-    const { user } = draft;
+    const { user, phoneNumberValidation, authMessages, emailValidation } =
+      draft;
     draft.isSignupButtonDisabled = !(
       user.nickName &&
       user.email &&
       user.phoneNumber &&
       user.gender &&
       user.age &&
-      user.password &&
-      user.confirmPassword &&
-      draft.verificationCode &&
-      draft.isVerificationCode &&
+      user.password === user.passwordConfirm &&
       user.agreementTerms.over14 &&
       user.agreementTerms.terms &&
       user.agreementTerms.privacy &&
-      user.agreementTerms.thirdParty
+      user.agreementTerms.thirdParty &&
+      phoneNumberValidation.verificationCode &&
+      authMessages.isNickNameExists === '사용 가능한 닉네임입니다.' &&
+      emailValidation.message === '사용 가능한 이메일입니다.'
     );
   };
 
-  const setUserField = (field, value) =>
-    set(
-      produce((draft) => {
-        draft.user[field] = value;
-        updateSignupButtonState(draft);
-      })
-    );
-
-  const setPhoneNumberButtonDisabled = (value) =>
-    set(
-      produce((draft) => {
-        draft.isPhoneNumberButtonDisabled = value;
-      })
-    );
-
-  const activateAuthMessage = (key) => {
-    set(
-      produce((draft) => {
-        draft.authMessages[key] = true;
-      })
-    );
-  };
-
-  const deactivateAuthMessage = (key) => {
-    set(
-      produce((draft) => {
-        draft.authMessages[key] = false;
-      })
-    );
-  };
   const handleNickNameChange = (value) => {
-    const nickNameRegex = /^[가-힣a-zA-Z0-9]{1,8}$/;
-    if (nickNameRegex.test(value)) {
-      setUserField('nickName', value);
+    const isValid = NINKNAME_REG.test(value);
+    if (isValid) {
+      set(
+        produce((draft) => {
+          draft.user.nickName = value;
+          draft.nickNameValidation.isNickNameButtonDisabled = !isValid;
+          updateSignupButtonState(draft);
+        })
+      );
     }
-    //  else {
-    //   alert('특수문자 제외 8글자까지만 작성해주세요');
-    // }
+  };
+
+  const handleNickNameCheck = async () => {
+    const user = useSignupStore.getState().user;
+    const data = await getData('users');
+    const result = data.items.find((item) => item.nickName === user.nickName);
+    set(
+      produce((draft) => {
+        draft.authMessages.isNickNameExists = result
+          ? '이미 존재하는 닉네임입니다.'
+          : '사용 가능한 닉네임입니다.';
+      })
+    );
   };
 
   const handleEmailChange = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(value)) {
-      setUserField('email', value);
-      deactivateAuthMessage('emailVerification');
+    const isValid = EMAIL_REG.test(value);
+
+    set(
+      produce((draft) => {
+        if (isValid) {
+          draft.user.email = value;
+          draft.emailValidation.isEmailButtonDisabled = false;
+          draft.emailValidation.message = ''; // 유효한 경우 메시지 초기화
+        } else {
+          draft.user.email = '';
+          draft.emailValidation.isEmailButtonDisabled = true; // 이메일 버튼 비활성화
+          draft.emailValidation.message = '유효한 이메일을 입력해 주세요.';
+        }
+
+        // 이메일 변경 시 버튼 상태 업데이트
+        updateSignupButtonState(draft);
+      })
+    );
+  };
+
+  const handleEmailCheck = async () => {
+    const userEmail = useSignupStore.getState().user.email;
+    const isValid = EMAIL_REG.test(userEmail);
+
+    if (isValid) {
+      const data = await getData('users');
+      const result = data.items.find((item) => item.email === userEmail);
+
+      set(
+        produce((draft) => {
+          draft.emailValidation.message = result
+            ? '이미 가입 된 이메일입니다.'
+            : '사용 가능한 이메일입니다.';
+
+          // 이메일 확인 후 버튼 상태 업데이트
+          updateSignupButtonState(draft);
+        })
+      );
     } else {
-      activateAuthMessage('emailVerification');
+      set(
+        produce((draft) => {
+          draft.emailValidation.message = '유효한 이메일을 입력해 주세요.';
+          draft.emailValidation.isEmailButtonDisabled = true;
+
+          // 유효하지 않은 경우 버튼 상태 업데이트
+          updateSignupButtonState(draft);
+        })
+      );
     }
   };
 
   const handlePhoneNumberChange = (value) => {
-    const phoneNumberRegex = /^0\d{10}$/;
-    if (phoneNumberRegex.test(value)) {
-      setUserField('phoneNumber', value);
-      deactivateAuthMessage('phoneNumberVerification');
-      setPhoneNumberButtonDisabled(false);
-    } else {
-      activateAuthMessage('phoneNumberVerification');
-      setPhoneNumberButtonDisabled(true);
-    }
+    const isValid = PHONENUMBER_REG.test(value);
+
+    set(
+      produce((draft) => {
+        if (isValid) {
+          draft.user.phoneNumber = value;
+          draft.phoneNumberValidation.isVerificationCodeButtonDisabled = false; // 유효하면 버튼 활성화
+        } else {
+          draft.user.phoneNumber = '';
+          draft.phoneNumberValidation.isVerificationCodeButtonDisabled = true; // 유효하지 않으면 버튼 비활성화
+        }
+
+        // 전화번호 변경 시 버튼 상태 업데이트
+        updateSignupButtonState(draft);
+      })
+    );
   };
 
   const handlePhoneNumberCheck = () => {
     const random = getRandomMinMax(100000, 999999);
+
     alert(`인증번호 : ${random}`);
     set(
       produce((draft) => {
-        draft.verificationCode = random;
-        draft.isVerificationCodeButtonDisabled = true;
+        draft.phoneNumberValidation.verificationCode = random;
+        draft.phoneNumberValidation.isVerificationCodeInput = true;
         updateSignupButtonState(draft);
       })
     );
   };
 
   const handleVerificationCodeCheck = (value) => {
+    const verificationCode = useSignupStore
+      .getState()
+      .phoneNumberValidation.verificationCode.toString();
+
+    const isValid = value === verificationCode;
+
     set(
       produce((draft) => {
-        if (value === draft.verificationCode.toString()) {
-          draft.isVerificationCode = true;
+        draft.phoneNumberValidation.verificationCodeInput = value;
+
+        if (isValid) {
           updateSignupButtonState(draft);
+        } else {
+          draft.isSignupButtonDisabled = true;
         }
       })
     );
   };
 
-  const handlePasswordCheck = (value) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+[\]{};':"\\|,.<>?/-]{8,}$/;
-    if (passwordRegex.test(value)) {
-      setUserField('password', value);
-      deactivateAuthMessage('passwordVerification');
-    } else {
-      activateAuthMessage('passwordVerification');
-    }
-  };
-
-  const handlePasswordConfirmCheck = (value) => {
+  const handlePasswordChange = (value) => {
+    const isValid = PASSWORD_REG.test(value);
     set(
       produce((draft) => {
-        draft.user.confirmPassword = value;
-        const { password, confirmPassword } = draft.user;
-        if (password !== confirmPassword) {
-          draft.authMessages.passwordConfirm = true;
+        if (isValid) {
+          draft.user.password = value;
+          draft.authMessages.passwordVerification = false;
         } else {
-          draft.authMessages.passwordConfirm = false;
+          draft.authMessages.passwordVerification = true;
+        }
+
+        updateSignupButtonState(draft);
+      })
+    );
+  };
+
+  const handlePasswordConfirmChange = (value) => {
+    set(
+      produce((draft) => {
+        draft.user.passwordConfirm = value;
+        const { password, passwordConfirm } = draft.user;
+        if (password !== passwordConfirm) {
+          draft.authMessages.confirmPassword = true;
+        } else {
+          draft.authMessages.confirmPassword = false;
         }
         updateSignupButtonState(draft);
       })
     );
   };
   const handleGenderCheck = ({ value }) => {
-    setUserField('gender', value);
+    set(
+      produce((draft) => {
+        draft.user.gender = value;
+      })
+    );
   };
 
   const handleAgeCheck = ({ value }) => {
-    setUserField('age', value);
+    set(
+      produce((draft) => {
+        draft.user.age = value;
+      })
+    );
   };
 
   const handleAllCheck = () => {
@@ -205,7 +278,7 @@ export const useSignupStore = create((set) => {
     const userData = {
       nickName: user.nickName,
       password: user.password,
-      passwordConfirm: user.confirmPassword,
+      passwordConfirm: user.passwordConfirm,
       phoneNumber: user.phoneNumber,
       email: user.email,
       gender: user.gender,
@@ -224,21 +297,19 @@ export const useSignupStore = create((set) => {
     ...INITIAL_STATE,
     handleMethod: {
       handleNickNameChange,
+      handleNickNameCheck,
       handleEmailChange,
+      handleEmailCheck,
       handlePhoneNumberChange,
       handlePhoneNumberCheck,
       handleVerificationCodeCheck,
-      handlePasswordCheck,
-      handlePasswordConfirmCheck,
+      handlePasswordChange,
+      handlePasswordConfirmChange,
       handleAllCheck,
       handleCheckboxChange,
       handleGenderCheck,
       handleAgeCheck,
       handleSignupButtonClick,
-    },
-    authMethod: {
-      activateAuthMessage,
-      deactivateAuthMessage,
     },
   };
 });
