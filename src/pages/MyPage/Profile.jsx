@@ -14,12 +14,11 @@ export default function Profile() {
           <div key={item.id} className="flex flex-col text-white">
             <img
               className="rounded-full"
-              src="{item.image}"
+              src={item.image}
               alt=""
               width={64}
               height={64}
             />
-            
           </div>
         );
       })}
