@@ -5,27 +5,28 @@ import { useEffect } from 'react';
 
 AppInput.propTypes = {
   label: string.isRequired,
-  email: bool,
-  password: bool,
-  passwordConfirm: bool,
   isHiddenLabel: bool,
   onChange: func,
   className: string,
+  email: bool,
+  password: bool,
   checkbox: bool,
   radio: bool,
   isChecked: bool,
+  required: bool,
 };
 
 function AppInput({
   label,
+  isHiddenLabel = false,
+  onChange,
+  className,
   email = false,
   password = false,
   checkbox = false,
   radio = false,
-  isHiddenLabel = false,
   isChecked = false,
-  onChange,
-  className,
+  required = false,
   ...restProps
 }) {
   const id = useId();
@@ -48,6 +49,7 @@ function AppInput({
     checkbox ? INITIAL_CLASS : ''
   );
   const [checkedRadioClass, setCheckedRadioClass] = useState('');
+
   const [inputValue, setInputValue] = useState('');
 
   const handleChange = throttle((e) => {
@@ -99,15 +101,25 @@ function AppInput({
   let renderVisibleButton = null;
 
   if (type === 'password' || (type === 'text' && isVisible)) {
+    const IsPasswordShow = isVisible ? (
+      <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+        <use href="../assets/sprite.svg#eye-off" />
+      </svg>
+    ) : (
+      <svg className="w-5 h-5 fill-white" xmlns="http://www.w3.org/2000/svg">
+        <use href="../assets/sprite.svg#eye-on" />
+      </svg>
+    );
+
     renderVisibleButton = (
       <button
         type="button"
-        className="border border-1 border-green-500 p-2 absolute right-0 h-full"
+        className="p-2 absolute right-1 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
       >
-        {isVisible ? '숨김' : '보기'}
+        {IsPasswordShow}
       </button>
     );
   }
@@ -119,13 +131,13 @@ function AppInput({
   if (className) {
     inputBaseClass = `${inputBaseClass} ${className}`;
   }
-  if (type == 'checkbox') {
+  if (type === 'checkbox') {
     inputBaseClass = 'hidden ';
     labelBaseClass = `${labelBaseClass} text-[12px]`;
   }
   if (type === 'radio') {
     inputBaseClass = 'hidden ';
-    labelBaseClass = `${labelBaseClass} justify-center  p-5 rounded-md text-[14px] ${checkedRadioClass}`;
+    labelBaseClass = `${labelBaseClass} justify-center p-5 rounded-md text-[14px] ${checkedRadioClass}`;
   }
   const wrapperClass = 'relative w-full';
   // ----------------------------------------------------------------4
@@ -140,13 +152,14 @@ function AppInput({
         onChange={handleChange}
         className={inputBaseClass}
         checked={type === 'checkbox' ? isChecked : undefined}
+        required={required}
         {...restProps}
       />
       <label
         htmlFor={id}
         className={isHiddenLabel ? 'sr-only' : labelBaseClass}
       >
-        {type == 'checkbox' ? (
+        {type === 'checkbox' ? (
           <span className={customCheckboxClass}></span>
         ) : null}
         {label}

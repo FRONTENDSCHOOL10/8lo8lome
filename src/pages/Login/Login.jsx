@@ -1,72 +1,79 @@
-import { Link } from 'react-router-dom';
 import { AppButton, AppHeader, AppInput } from '@/components';
-import AppAuthMessage from './../../components/AppAuthMessage';
-import { useState } from 'react';
-export default function Login() {
-  const [checked, isChecked] = useState(false);
+import { AuthLinks } from './AuthLinks';
+import { Email } from './Email';
+import { Password } from './Password';
+import { useLoginStore } from './store';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-  const handleChange = () => {
-    isChecked(!checked);
+export default function Login() {
+  const navigate = useNavigate();
+
+  const { autoLogin, handleAutoLoginCheck, handleLoginButtonClick } =
+    useLoginStore((s) => ({
+      autoLogin: s.autoLogin,
+      handleAutoLoginCheck: s.handleAutoLoginCheck,
+      handleLoginButtonClick: s.handleLoginButtonClick,
+    }));
+
+  const handleLogin = async () => {
+    try {
+      const isLoggedIn = await handleLoginButtonClick();
+      if (isLoggedIn) {
+        toast.success('로그인 되셨습니다!', {
+          icon: '👏',
+          style: {
+            borderRadius: '5px',
+            background: 'black',
+            color: '#fff',
+          },
+          duration: 500,
+        });
+        setTimeout(() => navigate('/main'), 500);
+      } else {
+        toast.error('이메일 또는 비밀번호를 확인해주세요', {
+          style: {
+            borderRadius: '5px',
+            background: 'black',
+            color: '#fff',
+          },
+          duration: 1000,
+        });
+      }
+    } catch (error) {
+      toast.error('로그인 중 오류가 발생했습니다.', {
+        style: {
+          borderRadius: '5px',
+          background: 'black',
+          color: '#fff',
+        },
+        duration: 1000,
+      });
+      console.error('Login error:', error);
+    }
   };
 
   return (
     <>
       <AppHeader>로그인</AppHeader>
       <section className="mb-10">
-        <section className="px-5">
+        <h2 className="sr-only">로그인 폼</h2>
+        <article className="px-5">
           <form action="" className="my-20 flex flex-col gap-4">
-            <div>
-              <AppInput
-                label="이메일"
-                email
-                isHiddenLabel
-                placeholder="이메일"
-                className={'w-full'}
-              />
-              <AppAuthMessage>이메일 양식이 맞지 않습니다.</AppAuthMessage>
-            </div>
-            <div>
-              <AppInput
-                label="비밀번호"
-                password
-                isHiddenLabel
-                placeholder="비밀번호"
-                className={'w-full'}
-              />
-              <AppAuthMessage>
-                아이디 혹은 비밀번호가 맞지 않습니다.
-              </AppAuthMessage>
-            </div>
+            <Email />
+            <Password />
             <AppInput
               label="자동 로그인"
               checkbox
-              isChecked={checked}
-              onChange={handleChange}
+              isChecked={autoLogin}
+              onChange={handleAutoLoginCheck}
             />
           </form>
-          <AppButton submit className="mb-[48px]">
+          <AppButton submit className="mb-[48px]" onClick={handleLogin}>
             로그인
           </AppButton>
-          <ul className="flex justify-center gap-2">
-            <li>
-              <Link to={'/findId'} className="text-xs">
-                아이디 찾기
-              </Link>
-            </li>
-            <li aria-hidden="true">|</li>
-            <li>
-              <Link to={'/findPassword'} className="text-xs">
-                비밀번호 찾기
-              </Link>
-            </li>
-            <li aria-hidden="true">|</li>
-            <li>
-              <Link to={'/signup'} className="text-xs">
-                회원가입
-              </Link>
-            </li>
-          </ul>
-        </section>
+          <AuthLinks />
+        </article>
       </section>
     </>
   );

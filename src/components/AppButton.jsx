@@ -47,16 +47,14 @@ function AppButton({
     iconRestProps = rest;
   }
 
-  let buttonBaseClasses =
+  let buttonBaseClass =
     'opacity-100 flex items-center justify-center rounded-md text-sm py-2 border disabled:opacity-50 w-full ';
 
-  buttonBaseClasses = isFilled
-    ? buttonBaseClasses +
-      ' py-3 border-none bg-primary text-black font-semibold'
-    : buttonBaseClasses +
-      ' border-solid border-white bg-transparent text-white';
+  buttonBaseClass = isFilled
+    ? buttonBaseClass + ' py-3 border-none bg-primary text-black font-semibold'
+    : buttonBaseClass + ' border-solid border-white bg-transparent text-white';
 
-  const buttonClasses = `${buttonBaseClasses} ${buttonClassName}`.trim();
+  const buttonClasses = `${buttonBaseClass} ${buttonClassName}`.trim();
 
   const iconBaseClasses = 'inline-flex text-white text-base';
   const iconClasses = `${iconBaseClasses} ${iconClassName}`.trim();
