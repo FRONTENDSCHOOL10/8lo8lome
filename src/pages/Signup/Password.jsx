@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppPasswordInput } from '@/components';
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 
 export function Password() {
   const { handlePasswordChange, passwordVerification } = useSignupStore(

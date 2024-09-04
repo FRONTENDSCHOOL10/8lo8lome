@@ -1,4 +1,4 @@
-import { useLoginStore } from './store';
+import { useLoginStore } from './loginStore';
 import { AppPasswordInput } from '@/components';
 
 export function Password() {

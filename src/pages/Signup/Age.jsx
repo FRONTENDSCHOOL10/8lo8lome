@@ -1,5 +1,5 @@
 import { AppRadioInput } from '@/components';
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 
 export function Age() {
   const { handleAgeCheck, age } = useSignupStore((s) => ({

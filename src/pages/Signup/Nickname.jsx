@@ -1,5 +1,5 @@
 import { AppButton, AppTextInput } from '@/components';
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 import { AppAuthMessage } from '@/components';
 
 export function Nickname() {

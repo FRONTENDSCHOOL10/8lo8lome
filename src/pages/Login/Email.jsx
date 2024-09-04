@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppEmailInput } from '@/components';
-import { useLoginStore } from './store';
+import { useLoginStore } from './loginStore';
 
 export function Email() {
   const { handleEmailChange, emailVerification } = useLoginStore((s) => ({

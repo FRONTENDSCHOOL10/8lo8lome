@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppButton, AppEmailInput } from '@/components';
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 
 export function Email() {
   const { handleEmailChange, handleEmailCheck, emailValidation } =

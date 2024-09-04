@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <section className="min-h-[600px] bg-[url('../assets/bg.avif')] bg-no-repeat bg-cover bg-right-top flex flex-col justify-evenly gap-20 pt-[100px] pb-[50px]">
       <h1 className="mx-auto">
-        <img width={200} height={125} src="../../assets/logo.svg" alt="로고" />
+        <img width={200} height={125} src="../assets/logo.svg" alt="로고" />
       </h1>
       <div className="flex flex-col justify-center items-center gap-[10px] px-3">
         <Link to="/signup" className={LinkClass + `bg-primary text-black`}>

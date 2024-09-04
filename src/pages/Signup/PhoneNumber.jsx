@@ -1,5 +1,5 @@
 import { AppButton, AppTextInput } from '@/components';
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 
 export function PhoneNumber() {
   const {

@@ -1,4 +1,4 @@
-import { useSignupStore } from './store';
+import { useSignupStore } from './signStore';
 import { AppCheckboxInput } from '@/components';
 
 export function AgreementTerms() {
