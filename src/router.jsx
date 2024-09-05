@@ -37,7 +37,7 @@ export const routes = createRoutesFromElements(
     <Route
       path="/main"
       lazy={async () => {
-        let { Main } = await import('./pages/Main/Main');
+        let { default: Main } = await import('./pages/Main/Main');
         return { Component: Main };
       }}
     />
@@ -46,14 +46,14 @@ export const routes = createRoutesFromElements(
     <Route
       path="/chat"
       lazy={async () => {
-        let { Chat } = await import('./pages/Chat/Chat');
+        let { default: Chat } = await import('./pages/Chat/Chat');
         return { Component: Chat };
       }}
     />
     <Route
       path="/mypage"
       lazy={async () => {
-        let { MyPage } = await import('./pages/MyPage/MyPage');
+        let { default: MyPage } = await import('./pages/MyPage/MyPage');
         return { Component: MyPage };
       }}
     />
