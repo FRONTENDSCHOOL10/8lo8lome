@@ -1,5 +1,5 @@
-import { AppAuthMessage, AppInput } from '@/components';
-import { useLoginStore } from './store';
+import { AppAuthMessage, AppEmailInput } from '@/components';
+import { useLoginStore } from './loginStore';
 
 export function Email() {
   const { handleEmailChange, emailVerification } = useLoginStore((s) => ({
@@ -9,16 +9,15 @@ export function Email() {
 
   return (
     <div>
-      <AppInput
+      <AppEmailInput
         label="이메일"
-        email
         isHiddenLabel
         placeholder="이메일"
         onChange={handleEmailChange}
         className={'w-full'}
       />
       {emailVerification ? (
-        <AppAuthMessage>이메일 양식이 맞지 않습니다.</AppAuthMessage>
+        <AppAuthMessage warning>이메일 양식이 맞지 않습니다.</AppAuthMessage>
       ) : null}
     </div>
   );

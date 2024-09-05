@@ -1,5 +1,5 @@
-import { AppInput } from '@/components';
-import { useSignupStore } from './store';
+import { AppRadioInput } from '@/components';
+import { useSignupStore } from './signStore';
 
 export function Gender() {
   const { handleGenderCheck, gender } = useSignupStore((s) => ({
@@ -11,8 +11,7 @@ export function Gender() {
     <section>
       <h2 className="font-semibold text-[16px] mb-3">성별을 선택해 주세요.</h2>
       <fieldset className="flex gap-3">
-        <AppInput
-          radio
+        <AppRadioInput
           label="남성"
           name="genderGroup"
           defaultValue="남성"
@@ -20,8 +19,7 @@ export function Gender() {
           onChange={handleGenderCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="여성"
           name="genderGroup"
           defaultValue="여성"

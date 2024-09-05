@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-// import { getData } from '@/api/axios';
 import pb from '@/api/pb';
 
 import { setStorageData } from '@/utils/web-storage';

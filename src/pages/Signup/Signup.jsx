@@ -1,5 +1,5 @@
 import { AppButton, AppHeader, AppDivider } from '@/components';
-import { useSignupStore } from './store.js';
+import { useSignupStore } from './signStore';
 import { Helmet } from 'react-helmet-async';
 import { Nickname } from './Nickname.jsx';
 import { Email } from './Email.jsx';

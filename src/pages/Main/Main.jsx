@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import GymList from './GymList';
-import { AppNav, AppInput } from '@/components';
+import { AppNav } from '@/components';
 
 export default function Main() {
   return (
@@ -27,7 +27,6 @@ export default function Main() {
         />
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
-
       <header className="flex items-center gap-1 m-4">
         <form action="" className="flex items-center grow gap-3 p-2">
           <label htmlFor="search" className="sr-only">
