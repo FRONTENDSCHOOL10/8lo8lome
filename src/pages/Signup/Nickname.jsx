@@ -1,8 +1,8 @@
-import { AppButton, AppTextInput } from '@/components';
+import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
 import { useSignupStore } from './signStore';
-import { AppAuthMessage } from '@/components';
+import { memo } from 'react';
 
-export function Nickname() {
+function Nickname() {
   const {
     handleNickNameChange,
     handleNickNameCheck,
@@ -48,3 +48,5 @@ export function Nickname() {
     </>
   );
 }
+
+export default memo(Nickname);

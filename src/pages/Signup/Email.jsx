@@ -1,7 +1,8 @@
 import { AppAuthMessage, AppButton, AppEmailInput } from '@/components';
 import { useSignupStore } from './signStore';
+import { memo } from 'react';
 
-export function Email() {
+function Email() {
   const { handleEmailChange, handleEmailCheck, emailValidation } =
     useSignupStore((s) => ({
       handleEmailChange: s.handleMethod.handleEmailChange,
@@ -38,3 +39,5 @@ export function Email() {
     </article>
   );
 }
+
+export default memo(Email);

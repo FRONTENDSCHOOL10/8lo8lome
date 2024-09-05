@@ -1,9 +1,10 @@
 import { AppTextInput, AppButton } from '@/components';
-import { useFindStore } from './findStore';
+import { useFindIdStore } from './findIdStore';
+import { memo } from 'react';
 
 function VerificationCodeInput() {
   const { handleVerificationCodeChange, handleVerificationCodeCheck } =
-    useFindStore((s) => ({
+    useFindIdStore((s) => ({
       handleVerificationCodeChange: s.handleVerificationCodeChange,
       handleVerificationCodeCheck: s.handleVerificationCodeCheck,
     }));
@@ -26,4 +27,4 @@ function VerificationCodeInput() {
   );
 }
 
-export default VerificationCodeInput;
+export default memo(VerificationCodeInput);

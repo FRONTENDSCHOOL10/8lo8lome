@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
-export function AuthLinks() {
+function AuthLinks() {
   const defaultClass = 'text-f12';
 
   return (
@@ -25,3 +26,4 @@ export function AuthLinks() {
     </ul>
   );
 }
+export default memo(AuthLinks);

@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Home() {
+function Home() {
   const LinkClass =
     'flex items-center justify-center py-s12 text-f12 rounded w-full font-bold ';
   return (
@@ -34,3 +35,5 @@ export default function Home() {
     </section>
   );
 }
+
+export default memo(Home);

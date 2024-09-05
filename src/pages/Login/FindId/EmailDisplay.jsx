@@ -1,7 +1,8 @@
-import { useFindStore } from './findStore';
+import { useFindIdStore } from './findIdStore';
+import { memo } from 'react';
 
 function EmailDisplay() {
-  const { email } = useFindStore((s) => ({
+  const { email } = useFindIdStore((s) => ({
     email: s.userData.email,
   }));
 
@@ -12,4 +13,4 @@ function EmailDisplay() {
   );
 }
 
-export default EmailDisplay;
+export default memo(EmailDisplay);

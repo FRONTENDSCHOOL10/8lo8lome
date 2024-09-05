@@ -1,5 +1,6 @@
 import { AppAuthMessage, AppEmailInput } from '@/components';
 import { useLoginStore } from './loginStore';
+import { memo } from 'react';
 
 export function Email() {
   const { handleEmailChange, emailVerification } = useLoginStore((s) => ({
@@ -22,3 +23,5 @@ export function Email() {
     </div>
   );
 }
+
+export default memo(Email);

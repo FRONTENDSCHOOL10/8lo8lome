@@ -1,8 +1,9 @@
 import { AppButton, AppTextInput } from '@/components';
 import { useSignupStore } from './signStore';
 import toast from 'react-hot-toast';
+import { memo } from 'react';
 
-export function PhoneNumber() {
+function PhoneNumber() {
   const {
     handlePhoneNumberChange,
     handlePhoneNumberCheck,
@@ -24,7 +25,7 @@ export function PhoneNumber() {
     const { isNumberExists, verificationCode } =
       useSignupStore.getState().phoneNumberValidation;
 
-    if (isNumberExists === true) {
+    if (isNumberExists) {
       toast.custom(
         () => (
           <div
@@ -108,3 +109,5 @@ export function PhoneNumber() {
     </article>
   );
 }
+
+export default memo(PhoneNumber);

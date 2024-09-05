@@ -1,7 +1,8 @@
 import { AppAuthMessage, AppPasswordInput } from '@/components';
 import { useSignupStore } from './signStore';
+import { memo } from 'react';
 
-export function PasswordConfirm() {
+function PasswordConfirm() {
   const { handlePasswordConfirmChange, confirmPassword } = useSignupStore(
     (s) => ({
       handlePasswordConfirmChange: s.handleMethod.handlePasswordConfirmChange,
@@ -28,3 +29,5 @@ export function PasswordConfirm() {
     </article>
   );
 }
+
+export default memo(PasswordConfirm);

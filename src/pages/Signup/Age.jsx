@@ -1,7 +1,8 @@
 import { AppRadioInput } from '@/components';
 import { useSignupStore } from './signStore';
+import { memo } from 'react';
 
-export function Age() {
+function Age() {
   const { handleAgeCheck, age } = useSignupStore((s) => ({
     handleAgeCheck: s.handleMethod.handleAgeCheck,
     age: s.user.age,
@@ -63,3 +64,5 @@ export function Age() {
     </section>
   );
 }
+
+export default memo(Age); // memo로 감싸서 기본 내보내기
