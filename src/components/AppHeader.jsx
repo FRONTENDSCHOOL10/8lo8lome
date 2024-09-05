@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { node, string, bool } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 AppHeader.propTypes = {
   className: string,
@@ -17,20 +16,12 @@ function AppHeader({ className, children, logo }) {
   };
 
   const isLogo = logo ? (
-    <Link to={'/main'}>
-      <svg
-        className={`w-5 h-5 `}
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-      >
-        <use href={`../assets/sprite.svg#my`} />
-      </svg>
-    </Link>
+    <h1 className="text-f20 text-center text-mainColor font-bold">다있짐</h1>
   ) : (
     <>
       <button type="button" onClick={handleGoBack}>
         <svg
-          className={`w-5 h-5 `}
+          className={`w-5 h-5`}
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
         >
