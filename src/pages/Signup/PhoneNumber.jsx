@@ -15,37 +15,16 @@ export function PhoneNumber() {
     phoneNumberValidation: s.phoneNumberValidation,
   }));
 
-  const {
-    isVerificationCodeInput,
-    isVerificationCodeButtonDisabled,
-    verificationCode,
-    isNumberExists,
-  } = phoneNumberValidation;
+  const { isVerificationCodeInput, isVerificationCodeButtonDisabled } =
+    phoneNumberValidation;
 
   const handleVerificationButtonClick = async () => {
     await handlePhoneNumberCheck(); // 전화번호 검증을 기다립니다.
 
-    if (isNumberExists) {
-      toast.custom((t) => (
-        <div
-          className="w-w$16 h-h$102 bg-subBg border-2 border-solid border-mainColor px-4 py-3 rounded"
-          role="alert"
-        >
-          <p className="font-bold text-white text-f14">
-            인증번호: {verificationCode}
-          </p>
-          <button onClick={() => toast.dismiss(t.id)} className="w-5 h-5">
-            <svg
-              className="w-5 h-5 text-red-500"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-            >
-              <use href="../assets/sprite.svg#close" />
-            </svg>
-          </button>
-        </div>
-      ));
-    } else {
+    const { isNumberExists, verificationCode } =
+      useSignupStore.getState().phoneNumberValidation;
+
+    if (isNumberExists === true) {
       toast.custom(
         () => (
           <div
@@ -53,11 +32,11 @@ export function PhoneNumber() {
             role="alert"
           >
             <svg
-              className="w-8 h-8 text-red-500 rounded-full p-1 mx-auto mb-5"
+              className="text-red-500 p-1 mx-auto mb-5 w-10 h-10"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
             >
-              <use href="../assets/sprite.svgwarning" />
+              <use href="/assets/sprite.svg#warning" />
             </svg>
             <p className="font-bold text-white text-f14">
               이미 존재하는 번호입니다!
@@ -65,7 +44,30 @@ export function PhoneNumber() {
           </div>
         ),
         {
-          duration: 1000,
+          duration: 2000,
+        }
+      );
+    } else {
+      toast.custom(
+        () => (
+          <div
+            className="w-w$16 h-h$102 bg-subBg border-2 border-solid border-white px-4 py-4 rounded"
+            role="alert"
+          >
+            <svg
+              className="text-mainColor p-1 mx-auto mb-5 w-10 h-10"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+            >
+              <use href="/assets/sprite.svg#warning" />
+            </svg>
+            <p className="font-bold text-white text-f14">
+              인증번호: {verificationCode}
+            </p>
+          </div>
+        ),
+        {
+          duration: 2000,
         }
       );
     }
