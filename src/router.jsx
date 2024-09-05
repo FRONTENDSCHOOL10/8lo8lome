@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import { getNavigationItems } from '@/utils';
 import RootLayout from '@/layouts/RootLayout';
-import { lazy } from 'react';
 
 import Home from '@/pages/Home';
 import Login from '@/pages/Login/Login';
@@ -14,10 +13,6 @@ import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
 import Map from './pages/Main/Map';
 import Gym from './pages/Main/Gym';
-
-const Main = lazy(() => import('@/pages/Main/Main'));
-const Chat = lazy(() => import('@/pages/Chat/Chat'));
-const MyPage = lazy(() => import('@/pages/MyPage/MyPage'));
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -39,17 +34,36 @@ const navigation = [
 export const routes = createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
     <Route index element={<Home />} />
-    <Route path="/main" element={<Main />} />
+    <Route
+      path="/main"
+      lazy={async () => {
+        let { default: Main } = await import('./pages/Main/Main');
+        return { Component: Main };
+      }}
+    />
     <Route path="/map" element={<Map />} />
     <Route path="/gym" element={<Gym />} />
-    <Route path="/chat" element={<Chat />} />
-    <Route path="/mypage" element={<MyPage />} />
+    <Route
+      path="/chat"
+      lazy={async () => {
+        let { default: Chat } = await import('./pages/Chat/Chat');
+        return { Component: Chat };
+      }}
+    />
+    <Route
+      path="/mypage"
+      lazy={async () => {
+        let { default: MyPage } = await import('./pages/MyPage/MyPage');
+        return { Component: MyPage };
+      }}
+    />
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
     <Route path="/findPassword" element={<FindPassword />} />
     <Route path="/signup" element={<Signup />} />
   </Route>
 );
+
 const router = createBrowserRouter(routes, {
   basename: import.meta.env.BASE_URL,
 });

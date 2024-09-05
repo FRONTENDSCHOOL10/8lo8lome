@@ -21,7 +21,7 @@ export const getData = async (resource, id = '') => {
 // POST 요청 함수
 export const createData = async (resource, data) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records`; // 모든 레코드를 생성하는 엔드포인트
+    const url = `${BASE_URL}/api/collections/${resource}/records`;
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const createData = async (resource, data) => {
 // PUT 요청 함수
 export const updateData = async (resource, id, data) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`; // 특정 ID의 레코드를 업데이트하는 엔드포인트
+    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`;
     const response = await axios.put(url, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const updateData = async (resource, id, data) => {
 // DELETE 요청 함수
 export const deleteData = async (resource, id) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`; // 특정 ID의 레코드를 삭제하는 엔드포인트
+    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`;
     const response = await axios.delete(url);
     return response.data;
   } catch (error) {

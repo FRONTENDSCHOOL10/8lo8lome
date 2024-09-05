@@ -28,7 +28,6 @@ export default function Main() {
         />
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
-
       <header className="flex items-center gap-1 m-4">
         <form
           action=""

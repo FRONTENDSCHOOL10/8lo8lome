@@ -1,5 +1,5 @@
-import { AppInput } from '@/components';
-import { useSignupStore } from './store';
+import { AppRadioInput } from '@/components';
+import { useSignupStore } from './signStore';
 
 export function Age() {
   const { handleAgeCheck, age } = useSignupStore((s) => ({
@@ -9,10 +9,9 @@ export function Age() {
 
   return (
     <section>
-      <h2 className="font-semibold text-[16px] mb-3">나이를 선택해 주세요.</h2>
+      <h2 className="font-semibold text-f16 mb-s12">나이를 선택해 주세요.</h2>
       <fieldset className="grid gap-x-3 gap-y-4 grid-cols-2">
-        <AppInput
-          radio
+        <AppRadioInput
           label="10대"
           name="ageGroup"
           defaultValue="10대"
@@ -20,8 +19,7 @@ export function Age() {
           onChange={handleAgeCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="20대"
           name="ageGroup"
           defaultValue="20대"
@@ -29,8 +27,7 @@ export function Age() {
           onChange={handleAgeCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="30대"
           name="ageGroup"
           defaultValue="30대"
@@ -38,8 +35,7 @@ export function Age() {
           onChange={handleAgeCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="40대"
           name="ageGroup"
           defaultValue="40대"
@@ -47,8 +43,7 @@ export function Age() {
           onChange={handleAgeCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="50대"
           name="ageGroup"
           defaultValue="50대"
@@ -56,8 +51,7 @@ export function Age() {
           onChange={handleAgeCheck}
           required
         />
-        <AppInput
-          radio
+        <AppRadioInput
           label="60대이상"
           name="ageGroup"
           defaultValue="60대이상"

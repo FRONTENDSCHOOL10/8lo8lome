@@ -26,12 +26,11 @@ function AppButton({
   ...restProps
 }) {
   let type = 'button';
-
   if (submit) type = 'submit';
   if (reset) type = 'reset';
 
   let buttonRestProps = {};
-  let buttonClassName = className;
+  let buttonClassName = '';
   if (buttonProps) {
     const { className: buttonClass, ...rest } = buttonProps;
     buttonClassName = buttonClass || '';
@@ -40,26 +39,22 @@ function AppButton({
 
   let iconRestProps = {};
   let iconClassName = '';
-
   if (iconProps) {
     const { className: iconClass, ...rest } = iconProps;
     iconClassName = iconClass || '';
     iconRestProps = rest;
   }
 
-  let buttonBaseClass =
-    'opacity-100 flex items-center justify-center rounded-md text-sm py-2 border disabled:opacity-50 w-full ';
+  const buttonBaseClass =
+    'opacity-100 flex items-center justify-center rounded text-f14 py-s12 border disabled:opacity-50 disabled:cursor-not-allowed w-full';
+  const filledClass = 'bg-mainColor text-black font-semibold border-none';
+  const outlinedClass = 'border-solid border-white bg-transparent text-white';
 
-  buttonBaseClass = isFilled
-    ? buttonBaseClass + ' py-3 border-none bg-primary text-black font-semibold'
-    : buttonBaseClass + ' border-solid border-white bg-transparent text-white';
-
-  const buttonClasses = `${buttonBaseClass} ${buttonClassName}`.trim();
-
-  const iconBaseClasses = 'inline-flex text-white text-base';
+  const buttonClasses =
+    `${buttonBaseClass} ${isFilled ? filledClass : outlinedClass} ${buttonClassName} ${className}`.trim();
+  const iconBaseClasses = 'inline-flex text-base';
   const iconClasses = `${iconBaseClasses} ${iconClassName}`.trim();
-
-  const wrapperClasses = `flex gap-1 w-full`;
+  const wrapperClasses = 'flex gap-1 w-full';
 
   return (
     <div className={wrapperClasses} {...restProps}>

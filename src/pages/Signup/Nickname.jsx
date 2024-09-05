@@ -1,5 +1,5 @@
-import { AppButton, AppInput } from '@/components';
-import { useSignupStore } from './store';
+import { AppButton, AppTextInput } from '@/components';
+import { useSignupStore } from './signStore';
 import { AppAuthMessage } from '@/components';
 
 export function Nickname() {
@@ -27,7 +27,7 @@ export function Nickname() {
       <article>
         <h2 className="sr-only">닉네임 입력</h2>
         <fieldset className="flex gap-2">
-          <AppInput
+          <AppTextInput
             label="닉네임"
             placeholder="닉네임"
             isHiddenLabel

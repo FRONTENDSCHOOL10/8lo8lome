@@ -10,10 +10,10 @@ const coupon = [
 
 export default function MyCoupon() {
   return (
-    <section className="p-5 size-80">
-      <h2 className="mb-4 text-lg text-white">내 회원권 정보</h2>
+    <section className="p-s20 size-80">
+      <h2 className="mb-4 text-f18 text-white">내 회원권 정보</h2>
       <div className="flex flex-row items-start w-full h-156px">
-        <ul className="w-full h-40 p-4 rounded-md shadow-md bg-gradient-to-br from-primary to-green-900">
+        <ul className="w-full h-40 p-4 rounded shadow-md bg-gradient-to-br from-mainColor to-green-900">
           {coupon.map((item) => {
             return (
               <li
@@ -22,7 +22,7 @@ export default function MyCoupon() {
               >
                 <p className="font-semibold">{item.subTitle1}</p>
                 <p className="text-2xl font-bold">{item.title}</p>
-                <p className="mb-5 text-sm">{item.subTitle2}</p>
+                <p className="mb-5 text-f14">{item.subTitle2}</p>
                 <p className="text-base font-bold">{item.dateInfo}</p>
               </li>
             );
