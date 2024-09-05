@@ -28,7 +28,7 @@ export default function Main() {
         <meta property="og:site:author" content="야무(yamoo9)" />
       </Helmet>
       <header className="flex items-center gap-1 m-4">
-        <form action="" className="flex items-center grow gap-3 p-2">
+        <form action="" className="flex items-center grow gap-3 p-s8">
           <label htmlFor="search" className="sr-only">
             검색
           </label>
@@ -36,7 +36,7 @@ export default function Main() {
             id="search"
             type="text"
             placeholder="검색어를 입력해 주세요."
-            className="bg-transparent outline-none grow text-sm"
+            className="bg-transparent outline-none grow text-f14"
           />
           <button type="submit" aria-label="검색">
             <svg

@@ -33,9 +33,9 @@ function PhoneNumberInput() {
           인증요청
         </AppButton>
       </article>
-      {phoneNumberVerification ? (
+      {phoneNumberVerification && (
         <AppAuthMessage warning>전화번호 양식이 맞지 않습니다.</AppAuthMessage>
-      ) : null}
+      )}
     </div>
   );
 }

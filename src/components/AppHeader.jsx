@@ -14,7 +14,7 @@ function AppHeader({ className, children }) {
     navigate(-1);
   };
 
-  let headerBaseClass = `flex p-6 bg-subBg font-bold text-[20px] w-full mt-10 ${className}`;
+  let headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full my-s40 ${className}`;
 
   return (
     <header className={headerBaseClass}>

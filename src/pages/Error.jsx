@@ -16,10 +16,10 @@
 //           오류 발생<span className="italic">!</span>
 //         </h1>
 //         <div className="flex flex-col items-center gap-3">
-//           <p className="text-indigo-800 text-lg">
+//           <p className="text-indigo-800 text-f18">
 //             오류 발생 요인은 다음과 같습니다.
 //           </p>
-//           <code className="text-sm text-indigo-600 bg-white py-2 px-4 rounded-full border-2 border-indigo-400/40">
+//           <code className="text-f14 text-indigo-600 bg-white py-2 px-4 rounded-full border-2 border-indigo-400/40">
 //             {data}
 //           </code>
 //         </div>

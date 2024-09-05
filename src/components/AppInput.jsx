@@ -33,7 +33,7 @@ function AppInput({
   required = false,
   checkedSvgId = '',
   unCheckedSvgId = '',
-  checkedColor = 'text-primary',
+  checkedColor = 'text-mainColor',
   unCheckedColor = 'text-white',
   ...restProps
 }) {
@@ -69,7 +69,7 @@ function AppInput({
 
   const checkedRadioClass = radio
     ? isChecked
-      ? 'border-transparent text-black bg-primary font-bold'
+      ? 'border-transparent text-black bg-mainColor font-bold'
       : 'border border-solid border-white'
     : '';
 
@@ -104,7 +104,7 @@ function AppInput({
     renderVisibleButton = (
       <button
         type="button"
-        className="p-2 absolute right-1 h-full"
+        className=" absolute right-1 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}
@@ -118,19 +118,19 @@ function AppInput({
   // ----------------------------------------------------------------
 
   let inputBaseClass =
-    'bg-transparent border border-solid border-white rounded-md p-3 w-full';
-  let labelBaseClass = 'flex items-center gap-1 focus-within:border-primary';
+    'bg-transparent border border-solid border-white rounded p-s12 w-full';
+  let labelBaseClass = 'flex items-center gap-1 focus-within:border-mainColor';
 
   if (className) {
     inputBaseClass = `${inputBaseClass} ${className}`;
   }
   if (type === 'checkbox') {
     inputBaseClass = 'hidden ';
-    labelBaseClass = `${labelBaseClass} text-[12px]`;
+    labelBaseClass = `${labelBaseClass} text-f12`;
   }
   if (type === 'radio') {
     inputBaseClass = 'hidden ';
-    labelBaseClass = `${labelBaseClass} justify-center p-5 rounded-md text-[14px] ${checkedRadioClass}`;
+    labelBaseClass = `${labelBaseClass} justify-center p-s20 rounded text-f14 ${checkedRadioClass}`;
   }
   const wrapperClass = 'relative w-full';
 

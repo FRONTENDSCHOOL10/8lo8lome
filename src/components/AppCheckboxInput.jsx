@@ -23,7 +23,7 @@ function AppCheckboxInput({
   required = false,
   checkedSvgId = '',
   unCheckedSvgId = '',
-  checkedColor = 'text-primary',
+  checkedColor = 'text-mainColor',
   unCheckedColor = 'text-white',
   ...restProps
 }) {
@@ -58,7 +58,7 @@ function AppCheckboxInput({
       />
       <label
         htmlFor={id}
-        className={`flex items-center gap-1 text-[12px] focus-visible:ring-1 focus-visible:ring-primary ${className || ''}`}
+        className={`flex items-center gap-1 text-f12 focus-visible:ring-1 focus-visible:ring-mainColor ${className || ''}`}
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >

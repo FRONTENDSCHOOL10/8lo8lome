@@ -46,8 +46,8 @@ function AppButton({
   }
 
   const buttonBaseClass =
-    'opacity-100 flex items-center justify-center rounded-md text-sm py-3 border disabled:opacity-50 w-full';
-  const filledClass = 'bg-primary text-black font-semibold border-none';
+    'opacity-100 flex items-center justify-center rounded text-f14 py-s12 border disabled:opacity-50 disabled:cursor-not-allowed w-full';
+  const filledClass = 'bg-mainColor text-black font-semibold border-none';
   const outlinedClass = 'border-solid border-white bg-transparent text-white';
 
   const buttonClasses =

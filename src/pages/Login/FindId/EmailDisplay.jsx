@@ -6,7 +6,7 @@ function EmailDisplay() {
   }));
 
   return (
-    <p className="text-sm bg-subBg h-[93px] flex justify-center items-center mb-5">
+    <p className="text-f14 bg-subBg h-[93px] flex justify-center items-center mb-s20">
       이메일은 {email} 입니다.
     </p>
   );
