@@ -1,5 +1,6 @@
 import { AppButton, AppTextInput } from '@/components';
 import { useSignupStore } from './signStore';
+import toast from 'react-hot-toast';
 
 export function PhoneNumber() {
   const {
@@ -14,8 +15,61 @@ export function PhoneNumber() {
     phoneNumberValidation: s.phoneNumberValidation,
   }));
 
-  const { isVerificationCodeInput, isVerificationCodeButtonDisabled } =
-    phoneNumberValidation;
+  const {
+    isVerificationCodeInput,
+    isVerificationCodeButtonDisabled,
+    verificationCode,
+    isNumberExists,
+  } = phoneNumberValidation;
+
+  const handleVerificationButtonClick = async () => {
+    await handlePhoneNumberCheck(); // 전화번호 검증을 기다립니다.
+
+    if (isNumberExists) {
+      toast.custom((t) => (
+        <div
+          className="w-w$16 h-h$102 bg-subBg border-2 border-solid border-mainColor px-4 py-3 rounded"
+          role="alert"
+        >
+          <p className="font-bold text-white text-f14">
+            인증번호: {verificationCode}
+          </p>
+          <button onClick={() => toast.dismiss(t.id)} className="w-5 h-5">
+            <svg
+              className="w-5 h-5 text-mainColor"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+            >
+              <use href="../assets/sprite.svg#close" />
+            </svg>
+          </button>
+        </div>
+      ));
+    } else {
+      toast.custom(
+        () => (
+          <div
+            className="w-w$16 h-h$102 bg-subBg border border-solid border-white px-4 py-4 rounded"
+            role="alert"
+          >
+            <svg
+              className="w-8 h-8 text-red-500 border border-1 border-red-500 rounded-full p-1 mx-auto mb-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+            >
+              <use href="../assets/sprite.svg#close" />
+            </svg>
+            <p className="font-bold text-white text-f14">
+              이미 존재하는 번호입니다!
+            </p>
+          </div>
+        ),
+        {
+          duration: 1000,
+        }
+      );
+    }
+  };
 
   return (
     <article>
@@ -34,7 +88,7 @@ export function PhoneNumber() {
         />
         <AppButton
           isFilled={false}
-          onClick={handlePhoneNumberCheck}
+          onClick={handleVerificationButtonClick}
           disabled={isVerificationCodeButtonDisabled}
         >
           인증받기
