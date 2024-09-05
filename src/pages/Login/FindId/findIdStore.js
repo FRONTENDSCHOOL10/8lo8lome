@@ -4,7 +4,7 @@ import { getData } from '@/api/CRUD';
 import { PHONENUMBER_REG } from '@/constant';
 import { getRandomMinMax } from '@/utils';
 
-export const useFindStore = create((set) => {
+export const useFindIdStore = create((set) => {
   const INITIAL_STATE = {
     phoneNumberVerification: false,
     isVerificationCodeButtonDisabled: true,
@@ -55,11 +55,11 @@ export const useFindStore = create((set) => {
 
   const handleVerificationCodeCheck = async () => {
     try {
-      const userVerificationCode = useFindStore
+      const userVerificationCode = useFindIdStore
         .getState()
         .userData.userVerificationCode.toString();
-      const verificationCode = useFindStore.getState().verificationCode;
-      const userPhoneNumber = useFindStore.getState().userData.phoneNumber; // 유저가 입력한 전화번호
+      const verificationCode = useFindIdStore.getState().verificationCode;
+      const userPhoneNumber = useFindIdStore.getState().userData.phoneNumber; // 유저가 입력한 전화번호
       // 데이터 가져오기
       const data = await getData('users');
       set(
