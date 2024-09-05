@@ -8,7 +8,7 @@ AppForm.propTypes = {
 function AppForm({ children, ...restProps }) {
   return (
     <form
-      className="flex flex-col items-start w-80 gap-5 border-accent pt-3 pb-5 px-6 rounded-xl border-4 border-double"
+      className="flex flex-col items-start w-80 gap-5 border-accent pt-s12 pb-s20 px-s24 rounded-xl border-4 border-double"
       {...restProps}
     >
       {children}
