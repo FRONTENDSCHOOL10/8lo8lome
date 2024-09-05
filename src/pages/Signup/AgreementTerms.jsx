@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { useSignupStore } from './signStore';
 import { AppCheckboxInput } from '@/components';
 
-export function AgreementTerms() {
+function AgreementTerms() {
   const { handleAllCheck, handleCheckboxChange, allChecked, agreementTerms } =
     useSignupStore((s) => ({
       handleAllCheck: s.handleMethod.handleAllCheck,
@@ -117,3 +118,5 @@ export function AgreementTerms() {
     </section>
   );
 }
+
+export default memo(AgreementTerms);

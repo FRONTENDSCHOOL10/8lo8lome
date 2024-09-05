@@ -1,13 +1,14 @@
 import { AppHeader } from '@/components';
 import { Link } from 'react-router-dom';
-import { useFindStore } from './findStore';
+import { useFindIdStore } from './findIdStore';
 import EmailDisplay from './EmailDisplay';
 import VerificationCodeInput from './VerificationCodeInput';
 import PhoneNumberInput from './PhoneNumberInput';
 import AppMeta from '@/components/AppMeta';
+import { memo } from 'react';
 
-export default function FindId() {
-  const { isVerificationCodeInput, isShowEmail } = useFindStore((s) => ({
+function FindId() {
+  const { isVerificationCodeInput, isShowEmail } = useFindIdStore((s) => ({
     isVerificationCodeInput: s.isVerificationCodeInput,
 
     isShowEmail: s.isShowEmail,
@@ -38,3 +39,4 @@ export default function FindId() {
     </>
   );
 }
+export default memo(FindId);

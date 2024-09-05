@@ -1,7 +1,8 @@
 import { AppRadioInput } from '@/components';
 import { useSignupStore } from './signStore';
+import { memo } from 'react';
 
-export function Gender() {
+function Gender() {
   const { handleGenderCheck, gender } = useSignupStore((s) => ({
     handleGenderCheck: s.handleMethod.handleGenderCheck,
     gender: s.user.gender,
@@ -31,3 +32,5 @@ export function Gender() {
     </section>
   );
 }
+
+export default memo(Gender);

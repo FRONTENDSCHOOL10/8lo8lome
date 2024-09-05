@@ -1,16 +1,17 @@
 import { AppButton, AppHeader, AppDivider } from '@/components';
 import { useSignupStore } from './signStore';
-import { Nickname } from './Nickname.jsx';
-import { Email } from './Email.jsx';
-import { PhoneNumber } from './PhoneNumber.jsx';
-import { Password } from './Password.jsx';
-import { PasswordConfirm } from './PasswordConfirm';
-import { Gender } from './Gender.jsx';
-import { Age } from './Age.jsx';
-import { AgreementTerms } from './AgreementTerms.jsx';
+import Nickname from './Nickname.jsx';
+import Email from './Email.jsx';
+import PhoneNumber from './PhoneNumber.jsx';
+import Password from './Password.jsx';
+import PasswordConfirm from './PasswordConfirm';
+import Gender from './Gender.jsx';
+import Age from './Age.jsx';
+import AgreementTerms from './AgreementTerms.jsx';
 import AppMeta from '@/components/AppMeta';
+import { memo } from 'react';
 
-export default function Signup() {
+function Signup() {
   const { isSignupButtonDisabled, handleSignupButtonClick } = useSignupStore(
     (s) => ({
       isSignupButtonDisabled: s.isSignupButtonDisabled,
@@ -47,3 +48,4 @@ export default function Signup() {
     </>
   );
 }
+export default memo(Signup);
