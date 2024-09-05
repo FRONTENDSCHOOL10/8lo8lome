@@ -4,6 +4,7 @@ import { useFindStore } from './findStore';
 import EmailDisplay from './EmailDisplay';
 import VerificationCodeInput from './VerificationCodeInput';
 import PhoneNumberInput from './PhoneNumberInput';
+import AppMeta from '@/components/AppMeta';
 
 export default function FindId() {
   const { isVerificationCodeInput, isShowEmail } = useFindStore((s) => ({
@@ -14,6 +15,10 @@ export default function FindId() {
 
   return (
     <>
+      <AppMeta
+        title="아이디 찾기 페이지"
+        description="아이디 찾기 페이지입니다."
+      />
       <AppHeader>아이디 찾기</AppHeader>
       <section className="px-s20 flex flex-col gap-5 my-s80">
         <h2 className="sr-only">아이디 찾기 폼</h2>
