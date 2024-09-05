@@ -45,13 +45,13 @@ export default function GymList() {
       <div className="flex justify-between items-center">
         <h1 className="text-white text-f18">내 주변 헬스장</h1>
         <svg role="icon" aria-label="검색 필터" className="w-5 h-5 fill-white">
-          <use href="/public/assets/sprite.svg#filter-click" />
+          <use href="/assets/sprite.svg#filter-click" />
         </svg>
       </div>
 
       <div className="flex gap-1 items-center pt-2 pb-3">
         <svg role="icon" aria-label="현재 위치로 검색하기" className="w-5 h-5">
-          <use href="/public/assets/sprite.svg#locate" />
+          <use href="/assets/sprite.svg#locate" />
         </svg>
         <span className="text-f14">현재 위치로 찾기</span>
       </div>
@@ -120,7 +120,7 @@ export default function GymList() {
                         aria-label="별점"
                         className="w-3 h-3 fill-yellow-300"
                       >
-                        <use href="/public/assets/sprite.svg#star" />
+                        <use href="/assets/sprite.svg#star" />
                       </svg>
 
                       <p>{item.rating}</p>
