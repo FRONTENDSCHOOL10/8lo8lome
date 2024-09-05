@@ -22,7 +22,7 @@ export const useSignupStore = create((set) => {
       isVerificationCodeButtonDisabled: true,
       isVerificationCodeInput: false,
       verificationCode: 0,
-      isNumberExists: null,
+      isNumberExists: false,
     },
     authMessages: {
       phoneNumberVerification: false,
@@ -260,7 +260,6 @@ export const useSignupStore = create((set) => {
         } else {
           // 전화번호가 존재하지 않는 경우
           const random = getRandomMinMax(100000, 999999);
-          console.log('Generated verification code:', random);
           draft.phoneNumberValidation.isNumberExists = false;
           draft.phoneNumberValidation.verificationCode = random; // 인증 코드 저장
           draft.phoneNumberValidation.isVerificationCodeInput = true; // 인증 코드 입력 필드 활성화

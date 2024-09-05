@@ -1,13 +1,14 @@
 import { AppButton, AppHeader, AppCheckboxInput } from '@/components';
-import { AuthLinks } from './AuthLinks';
-import { Email } from './Email';
-import { Password } from './Password';
+import AuthLinks from './AuthLinks';
+import Email from './Email';
+import Password from './Password';
 import { useLoginStore } from './loginStore';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import AppMeta from '@/components/AppMeta';
+import { memo } from 'react';
 
-export default function Login() {
+function Login() {
   const navigate = useNavigate();
 
   const { autoLogin, handleAutoLoginCheck, handleLoginButtonClick } =
@@ -86,3 +87,5 @@ export default function Login() {
     </>
   );
 }
+
+export default memo(Login);

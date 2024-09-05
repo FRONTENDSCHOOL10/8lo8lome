@@ -1,6 +1,6 @@
 import { AppTextInput, AppButton, AppAuthMessage } from '@/components';
 import { memo } from 'react';
-import { useFindStore } from './findStore';
+import { useFindIdStore } from './findIdStore';
 
 function PhoneNumberInput() {
   const {
@@ -8,7 +8,7 @@ function PhoneNumberInput() {
     phoneNumberVerification,
     isVerificationCodeButtonDisabled,
     handlePhoneNumberCheck,
-  } = useFindStore((s) => ({
+  } = useFindIdStore((s) => ({
     handlePhoneNumberChange: s.handlePhoneNumberChange,
     phoneNumberVerification: s.phoneNumberVerification,
     isVerificationCodeButtonDisabled: s.isVerificationCodeButtonDisabled,

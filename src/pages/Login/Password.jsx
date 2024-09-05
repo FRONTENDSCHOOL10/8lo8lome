@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { useLoginStore } from './loginStore';
 import { AppPasswordInput } from '@/components';
 
-export function Password() {
+function Password() {
   const { handlePasswordChange } = useLoginStore((s) => ({
     handlePasswordChange: s.handlePasswordChange,
   }));
@@ -18,3 +19,5 @@ export function Password() {
     </div>
   );
 }
+
+export default memo(Password);
