@@ -2,7 +2,8 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import GymList from './GymList';
-import { AppNav, AppInput } from '@/components';
+import { AppNav, AppInput, AppLink, AppDivider } from '@/components';
+import App from '@/App';
 
 export default function Main() {
   return (
@@ -29,15 +30,15 @@ export default function Main() {
       </Helmet>
 
       <header className="flex items-center gap-1 m-4">
-        <form action="" className="flex items-center grow gap-3 p-2">
-          <label htmlFor="search" className="sr-only">
-            검색
-          </label>
-          <input
-            id="search"
-            type="text"
+        <form
+          action=""
+          className="flex items-center grow gap-3 p-2 border-b-2 border-solid border-primary"
+        >
+          <AppInput
+            label={'검색'}
+            isHiddenLabel
             placeholder="검색어를 입력해 주세요."
-            className="bg-transparent outline-none grow text-sm"
+            className="bg-transparent outline-none grow text-sm border-0"
           />
           <button type="submit" aria-label="검색">
             <svg
@@ -60,7 +61,6 @@ export default function Main() {
           </svg>
         </Link>
       </header>
-
       <GymList />
       <AppNav />
     </>
