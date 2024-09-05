@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { getRandomMinMax } from '@/utils';
-import { createData, getData } from '@/api/axios';
+import { createData, getData } from '@/api/CRUD';
 import {
   NINKNAME_REG,
   EMAIL_REG,
