@@ -20,11 +20,20 @@ export default function AppLoading() {
     const timer = setTimeout(() => {
       setLoading(false);
       setMessage(alarm[1].notification);
-    },3000);
+    }, 3000); //3초후 로딩 종료
     return () => clearTimeout(timer);
-    }, []);
+  }, []);
 
   return (
-    <></>
-  )
+    <>
+      {loading && createPortal(
+          <div className="fixed inset-y-0 z-50 flex items-center justify-center w-full h-full bg-white bg-opacity-50">
+            <AppSpinner size={50} duration={1.5} />
+            <p>{message}</p>
+          </div>,
+          document.body
+        )}
+        {!loading && <p>{message}</p> }
+    </>
+  );
 }
