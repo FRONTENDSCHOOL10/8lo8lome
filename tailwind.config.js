@@ -5,7 +5,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: '1.25rem 1.25rem;', //20px
+      padding: '1.25rem', //20px
     },
     borderRadius: {
       none: 0,
