@@ -5,7 +5,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: '1.25rem 1.25rem;', //20px
+      padding: '1.25rem', //20px
     },
     borderRadius: {
       none: 0,
@@ -28,7 +28,7 @@ export default {
     },
     extend: {
       colors: {
-        balck: '#000000',
+        black: '#000000',
         strokeBlack: '#2A2A2A',
         white: '#ffffff',
         opacityWhite: 'rgba(255, 255, 255, 0.22)',
@@ -117,7 +117,7 @@ export default {
       },
       spacing: {
         s6: '0.375rem',
-        s8: '0.5',
+        s8: '0.5rem',
         s10: '0.625rem',
         s12: '0.75rem',
         s14: '0.875rem',
@@ -144,7 +144,7 @@ export default {
         s67: '4.19rem',
         s73: '4.5625rem',
         s76: '4.75rem',
-        s80: '5r em',
+        s80: '5rem',
         s82: '5.12rem',
         s84: '5.25rem',
         s91: '5.6875rem',

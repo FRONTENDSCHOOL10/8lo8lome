@@ -5,6 +5,7 @@ import { Password } from './Password';
 import { useLoginStore } from './loginStore';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import AppMeta from '@/components/AppMeta';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ export default function Login() {
       handleLoginButtonClick: s.handleLoginButtonClick,
     }));
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const isLoggedIn = await handleLoginButtonClick();
       if (isLoggedIn) {
@@ -55,11 +57,16 @@ export default function Login() {
 
   return (
     <>
+      <AppMeta title="로그인 페이지" description="로그인 페이지입니다." />
       <AppHeader>로그인</AppHeader>
-      <section className="mb-10">
-        <h2 className="sr-only">로그인 폼</h2>
-        <article className="px-5">
-          <form action="" className="my-20 flex flex-col gap-4">
+      <section className="container flex flex-col gap-s20 pb-s20">
+        <h2 className="sr-only">로그인 입력</h2>
+        <fieldset className="w-full mb-s40">
+          <form
+            action=""
+            className=" flex flex-col gap-4"
+            onSubmit={handleLogin}
+          >
             <Email />
             <Password />
             <AppCheckboxInput
@@ -69,12 +76,12 @@ export default function Login() {
               unCheckedSvgId="checkmark-circle-unclick"
               checkedSvgId="checkmark-circle-click"
             />
+            <AppButton submit className="mt-s20">
+              로그인
+            </AppButton>
           </form>
-          <AppButton submit className="mb-[48px]" onClick={handleLogin}>
-            로그인
-          </AppButton>
-          <AuthLinks />
-        </article>
+        </fieldset>
+        <AuthLinks />
       </section>
     </>
   );

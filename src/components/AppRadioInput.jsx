@@ -21,7 +21,7 @@ function AppRadioInput({
   isChecked = false,
   required = false,
   name = '',
-  checkedColor = 'bg-primary text-black font-bold border-transparent',
+  checkedColor = 'bg-mainColor text-black font-bold border-transparent',
   unCheckedColor = 'border border-solid border-white',
   ...restProps
 }) {
@@ -31,9 +31,16 @@ function AppRadioInput({
     onChange?.(e.target);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      document.getElementById(id).click();
+    }
+  };
+
   const radioClass = isChecked ? checkedColor : unCheckedColor;
 
-  const labelBaseClass = `flex items-center gap-1 focus-within:border-primary justify-center p-5 rounded-md text-[14px] ${radioClass} ${className}`;
+  const labelBaseClass = `flex items-center gap-1 focus-within:border-mainColor justify-center p-s20 rounded text-f14 ${radioClass} ${className}`;
 
   return (
     <div className="relative w-full">
@@ -47,7 +54,12 @@ function AppRadioInput({
         required={required}
         {...restProps}
       />
-      <label htmlFor={id} className={labelBaseClass} tabIndex="0">
+      <label
+        htmlFor={id}
+        className={labelBaseClass}
+        tabIndex="0"
+        onKeyPress={handleKeyPress}
+      >
         {!isHiddenLabel && label}
       </label>
     </div>

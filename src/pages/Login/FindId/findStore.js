@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getData } from '@/api/axios';
+import { getData } from '@/api/CRUD';
 import { PHONENUMBER_REG } from '@/constant';
 import { getRandomMinMax } from '@/utils';
 

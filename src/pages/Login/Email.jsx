@@ -16,9 +16,9 @@ export function Email() {
         onChange={handleEmailChange}
         className={'w-full'}
       />
-      {emailVerification ? (
+      {emailVerification && (
         <AppAuthMessage warning>이메일 양식이 맞지 않습니다.</AppAuthMessage>
-      ) : null}
+      )}
     </div>
   );
 }

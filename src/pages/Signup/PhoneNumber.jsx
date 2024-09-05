@@ -45,7 +45,7 @@ export function PhoneNumber() {
           label="인증번호"
           placeholder="인증번호"
           isHiddenLabel
-          className={'w-full mt-5'}
+          className={'w-full mt-s20'}
           onChange={handleVerificationCodeCheck}
         />
       )}

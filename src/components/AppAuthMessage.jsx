@@ -8,7 +8,7 @@ AppAuthMessage.propTypes = {
 };
 
 export default function AppAuthMessage({ children, className, warning }) {
-  let baseClass = warning ? 'text-xs text-warning' : 'text-xs text-primary';
+  let baseClass = warning ? 'text-f12 text-warning' : 'text-f12 text-mainColor';
 
   const [isShow] = useState(true);
 
