@@ -36,7 +36,7 @@ export function PhoneNumber() {
           </p>
           <button onClick={() => toast.dismiss(t.id)} className="w-5 h-5">
             <svg
-              className="w-5 h-5 text-mainColor"
+              className="w-5 h-5 text-red-500"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
             >
@@ -53,11 +53,11 @@ export function PhoneNumber() {
             role="alert"
           >
             <svg
-              className="w-8 h-8 text-red-500 border border-1 border-red-500 rounded-full p-1 mx-auto mb-5"
+              className="w-8 h-8 text-red-500 rounded-full p-1 mx-auto mb-5"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
             >
-              <use href="../assets/sprite.svg#close" />
+              <use href="../assets/sprite.svgwarning" />
             </svg>
             <p className="font-bold text-white text-f14">
               이미 존재하는 번호입니다!
