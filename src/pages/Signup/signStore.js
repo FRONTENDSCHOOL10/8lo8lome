@@ -21,7 +21,8 @@ export const useSignupStore = create((set) => {
     phoneNumberValidation: {
       isVerificationCodeButtonDisabled: true,
       isVerificationCodeInput: false,
-      verificationCode: null,
+      verificationCode: 0,
+      isNumberExists: null,
     },
     authMessages: {
       phoneNumberVerification: false,
@@ -243,19 +244,28 @@ export const useSignupStore = create((set) => {
   };
 
   // 전화번호 인증 코드 생성 및 알림 핸들러
-  const handlePhoneNumberCheck = () => {
-    // 인증 코드로 사용할 랜덤 숫자를 생성합니다. (6자리)
-    const random = getRandomMinMax(100000, 999999);
-
-    // 생성된 인증 코드를 사용자에게 알림으로 표시합니다.
-    alert(`인증번호 : ${random}`);
-
-    // 상태를 업데이트하여 생성된 인증 코드를 저장하고 인증 코드 입력을 활성화합니다.
+  const handlePhoneNumberCheck = async () => {
+    const userPhoneNumber = useSignupStore.getState().user.phoneNumber;
+    const data = await getData('users');
+    const userExists = data.items.find(
+      (item) => item.phoneNumber === userPhoneNumber
+    );
+    // 상태 업데이트
     set(
       produce((draft) => {
-        draft.phoneNumberValidation.verificationCode = random; // 생성된 인증 코드 저장
-        draft.phoneNumberValidation.isVerificationCodeInput = true; // 인증 코드 입력 필드 활성화
-        updateSignupButtonState(draft); // Signup 버튼 상태를 업데이트합니다.
+        if (userExists) {
+          // 전화번호가 이미 존재하는 경우
+          draft.phoneNumberValidation.isNumberExists = true;
+          draft.phoneNumberValidation.isVerificationCodeInput = false; // 인증 코드 입력 필드 비활성화
+        } else {
+          // 전화번호가 존재하지 않는 경우
+          const random = getRandomMinMax(100000, 999999);
+          console.log('Generated verification code:', random);
+          draft.phoneNumberValidation.isNumberExists = false;
+          draft.phoneNumberValidation.verificationCode = random; // 인증 코드 저장
+          draft.phoneNumberValidation.isVerificationCodeInput = true; // 인증 코드 입력 필드 활성화
+        }
+        updateSignupButtonState(draft); // Signup 버튼 상태 업데이트
       })
     );
   };
