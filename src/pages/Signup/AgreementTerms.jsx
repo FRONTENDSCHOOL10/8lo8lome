@@ -32,7 +32,7 @@ export function AgreementTerms() {
           unCheckedSvgId="checkmark-circle-unclick"
           checkedSvgId="checkmark-circle-click"
         />
-        <ul className="mt-3 flex flex-col gap-1">
+        <ul className="mt-s12 flex flex-col gap-1">
           <li>
             <AppCheckboxInput
               label={'[필수] 만 14세 이상입니다.'}
@@ -76,7 +76,7 @@ export function AgreementTerms() {
               unCheckedSvgId="checkmark-circle-unclick"
               checkedSvgId="checkmark-circle-click"
             />
-            <ul className="pl-4 mt-2 border-l flex flex-col gap-1">
+            <ul className="pl-s16 mt-s8 flex flex-col gap-1">
               <li>
                 <AppCheckboxInput
                   label={'[선택] 개인정보 제 3자 제공동의'}

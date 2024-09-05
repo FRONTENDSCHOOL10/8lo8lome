@@ -8,7 +8,7 @@ const myProfile = [
 ];
 export default function Profile() {
   return (
-    <section className="flex h-24 p-5 w-80">
+    <section className="flex h-24 p-s20 w-80">
       {myProfile.map((item) => {
         return (
           <div key={item.id} className="flex flex-col text-white">

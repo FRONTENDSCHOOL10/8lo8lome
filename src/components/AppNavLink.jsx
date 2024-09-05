@@ -6,7 +6,7 @@ AppNavLink.propTypes = {
 };
 
 function AppNavLink({ className, ...restProps }) {
-  const baseNavClasses = `text-sm py-2 px-4 text-indigo-800/70 rounded-full hover:text-indigo-800 ${className || ''}`;
+  const baseNavClasses = `text-f14 py-s8 px-s16 text-indigo-800/70 rounded-full hover:text-indigo-800 ${className || ''}`;
 
   return (
     <NavLink

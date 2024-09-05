@@ -27,7 +27,7 @@ function AppEmailInput({
     onChange?.(value);
   }, 200);
 
-  const inputBaseClass = `bg-transparent border border-solid border-white rounded-md p-3 w-full ${className || ''}`;
+  const inputBaseClass = `bg-transparent border border-solid border-white rounded p-s12 w-full ${className || ''}`;
   const wrapperClass = 'relative w-full';
 
   return (

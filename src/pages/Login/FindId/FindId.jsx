@@ -15,18 +15,18 @@ export default function FindId() {
   return (
     <>
       <AppHeader>아이디 찾기</AppHeader>
-      <section className="px-5 flex flex-col gap-5 my-20">
+      <section className="px-s20 flex flex-col gap-5 my-s80">
         <h2 className="sr-only">아이디 찾기 폼</h2>
         <PhoneNumberInput />
         {isVerificationCodeInput ? <VerificationCodeInput /> : null}
         {isShowEmail ? <EmailDisplay /> : null}
         <Link
           to={'/login'}
-          className="text-center block border-2 border-borderPrimary border-solid text-md mb-10 rounded-md py-3 px-5"
+          className="text-center block border-2 border-mainColor border-solid text-md mb-s40 rounded py-s12 px-s20"
         >
           로그인 하러가기
         </Link>
-        <Link to={'/findPassword'} className="text-center block text-sm">
+        <Link to={'/findPassword'} className="text-center block text-f14">
           비밀번호 찾기
         </Link>
       </section>

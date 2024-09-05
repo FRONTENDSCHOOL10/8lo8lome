@@ -56,10 +56,10 @@ export default function Login() {
   return (
     <>
       <AppHeader>로그인</AppHeader>
-      <section className="mb-10">
-        <h2 className="sr-only">로그인 폼</h2>
-        <article className="px-5">
-          <form action="" className="my-20 flex flex-col gap-4">
+      <section>
+        <h2 className="sr-only">로그인 입력</h2>
+        <fieldset className="px-s20">
+          <form action="" className="my-s80 flex flex-col gap-4">
             <Email />
             <Password />
             <AppCheckboxInput
@@ -70,11 +70,11 @@ export default function Login() {
               checkedSvgId="checkmark-circle-click"
             />
           </form>
-          <AppButton submit className="mb-[48px]" onClick={handleLogin}>
+          <AppButton submit className="mb-s48" onClick={handleLogin}>
             로그인
           </AppButton>
           <AuthLinks />
-        </article>
+        </fieldset>
       </section>
     </>
   );

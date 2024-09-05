@@ -33,7 +33,7 @@ export default function Signup() {
       </Helmet>
       <AppHeader>회원가입</AppHeader>
       <form
-        className="bg-black px-[18px] flex flex-col gap-[30px] my-[50px]"
+        className="bg-mainBg px-s18 flex flex-col gap-s30 mb-s50"
         onSubmit={(e) => {
           e.preventDefault();
           handleSignupButtonClick();

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 export function AuthLinks() {
-  const defaultClass = 'text-xs';
+  const defaultClass = 'text-f12';
 
   return (
     <ul className="flex justify-center gap-2">

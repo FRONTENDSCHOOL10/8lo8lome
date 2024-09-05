@@ -9,7 +9,7 @@ export function Gender() {
 
   return (
     <section>
-      <h2 className="font-semibold text-[16px] mb-3">성별을 선택해 주세요.</h2>
+      <h2 className="font-semibold text-f16 mb-s12">성별을 선택해 주세요.</h2>
       <fieldset className="flex gap-3">
         <AppRadioInput
           label="남성"

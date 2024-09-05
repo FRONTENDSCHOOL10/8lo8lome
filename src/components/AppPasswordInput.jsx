@@ -38,7 +38,7 @@ function AppPasswordInput({
         id={id}
         name={id}
         onChange={handleChange}
-        className={`bg-transparent border border-solid border-white rounded-md p-3 w-full ${className || ''}`}
+        className={`bg-transparent border border-solid border-white rounded p-s12 w-full ${className || ''}`}
         required={required}
         {...restProps}
       />
@@ -47,7 +47,7 @@ function AppPasswordInput({
       </label>
       <button
         type="button"
-        className="p-2 absolute right-1 h-full"
+        className="p-s8 absolute right-1 h-full"
         aria-label={visibleLabel}
         title={visibleLabel}
         onClick={handleToggle}

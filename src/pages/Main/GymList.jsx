@@ -39,9 +39,9 @@ const list = [
 
 export default function GymList() {
   return (
-    <section className="bg-black p-4">
+    <section className="bg-mainBg p-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-white text-lg">내 주변 헬스장</h1>
+        <h1 className="text-white text-f18">내 주변 헬스장</h1>
         <svg role="icon" aria-label="검색 필터" className="w-5 h-5 fill-white">
           <use href="/public/assets/sprite.svg#filter-click" />
         </svg>
@@ -51,10 +51,10 @@ export default function GymList() {
         <svg role="icon" aria-label="현재 위치로 검색하기" className="w-5 h-5">
           <use href="/public/assets/sprite.svg#locate" />
         </svg>
-        <span className="text-sm">현재 위치로 찾기</span>
+        <span className="text-f14">현재 위치로 찾기</span>
       </div>
 
-      <ul className="flex text-xs pb-3">
+      <ul className="flex text-f12 pb-3">
         <li>
           <span className="whitespace-nowrap">별점 4점</span>
           <span>&nbsp;|&nbsp;</span>
@@ -79,7 +79,7 @@ export default function GymList() {
               <a
                 href=""
                 className="text-white flex gap-[0.625rem]
-            bg-subBg rounded-md p-[0.625rem]"
+            bg-subBg rounded p-[0.625rem]"
               >
                 <img
                   src={item.image}
@@ -100,7 +100,7 @@ export default function GymList() {
                     </svg>
                   </div>
 
-                  <p className="text-xs">
+                  <p className="text-f12">
                     가격 : {item.price.toLocaleString()}원
                   </p>
                   <div className="flex justify-between text-[0.625rem] pt-4">
