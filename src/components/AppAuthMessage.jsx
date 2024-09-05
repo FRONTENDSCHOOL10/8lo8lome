@@ -1,5 +1,4 @@
 import { string, bool } from 'prop-types';
-import { useState } from 'react';
 
 AppAuthMessage.propTypes = {
   children: string.isRequired,
@@ -8,13 +7,11 @@ AppAuthMessage.propTypes = {
 };
 
 export default function AppAuthMessage({ children, className, warning }) {
-  let baseClass = warning ? 'text-f12 text-warning' : 'text-f12 text-mainColor';
-
-  const [isShow] = useState(true);
+  let baseClass = warning ? 'text-warning' : 'text-mainColor';
 
   if (className) {
     baseClass = ` ${baseClass} ${className}`;
   }
 
-  return isShow ? <span className={baseClass}>{children}</span> : '';
+  return <span className={`text-f12 py-2 block ${baseClass}`}>{children}</span>;
 }
