@@ -15,6 +15,7 @@ import FindId from '@/pages/Login/FindId/FindId';
 import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
 import Map from './pages/Main/Map/Map';
 import Gym from './pages/Main/Gym/Gym';
+import Filter from './pages/Main/Filter/Filter';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -45,6 +46,7 @@ export const routes = createRoutesFromElements(
     />
     <Route path="/map" element={<Map />} />
     <Route path="/gym" element={<Gym />} />
+    <Route path="/filter" element={<Filter />} />
     <Route
       path="/chat"
       lazy={async () => {

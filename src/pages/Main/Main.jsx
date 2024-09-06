@@ -1,10 +1,12 @@
 import SearchBar from './SearchBar';
 import MapLink from './MapLink';
+import FilterList from './FilterList';
 import GymList from './GymList';
 import { AppNav } from '@/components';
 import AppMeta from '@/components/AppMeta';
+import { memo } from 'react';
 
-export default function Main() {
+function Main() {
   return (
     <>
       <AppMeta title="메인페이지" description="메인페이지입니다." />
@@ -15,8 +17,11 @@ export default function Main() {
         <SearchBar />
         <MapLink />
       </header>
+      <FilterList />
       <GymList />
       <AppNav />
     </>
   );
 }
+
+export default memo(Main);
