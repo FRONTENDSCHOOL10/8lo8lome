@@ -45,7 +45,7 @@ function AppCheckboxInput({
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative">
       <input
         type="checkbox"
         id={id}

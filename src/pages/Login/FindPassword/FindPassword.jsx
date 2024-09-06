@@ -7,6 +7,9 @@ import { useFindPasswordStore } from './findPasswordStore';
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 
+import NewPasswordInputConfirm from './NewPasswordInputConfirm';
+import OldPasswordInput from './OldPasswordInput';
+
 function FindPassword() {
   const { handlePasswordResetRequest, handlePasswordResetConfirmation } =
     useFindPasswordStore((s) => ({
@@ -26,12 +29,14 @@ function FindPassword() {
         description="비밀번호 변경 페이지입니다."
       />
       <AppHeader>비밀번호 변경</AppHeader>
-      <section className="px-s20 flex flex-col gap-5 my-s82">
+      <section className="px-s20 flex flex-col gap-4 my-s82">
         <h2 className="sr-only">비밀번호 변경 폼</h2>
         <EmailInput />
+        <OldPasswordInput />
         <NewPasswordInput />
+        <NewPasswordInputConfirm />
         <AppButton
-          isFilled={true} // 버튼이 채워진 스타일로 표시됩니다.
+          isFilled
           onClick={onResetPasswordRequest} // 비밀번호 변경 요청 시 호출될 함수입니다.
         >
           비밀번호 변경

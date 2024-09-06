@@ -2,15 +2,15 @@ import { AppPasswordInput, AppAuthMessage } from '@/components';
 import { useFindPasswordStore } from './findPasswordStore';
 import { memo } from 'react';
 
-export function NewPasswordInput() {
+export function OldPasswordInput() {
   const {
     isNewPasswordInput,
-    newPasswordVerification,
-    handleNewPasswordChange,
+    oldPasswordVerification,
+    handleOldPasswordChange,
   } = useFindPasswordStore((s) => ({
     isNewPasswordInput: s.isNewPasswordInput,
-    newPasswordVerification: s.newPasswordVerification,
-    handleNewPasswordChange: s.handleNewPasswordChange,
+    oldPasswordVerification: s.oldPasswordVerification,
+    handleOldPasswordChange: s.handleOldPasswordChange,
   }));
 
   return (
@@ -18,13 +18,13 @@ export function NewPasswordInput() {
       {isNewPasswordInput && (
         <div>
           <AppPasswordInput
-            label="새로운 비밀번호"
-            placeholder="새로운 비밀번호"
+            label="기존 비밀번호"
+            placeholder="기존 비밀번호"
             isHiddenLabel
             className="w-full"
-            onChange={handleNewPasswordChange}
+            onChange={handleOldPasswordChange}
           />
-          {newPasswordVerification && (
+          {oldPasswordVerification && (
             <AppAuthMessage warning>
               비밀번호 양식은 문자와 숫자 8글자 이상입니다.
             </AppAuthMessage>
@@ -35,4 +35,4 @@ export function NewPasswordInput() {
   );
 }
 
-export default memo(NewPasswordInput);
+export default memo(OldPasswordInput);
