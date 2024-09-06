@@ -11,8 +11,14 @@ import Login from '@/pages/Login/Login';
 import Signup from '@/pages/Signup/Signup';
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
-
+// MyPage 하위 컴포넌트
 import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
+import PaymentHistory from '@/pages/MyPage/PaymentHistory/PaymentHistory';
+import ReviewSettings from '@/pages/MyPage/ReviewSettings/ReviewSettings';
+import WishList from '@/pages/MyPage/WishList/WishList';
+import Setting from '@/pages/MyPage/Setting/Setting';
+import LogOut from '@/pages/MyPage/LogOut/LogOut';
+// Main페이지 하위 컴포넌트
 import Map from './pages/Main/Map/Map';
 import Gym from './pages/Main/Gym/Gym';
 
@@ -52,6 +58,7 @@ export const routes = createRoutesFromElements(
         return { Component: Chat };
       }}
     />
+    {/* MyPage */}
     <Route
       path="/mypage"
       lazy={async () => {
@@ -60,6 +67,12 @@ export const routes = createRoutesFromElements(
       }}
     />
     <Route path="/mypage/editProfile" element={<EditProfile />} />
+    <Route path="/mypage/paymentHistory" element={<PaymentHistory />} />
+    <Route path="/mypage/reviewSettings" element={<ReviewSettings />} />
+    <Route path="/mypage/wishList" element={<WishList />} />
+    <Route path="/mypage/setting" element={<Setting />} />
+    <Route path="/mypage/logOut" element={<LogOut />} />
+    {/*account*/}
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
     <Route path="/findPassword" element={<FindPassword />} />

@@ -11,15 +11,12 @@ const myProfile = [
 export default function MyProfile() {
   return (
     <section
-      className="w-full h-24 border-b border-solid p-s20 border-strokeBlack"
+      className="w-full h-24 border-b border-solid px-s20 border-strokeBlack "
       aria-label="내 프로필"
     >
       {myProfile.map((item) => {
         return (
-          <div
-            key={item.id}
-            className="flex items-center h-full text-white bg-mainBg "
-          >
+          <div key={item.id} className="flex items-center h-full text-white ">
             <span className="h-64px w-64px ">
               <img
                 className="rounded-full"
