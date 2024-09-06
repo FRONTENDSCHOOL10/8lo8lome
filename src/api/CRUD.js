@@ -7,7 +7,7 @@ export const getData = async (resource, id) => {
     const response = await pb.collection(resource).getOne(id);
     return response.items;
   } catch (error) {
-    throw new Error(error.message);
+    return false;
   }
 };
 // 여러 개의 데이터 가져오기
@@ -25,7 +25,7 @@ export const getAllData = async (
       .getList(page, perPage, { sort });
     return response.items; // 또는 필요한 형태로 데이터 가공
   } catch (error) {
-    throw new Error(error.message);
+    return false;
   }
 };
 
@@ -38,9 +38,7 @@ export const getFirstListItem = async (resource, field, value) => {
       .getFirstListItem(`${field}="${value}"`);
     return user;
   } catch (error) {
-    throw new Error(
-      `사용자를 가져오는 중 오류가 발생했습니다: ${error.message}`
-    );
+    return false;
   }
 };
 
@@ -50,7 +48,7 @@ export const createData = async (resource, data) => {
     const response = await pb.collection(resource).create(data);
     return response;
   } catch (error) {
-    throw new Error(error.message);
+    return false;
   }
 };
 
@@ -60,7 +58,7 @@ export const updateData = async (resource, id, data) => {
     const response = await pb.collection(resource).update(id, data);
     return response;
   } catch (error) {
-    throw new Error(error.message);
+    return false;
   }
 };
 
@@ -70,7 +68,7 @@ export const deleteData = async (resource, id) => {
     const response = await pb.collection(resource).delete(id);
     return response;
   } catch (error) {
-    throw new Error(error.message);
+    return false;
   }
 };
 
