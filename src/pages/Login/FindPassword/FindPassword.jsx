@@ -26,7 +26,7 @@ function FindPassword() {
         description="비밀번호 변경 페이지입니다."
       />
       <AppHeader>비밀번호 변경</AppHeader>
-      <section className="px-s20 flex flex-col gap-5 my-s80">
+      <section className="px-s20 flex flex-col gap-5 my-s82">
         <h2 className="sr-only">비밀번호 변경 폼</h2>
         <EmailInput />
         <NewPasswordInput />
