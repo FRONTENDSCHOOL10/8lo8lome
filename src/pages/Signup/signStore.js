@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { getRandomMinMax } from '@/utils';
-import { createData, getData } from '@/api/CRUD';
+import { createData, getFirstListItem } from '@/api/CRUD';
 import {
-  NINKNAME_REG,
+  NICKNAME_REG,
   EMAIL_REG,
   PHONENUMBER_REG,
   PASSWORD_REG,
@@ -91,7 +91,7 @@ export const useSignupStore = create((set) => {
   // 닉네임 변경 핸들러
   const handleNickNameChange = (value) => {
     // 닉네임 유효성 검사
-    const isValid = NINKNAME_REG.test(value);
+    const isValid = NICKNAME_REG.test(value);
 
     set(
       produce((draft) => {
@@ -117,14 +117,10 @@ export const useSignupStore = create((set) => {
     const userNickName = useSignupStore.getState().user.nickName;
 
     // 닉네임이 유효할 때만 중복 확인을 진행합니다.
-    if (NINKNAME_REG.test(userNickName)) {
+    if (NICKNAME_REG.test(userNickName)) {
       try {
-        // 사용자 목록을 가져옵니다.
-        const data = await getData('users');
-        // 중복된 닉네임이 있는지 확인합니다.
-        const result = data.items.find(
-          (item) => item.nickName === userNickName
-        );
+        // 닉네임에 해당하는 첫 번째 사용자 항목을 가져옵니다.
+        const result = await getFirstListItem('nickName', userNickName);
 
         // 상태를 업데이트합니다.
         set(
@@ -181,15 +177,14 @@ export const useSignupStore = create((set) => {
   const handleEmailCheck = async () => {
     // 현재 상태에서 사용자 이메일을 가져옵니다.
     const userEmail = useSignupStore.getState().user.email;
+
     // 이메일 유효성 검사
     const isValid = EMAIL_REG.test(userEmail);
 
     if (isValid) {
       try {
-        // 사용자 목록을 가져옵니다.
-        const data = await getData('users');
-        // 중복된 이메일이 있는지 확인합니다.
-        const result = data.items.find((item) => item.email === userEmail);
+        // 이메일에 해당하는 첫 번째 사용자 항목을 가져옵니다.
+        const result = await getFirstListItem('email', userEmail);
 
         // 상태를 업데이트합니다.
         set(
@@ -198,6 +193,8 @@ export const useSignupStore = create((set) => {
               ? '이미 가입 된 이메일입니다.' // 이메일이 중복된 경우 메시지
               : '사용 가능한 이메일입니다.'; // 이메일이 중복되지 않은 경우 메시지
 
+            draft.emailValidation.isEmailButtonDisabled = false; // 이메일 버튼 활성화
+
             // 이메일 확인 후 Signup 버튼의 상태를 업데이트합니다.
             updateSignupButtonState(draft);
           })
@@ -205,6 +202,18 @@ export const useSignupStore = create((set) => {
       } catch (error) {
         // 데이터 가져오기 실패 시 콘솔에 오류를 기록합니다.
         console.error('Error fetching user data:', error);
+
+        // 오류 발생 시 이메일 버튼 비활성화
+        set(
+          produce((draft) => {
+            draft.emailValidation.message =
+              '이메일 확인 중 오류가 발생했습니다.';
+            draft.emailValidation.isEmailButtonDisabled = true; // 이메일 버튼 비활성화
+
+            // Signup 버튼 상태 업데이트
+            updateSignupButtonState(draft);
+          })
+        );
       }
     } else {
       // 유효하지 않은 이메일인 경우 메시지를 설정합니다.
@@ -224,7 +233,6 @@ export const useSignupStore = create((set) => {
   const handlePhoneNumberChange = (value) => {
     // 전화번호 유효성 검사
     const isValid = PHONENUMBER_REG.test(value);
-
     set(
       produce((draft) => {
         if (isValid) {
@@ -245,28 +253,45 @@ export const useSignupStore = create((set) => {
 
   // 전화번호 인증 코드 생성 및 알림 핸들러
   const handlePhoneNumberCheck = async () => {
+    // 현재 상태에서 사용자 전화번호를 가져옵니다.
     const userPhoneNumber = useSignupStore.getState().user.phoneNumber;
-    const data = await getData('users');
-    const userExists = data.items.find(
-      (item) => item.phoneNumber === userPhoneNumber
-    );
-    // 상태 업데이트
-    set(
-      produce((draft) => {
-        if (userExists) {
-          // 전화번호가 이미 존재하는 경우
-          draft.phoneNumberValidation.isNumberExists = true;
-          draft.phoneNumberValidation.isVerificationCodeInput = false; // 인증 코드 입력 필드 비활성화
-        } else {
-          // 전화번호가 존재하지 않는 경우
-          const random = getRandomMinMax(100000, 999999);
+
+    try {
+      // 전화번호에 해당하는 첫 번째 사용자 항목을 가져옵니다.
+      const userExists = await getFirstListItem('phoneNumber', userPhoneNumber);
+
+      // 상태를 업데이트합니다.
+      set(
+        produce((draft) => {
+          if (userExists) {
+            // 전화번호가 이미 존재하는 경우
+            draft.phoneNumberValidation.isNumberExists = true;
+            draft.phoneNumberValidation.isVerificationCodeInput = false; // 인증 코드 입력 필드 비활성화
+          } else {
+            // 전화번호가 존재하지 않는 경우
+            const random = getRandomMinMax(100000, 999999);
+            draft.phoneNumberValidation.isNumberExists = false;
+            draft.phoneNumberValidation.verificationCode = random; // 인증 코드 저장
+            draft.phoneNumberValidation.isVerificationCodeInput = true; // 인증 코드 입력 필드 활성화
+          }
+          updateSignupButtonState(draft); // Signup 버튼 상태 업데이트
+        })
+      );
+    } catch (error) {
+      // 데이터 가져오기 실패 시 콘솔에 오류를 기록합니다.
+      console.error('Error checking phone number:', error);
+
+      // 실패 시 상태를 업데이트하여 사용자에게 오류 메시지를 전달합니다.
+      set(
+        produce((draft) => {
           draft.phoneNumberValidation.isNumberExists = false;
-          draft.phoneNumberValidation.verificationCode = random; // 인증 코드 저장
-          draft.phoneNumberValidation.isVerificationCodeInput = true; // 인증 코드 입력 필드 활성화
-        }
-        updateSignupButtonState(draft); // Signup 버튼 상태 업데이트
-      })
-    );
+          draft.phoneNumberValidation.isVerificationCodeInput = false; // 인증 코드 입력 필드 비활성화
+          draft.phoneNumberValidation.errorMessage =
+            '전화번호 확인 중 오류가 발생했습니다.';
+          updateSignupButtonState(draft); // Signup 버튼 상태 업데이트
+        })
+      );
+    }
   };
 
   // 인증 코드 확인 핸들러

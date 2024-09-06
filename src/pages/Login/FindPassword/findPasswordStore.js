@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { EMAIL_REG, PASSWORD_REG } from '@/constant';
 import PocketBase from 'pocketbase';
+import { getFirstListItem } from '@/api/CRUD';
 
 // PocketBase 인스턴스 생성
 const pb = new PocketBase('https://eightloeightlome.pockethost.io');
@@ -9,17 +10,19 @@ const pb = new PocketBase('https://eightloeightlome.pockethost.io');
 export const useFindPasswordStore = create((set) => {
   const INITIAL_STATE = {
     emailVerification: false,
-    passwordVerification: false,
+    oldPasswordVerification: false,
+    newPasswordVerification: false,
+    newPasswordConfirmVerification: false,
     isVerificationCodeButtonDisabled: true,
     isNewPasswordInput: false,
     isEmailExists: false,
     verificationCode: null,
     userData: {
-      email: '',
-      newPassword: '',
       id: '',
+      email: '',
       oldPassword: '',
-      passwordConfirm: '',
+      newPassword: '',
+      newPasswordConfirm: '',
     },
     resetStatus: '', // 비밀번호 재설정 상태 추가
   };
@@ -28,18 +31,14 @@ export const useFindPasswordStore = create((set) => {
     const email = useFindPasswordStore.getState().userData.email;
 
     try {
-      // 'users' 컬렉션에서 모든 사용자 정보를 가져옴
-      const users = await pb.collection('users').getFullList();
-      console.log(users);
-      // 이메일과 일치하는 사용자 찾기
-      const data = users.find((item) => item.email === email);
-
+      // 이메일로 사용자 데이터 가져오기
+      const user = await getFirstListItem('email', email);
       set(
         produce((draft) => {
-          if (data) {
+          if (user) {
             draft.isNewPasswordInput = true; // 인증 코드 입력 필드 활성화
             draft.isEmailExists = true;
-            draft.userData.id = data.id; // 사용자의 ID 값을 저장
+            draft.userData.id = user.id; // 사용자의 ID 값을 저장
           } else {
             draft.isNewPasswordInput = false;
             draft.isEmailExists = false;
@@ -67,39 +66,59 @@ export const useFindPasswordStore = create((set) => {
     );
   };
 
-  const handlePasswordChange = (value) => {
+  const handleOldPasswordChange = (value) => {
     set(
       produce((draft) => {
         if (PASSWORD_REG.test(value)) {
-          draft.passwordVerification = false;
-          draft.userData.newPassword = value;
-          draft.userData.passwordConfirm = value;
+          draft.oldPasswordVerification = false;
+          draft.userData.oldPassword = value;
         } else {
-          draft.passwordVerification = true;
-          draft.userData.newPassword = '';
-          draft.userData.passwordConfirm = value;
+          draft.oldPasswordVerification = true;
+          draft.userData.oldPassword = '';
         }
       })
     );
   };
 
-  const handleOldPasswordChange = (value) => {
+  const handleNewPasswordChange = (value) => {
     set(
       produce((draft) => {
-        draft.userData.oldPassword = value;
+        if (PASSWORD_REG.test(value)) {
+          draft.newPasswordVerification = false;
+          draft.userData.newPassword = value;
+        } else {
+          draft.newPasswordVerification = true;
+          draft.userData.newPassword = '';
+        }
+      })
+    );
+  };
+
+  const handleNewPasswordConfirmChange = (value) => {
+    const { newPassword } = useFindPasswordStore.getState().userData;
+
+    set(
+      produce((draft) => {
+        if (PASSWORD_REG.test(value) && newPassword === value) {
+          draft.newPasswordConfirmVerification = false;
+          draft.userData.newPasswordConfirm = value;
+        } else {
+          draft.newPasswordConfirmVerification = true;
+          draft.userData.newPasswordConfirm = '';
+        }
       })
     );
   };
 
   const handlePasswordChangeButtonClick = async () => {
-    const { id, newPassword, oldPassword, passwordConfirm } =
+    const { id, newPassword, oldPassword, newPasswordConfirm } =
       useFindPasswordStore.getState().userData;
     try {
       // 사용자가 로그인 중인 경우 비밀번호 변경을 위해 API 호출
       await pb.collection('users').update(id, {
         password: newPassword,
         oldPassword: oldPassword,
-        passwordConfirm: passwordConfirm,
+        passwordConfirm: newPasswordConfirm,
       });
 
       set(
@@ -194,8 +213,9 @@ export const useFindPasswordStore = create((set) => {
     ...INITIAL_STATE,
     handleEmailCheck,
     handleEmailChange,
-    handlePasswordChange,
     handleOldPasswordChange,
+    handleNewPasswordConfirmChange,
+    handleNewPasswordChange,
     handlePasswordChangeButtonClick,
     handlePasswordResetRequest,
     handlePasswordResetConfirmation,

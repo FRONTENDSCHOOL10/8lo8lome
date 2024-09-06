@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getData } from '@/api/CRUD';
+import { getFirstListItem } from '@/api/CRUD';
 import { PHONENUMBER_REG } from '@/constant';
 import { getRandomMinMax } from '@/utils';
 
@@ -60,27 +60,24 @@ export const useFindIdStore = create((set) => {
         .userData.userVerificationCode.toString();
       const verificationCode = useFindIdStore.getState().verificationCode;
       const userPhoneNumber = useFindIdStore.getState().userData.phoneNumber; // 유저가 입력한 전화번호
-      // 데이터 가져오기
-      const data = await getData('users');
-      set(
-        produce((draft) => {
-          // 인증번호가 일치하는지 확인
-          if (userVerificationCode === verificationCode) {
-            // 전화번호가 일치하는 사용자의 이메일 찾기
-            const user = data.items.find(
-              (item) => item.phoneNumber === userPhoneNumber
-            );
-            if (user) {
+
+      // 인증번호가 일치하는지 확인
+      if (userVerificationCode === verificationCode) {
+        // 전화번호로 사용자 데이터 가져오기
+        const user = await getFirstListItem('phoneNumber', userPhoneNumber);
+        if (user) {
+          set(
+            produce((draft) => {
               draft.isShowEmail = true;
               draft.userData.email = user.email; // 이메일 저장
-            } else {
-              alert('해당 전화번호로 등록된 사용자가 없습니다.');
-            }
-          } else {
-            alert('인증번호가 일치하지 않습니다.');
-          }
-        })
-      );
+            })
+          );
+        } else {
+          alert('해당 전화번호로 등록된 사용자가 없습니다.');
+        }
+      } else {
+        alert('인증번호가 일치하지 않습니다.');
+      }
     } catch (error) {
       console.error('Error during verification:', error);
       alert('오류가 발생했습니다. 다시 시도해주세요.');
