@@ -1,0 +1,10 @@
+/* Webkit 기반 브라우저 (Chrome, Safari 등) */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 스크롤바가 있는 상태를 유지하되 시각적으로는 숨기기 */
+.custom-scrollbar {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+}
