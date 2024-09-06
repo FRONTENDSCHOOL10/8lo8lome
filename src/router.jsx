@@ -11,9 +11,11 @@ import Login from '@/pages/Login/Login';
 import Signup from '@/pages/Signup/Signup';
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
-import Map from './pages/Main/Map';
-import Gym from './pages/Main/Gym';
+
 import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
+import Map from './pages/Main/Map/Map';
+import Gym from './pages/Main/Gym/Gym';
+
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
