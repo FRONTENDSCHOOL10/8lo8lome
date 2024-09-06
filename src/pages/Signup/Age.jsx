@@ -65,4 +65,4 @@ function Age() {
   );
 }
 
-export default memo(Age); // memo로 감싸서 기본 내보내기
+export default memo(Age);
