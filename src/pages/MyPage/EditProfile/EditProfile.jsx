@@ -1,5 +1,5 @@
 import { AppHeader } from '@/components';
-import { AppMeta } from '@/components/AppMeta';
+import AppMeta from '@/components/AppMeta';
 
 export default function EditProfile() {
   return (
