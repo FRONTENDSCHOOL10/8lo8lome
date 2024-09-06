@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppEmailInput } from '@/components';
-import { useLoginStore } from './loginStore';
+import { useLoginStore } from '../../stores/loginStore';
 import { memo } from 'react';
 
 export function Email() {

@@ -1,6 +1,6 @@
 import { AppHeader } from '@/components';
 import { Link } from 'react-router-dom';
-import { useFindIdStore } from './findIdStore';
+import { useFindIdStore } from '@/stores/findIdStore';
 import EmailDisplay from './EmailDisplay';
 import VerificationCodeInput from './VerificationCodeInput';
 import PhoneNumberInput from './PhoneNumberInput';

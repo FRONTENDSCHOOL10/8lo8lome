@@ -1,5 +1,5 @@
 import { AppTextInput, AppButton } from '@/components';
-import { useFindIdStore } from './findIdStore';
+import { useFindIdStore } from '@/stores/findIdStore';
 import { memo } from 'react';
 
 function VerificationCodeInput() {

@@ -1,12 +1,13 @@
-import { AppInput } from '@/components';
+import { AppTextInput } from '@/components';
+import { memo } from 'react';
 
-export default function SearchBar() {
+function SearchBar() {
   return (
     <form
       action=""
-      className="flex items-center grow gap-3 p-2 border-b-[0.0625rem] border-solid border-white focus:border-borderPrimary"
+      className="flex items-center grow gap-3 p-2 border-b-[0.0625rem] border-solid border-white focus-within:border-borderPrimary"
     >
-      <AppInput
+      <AppTextInput
         label={'검색'}
         isHiddenLabel
         placeholder="검색어를 입력해 주세요."
@@ -20,3 +21,5 @@ export default function SearchBar() {
     </form>
   );
 }
+
+export default memo(SearchBar);

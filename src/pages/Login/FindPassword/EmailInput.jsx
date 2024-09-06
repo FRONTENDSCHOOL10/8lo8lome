@@ -1,6 +1,6 @@
 import { AppButton, AppAuthMessage, AppEmailInput } from '@/components';
 import { memo } from 'react';
-import { useFindPasswordStore } from '@/pages/Login/FindPassword/findPasswordStore';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
 import toast from 'react-hot-toast';
 
 function PhoneNumberInput() {

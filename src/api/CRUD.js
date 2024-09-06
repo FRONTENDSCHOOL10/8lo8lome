@@ -11,9 +11,18 @@ export const getData = async (resource, id) => {
   }
 };
 // 여러 개의 데이터 가져오기
-export const getAllData = async (resource, page = 1, perPage = 50) => {
+// getAllData 함수에 정렬 옵션 추가
+
+export const getAllData = async (
+  resource,
+  sort = '',
+  page = 1,
+  perPage = 50
+) => {
   try {
-    const response = await pb.collection(resource).getList(page, perPage);
+    const response = await pb
+      .collection(resource)
+      .getList(page, perPage, { sort });
     return response.items; // 또는 필요한 형태로 데이터 가공
   } catch (error) {
     throw new Error(error.message);
@@ -21,11 +30,11 @@ export const getAllData = async (resource, page = 1, perPage = 50) => {
 };
 
 // 일치하는 데이터 하나 가져오기
-export const getFirstListItem = async (field, value) => {
+export const getFirstListItem = async (resource, field, value) => {
   try {
     // 쿼리 조건을 사용하여 첫 번째 항목을 가져옵니다
     const user = await pb
-      .collection('users')
+      .collection(resource)
       .getFirstListItem(`${field}="${value}"`);
     return user;
   } catch (error) {

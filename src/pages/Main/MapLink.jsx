@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
 
-export default function MapLink() {
+function MapLink() {
   return (
     <Link to={'/map'} aria-label="지도로 보기">
       <svg
@@ -13,3 +14,5 @@ export default function MapLink() {
     </Link>
   );
 }
+
+export default memo(MapLink);

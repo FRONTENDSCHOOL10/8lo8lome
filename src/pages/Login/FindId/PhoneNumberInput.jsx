@@ -1,6 +1,6 @@
 import { AppTextInput, AppButton, AppAuthMessage } from '@/components';
 import { memo } from 'react';
-import { useFindIdStore } from './findIdStore';
+import { useFindIdStore } from '@/stores/findIdStore';
 
 function PhoneNumberInput() {
   const {
