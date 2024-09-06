@@ -1,14 +1,11 @@
-import { AppHeader } from '@/components';
-import { AppNav } from '@/components';
-import MyCoupon from './MyCoupon';
-import MyProfile from './MyProfile';
 import { Helmet } from 'react-helmet-async';
+import { AppHeader } from '@/components';
 
-export default function MyPage() {
+export default function EditProfile() {
   return (
     <>
       <Helmet>
-        <title>다있짐 / 마이페이지</title>
+        <title>다있짐 / 프로필 편집</title>
         <meta
           name="description"
           content="Zustand를 사용하면 Context, useReducer, useState 없이 보다 효과적으로, 더 빠르게, 더 가볍게 상태를 관리할 수 있습니다."
@@ -29,9 +26,6 @@ export default function MyPage() {
       </Helmet>
 
       <AppHeader />
-      <MyProfile />
-      <MyCoupon />
-      <AppNav />
     </>
   );
 }
