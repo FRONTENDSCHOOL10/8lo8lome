@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppPasswordInput } from '@/components';
-import { useSignupStore } from './signStore';
+import { useSignupStore } from '@/stores/signStore';
 import { memo } from 'react';
 
 function Password() {

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useLoginStore } from './loginStore';
+import { useLoginStore } from '../../stores/loginStore';
 import { AppPasswordInput } from '@/components';
 
 function Password() {

@@ -1,5 +1,5 @@
 import { AppButton, AppHeader, AppDivider } from '@/components';
-import { useSignupStore } from './signStore';
+import { useSignupStore } from '@/stores/signStore';
 import Nickname from './Nickname.jsx';
 import Email from './Email.jsx';
 import PhoneNumber from './PhoneNumber.jsx';

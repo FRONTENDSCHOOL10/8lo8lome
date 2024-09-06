@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useSignupStore } from './signStore';
+import { useSignupStore } from '@/stores/signStore';
 import { AppCheckboxInput } from '@/components';
 
 function AgreementTerms() {

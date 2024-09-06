@@ -13,9 +13,9 @@ import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
 
 import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
-import Map from './pages/Main/Map/Map';
-import Gym from './pages/Main/Gym/Gym';
-import Filter from './pages/Main/Filter/Filter';
+import Map from '@/pages/Main/Map/Map';
+import Gym from '@/pages/Main/Gym/Gym';
+import Filter from '@/pages/Main/Filter/Filter';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
