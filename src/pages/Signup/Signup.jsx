@@ -24,7 +24,7 @@ function Signup() {
       <AppMeta title="회원가입 페이지" description="회원가입 페이지입니다." />
       <AppHeader>회원가입</AppHeader>
       <form
-        className="bg-mainBg px-s18 flex flex-col gap-s30 mb-s50"
+        className="bg-mainBg px-s18 flex flex-col gap-s30 my-s50"
         onSubmit={(e) => {
           e.preventDefault();
           handleSignupButtonClick();
