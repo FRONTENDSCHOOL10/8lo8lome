@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   const LinkClass =
-    'flex items-center justify-center py-s12 text-f12 rounded w-full font-bold ';
+    'flex items-center justify-center py-s14 text-f12 rounded w-full font-bold ';
   return (
     <section className="min-h-[600px] bg-[url('../assets/bg.avif')] bg-no-repeat bg-cover bg-right-top flex flex-col justify-evenly gap-20 pt-s98 pb-s50">
       <div>

@@ -22,20 +22,24 @@ import LogOut from '@/pages/MyPage/LogOut/LogOut';
 import Map from '@/pages/Main/Map/Map';
 import Gym from '@/pages/Main/Gym/Gym';
 import Filter from '@/pages/Main/Filter/Filter';
+import AppSuccess from '@/components/AppSuccess';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
   {
-    text: '메인',
+    text: '홈',
     path: '/main',
+    svgId: 'home',
   },
   {
-    text: '채팅',
+    text: '상담',
     path: '/chat',
+    svgId: 'chat',
   },
   {
-    text: '마이페이지',
+    text: 'MY',
     path: '/mypage',
+    svgId: 'my',
   },
 ];
 
@@ -78,6 +82,10 @@ export const routes = createRoutesFromElements(
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
     <Route path="/findPassword" element={<FindPassword />} />
+    <Route
+      path="/findPassword/success"
+      element={<AppSuccess status="password" />}
+    />
     <Route path="/signup" element={<Signup />} />
   </Route>
 );

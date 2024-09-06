@@ -32,7 +32,7 @@ export const useFindPasswordStore = create((set) => {
 
     try {
       // 이메일로 사용자 데이터 가져오기
-      const user = await getFirstListItem('email', email);
+      const user = await getFirstListItem('users', 'email', email);
       set(
         produce((draft) => {
           if (user) {
