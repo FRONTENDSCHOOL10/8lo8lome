@@ -49,11 +49,11 @@ export default function MyCoupon() {
         spaceBetween={16}
         slidesPerView={1.1}
         pagination={{ clickable: true }}
-        className="w-full h-s156"
+        className="max-w-[300px]"
       >
         {coupon.map((item) => (
           <SwiperSlide key={item.id}>
-            <ul className="flex flex-row rounded-md shadow-md p-s20 bg-gradient-to-br from-mainColor to-green-900 h-s156">
+            <ul className="flex flex-row rounded-md shadow-md p-s20 bg-gradient-to-br from-mainColor to-green-900">
               <li className="flex flex-col text-base text-black ">
                 <p className="font-semibold text-f14 mb-s6">{item.subTitle1}</p>
                 <p className="font-extrabold text-f24 mb-s6">{item.title}</p>
