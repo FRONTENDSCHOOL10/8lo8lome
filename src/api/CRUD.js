@@ -1,67 +1,69 @@
-// api.js 또는 requests.js
-import axios from 'axios';
-
-// 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_PB;
-
-import PocketBase from 'pocketbase';
+import pb from './pb'; // 또는 'pocketbase' 경로에 맞게 수정
 
 // GET 요청 함수
-export const getData = async (resource, id = '') => {
+// 한 개의 데이터 가져오기
+export const getData = async (resource, id) => {
   try {
-    const url = id
-      ? `${BASE_URL}/api/collections/${resource}/records/${id}`
-      : `${BASE_URL}/api/collections/${resource}/records`;
-    const response = await axios.get(url);
-
-    return response.data;
+    const response = await pb.collection(resource).getOne(id);
+    return response.items;
   } catch (error) {
-    throw new Error(error.response ? error.response.data : error.message);
+    throw new Error(error.message);
+  }
+};
+// 여러 개의 데이터 가져오기
+export const getAllData = async (resource, page = 1, perPage = 50) => {
+  try {
+    const response = await pb.collection(resource).getList(page, perPage);
+    return response.items; // 또는 필요한 형태로 데이터 가공
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// 일치하는 데이터 하나 가져오기
+export const getFirstListItem = async (field, value) => {
+  try {
+    // 쿼리 조건을 사용하여 첫 번째 항목을 가져옵니다
+    const user = await pb
+      .collection('users')
+      .getFirstListItem(`${field}="${value}"`);
+    return user;
+  } catch (error) {
+    throw new Error(
+      `사용자를 가져오는 중 오류가 발생했습니다: ${error.message}`
+    );
   }
 };
 
 // POST 요청 함수
 export const createData = async (resource, data) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records`;
-    const response = await axios.post(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
+    const response = await pb.collection(resource).create(data);
+    return response;
   } catch (error) {
-    throw new Error(error.response ? error.response.data : error.message);
+    throw new Error(error.message);
   }
 };
 
 // PUT 요청 함수
 export const updateData = async (resource, id, data) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`;
-    const response = await axios.patch(url, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
+    const response = await pb.collection(resource).update(id, data);
+    return response;
   } catch (error) {
-    throw new Error(error.response ? error.response.data : error.message);
+    throw new Error(error.message);
   }
 };
 
 // DELETE 요청 함수
 export const deleteData = async (resource, id) => {
   try {
-    const url = `${BASE_URL}/api/collections/${resource}/records/${id}`;
-    const response = await axios.delete(url);
-    return response.data;
+    const response = await pb.collection(resource).delete(id);
+    return response;
   } catch (error) {
-    throw new Error(error.response ? error.response.data : error.message);
+    throw new Error(error.message);
   }
 };
-
-const pb = new PocketBase('https://eightloeightlome.pockethost.io');
 
 // api/CRUD.js
 
