@@ -2,7 +2,7 @@ import AppMeta from '@/components/AppMeta';
 import EmailInput from './EmailInput';
 import NewPasswordInput from './NewPasswordInput';
 import { AppHeader, AppButton } from '@/components';
-import { useFindPasswordStore } from './findPasswordStore';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
 
 import { Link } from 'react-router-dom';
 import { memo } from 'react';

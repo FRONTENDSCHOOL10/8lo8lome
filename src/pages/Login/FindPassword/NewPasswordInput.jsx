@@ -1,5 +1,5 @@
 import { AppPasswordInput, AppAuthMessage } from '@/components';
-import { useFindPasswordStore } from './findPasswordStore';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
 import { memo } from 'react';
 
 export function NewPasswordInput() {

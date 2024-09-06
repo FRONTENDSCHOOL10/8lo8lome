@@ -1,5 +1,5 @@
 import { AppAuthMessage, AppButton, AppEmailInput } from '@/components';
-import { useSignupStore } from './signStore';
+import { useSignupStore } from '@/stores/signStore';
 import { memo } from 'react';
 
 function Email() {

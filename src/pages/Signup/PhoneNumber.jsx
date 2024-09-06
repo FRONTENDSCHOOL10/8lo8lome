@@ -1,5 +1,5 @@
 import { AppButton, AppTextInput } from '@/components';
-import { useSignupStore } from './signStore';
+import { useSignupStore } from '@/stores/signStore';
 import toast from 'react-hot-toast';
 import { memo } from 'react';
 
