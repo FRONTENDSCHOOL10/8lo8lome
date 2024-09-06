@@ -11,8 +11,11 @@ import Login from '@/pages/Login/Login';
 import Signup from '@/pages/Signup/Signup';
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
+
+import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
 import Map from './pages/Main/Map/Map';
 import Gym from './pages/Main/Gym/Gym';
+
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -56,7 +59,9 @@ export const routes = createRoutesFromElements(
         let { default: MyPage } = await import('./pages/MyPage/MyPage');
         return { Component: MyPage };
       }}
-    />
+    >
+      <Route path="/mypage/editProfile" element={<EditProfile />} />
+    </Route>
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
     <Route path="/findPassword" element={<FindPassword />} />
