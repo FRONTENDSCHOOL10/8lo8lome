@@ -1,8 +1,10 @@
+import { AppCheckboxInput } from '@/components';
+
 const list = [
   {
     id: 1,
     title: '짐박스 신도림',
-    price: 30000,
+    price: { oneDayPrice: 8000, pt: 150000, fitness: 30000 },
     rating: '3.4',
     range: '4.5',
     image:
@@ -11,7 +13,7 @@ const list = [
   {
     id: 2,
     title: '득근득근 헬스장',
-    price: 30000,
+    price: { oneDayPrice: 10000, pt: 150000, fitness: 30000 },
     rating: '3.4',
     range: '4.5',
     image:
@@ -20,7 +22,7 @@ const list = [
   {
     id: 3,
     title: '짐박스 신대방',
-    price: 30000,
+    price: { oneDayPrice: 8000, pt: 150000, fitness: 30000 },
     rating: '3.4',
     range: '4.5',
     image:
@@ -29,7 +31,7 @@ const list = [
   {
     id: 4,
     title: '짐야드 헬스장',
-    price: 30000,
+    price: { oneDayPrice: 8000, pt: 150000, fitness: 30000 },
     rating: '3.4',
     range: '4.5',
     image:
@@ -43,13 +45,13 @@ export default function GymList() {
       <div className="flex justify-between items-center">
         <h1 className="text-white text-f18">내 주변 헬스장</h1>
         <svg role="icon" aria-label="검색 필터" className="w-5 h-5 fill-white">
-          <use href="/public/assets/sprite.svg#filter-click" />
+          <use href="/assets/sprite.svg#filter-click" />
         </svg>
       </div>
 
       <div className="flex gap-1 items-center pt-2 pb-3">
         <svg role="icon" aria-label="현재 위치로 검색하기" className="w-5 h-5">
-          <use href="/public/assets/sprite.svg#locate" />
+          <use href="/assets/sprite.svg#locate" />
         </svg>
         <span className="text-f14">현재 위치로 찾기</span>
       </div>
@@ -65,6 +67,10 @@ export default function GymList() {
         </li>
         <li>
           <span>주차장</span>
+          <span>&nbsp;|&nbsp;</span>
+        </li>
+        <li>
+          <span>추천순</span>
           <span>&nbsp;|&nbsp;</span>
         </li>
         <li>
@@ -91,17 +97,20 @@ export default function GymList() {
                 <div className="flex flex-col w-full">
                   <div className="flex justify-between items-center">
                     <h2 className="text-base">{item.title}</h2>
-                    <svg
-                      role="icon"
-                      aria-label="헬스장 정보 찜하기"
-                      className="w-5 h-5 fill-white"
-                    >
-                      <use href="/public/assets/sprite.svg#heart-unclick" />
-                    </svg>
+                    <AppCheckboxInput
+                      label={'헬스장 정보 찜하기'}
+                      isHiddenLabel
+                      // name="over14"
+                      // isChecked={over14}
+                      // onChange={handleCheckboxChange}
+                      unCheckedSvgId="heart-unclick"
+                      checkedSvgId="heart-click"
+                      checkedColor="text-red-500"
+                    />
                   </div>
 
                   <p className="text-f12">
-                    가격 : {item.price.toLocaleString()}원
+                    가격 : {item.price.oneDayPrice.toLocaleString()}원
                   </p>
                   <div className="flex justify-between text-[0.625rem] pt-4">
                     <p>{item.range}km</p>
@@ -111,7 +120,7 @@ export default function GymList() {
                         aria-label="별점"
                         className="w-3 h-3 fill-yellow-300"
                       >
-                        <use href="/public/assets/sprite.svg#star" />
+                        <use href="/assets/sprite.svg#star" />
                       </svg>
 
                       <p>{item.rating}</p>
