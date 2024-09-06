@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
 
 const myProfile = [
   {
@@ -30,12 +29,11 @@ export default function MyProfile() {
                 height={64}
               />
             </span>
-
             <form action="" className="flex text-white flex-low ml-s20">
               <ul className="items-center ">
                 <li className="flex items-center font-bold mb-s10 text-f18">
                   <h2 className="pr-s10">{item.nickName}</h2>
-                  <Link to={'/editProfile'}>
+                  <Link to={'/mypage/editProfile'}>
                     <svg
                       role="icon"
                       aria-label="프로필 편집 버튼"
@@ -44,7 +42,6 @@ export default function MyProfile() {
                       <use href="/assets/sprite.svg#arrow-forward" />
                     </svg>
                   </Link>
-                  <Outlet />
                 </li>
                 <li>
                   <p className="font-light text-s12">{item.email}</p>
