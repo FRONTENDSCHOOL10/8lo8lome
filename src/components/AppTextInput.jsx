@@ -27,7 +27,7 @@ function AppTextInput({
     onChange?.(value);
   }, 200);
 
-  const inputBaseClass = `bg-transparent border border-solid border-white rounded p-s12 w-full ${className || ''}`;
+  const inputBaseClass = `bg-transparent border border-solid border-white rounded p-s12 w-full focus:outline-none focus:border-mainColor ${className || ''}`;
   const wrapperClass = 'relative w-full';
 
   return (
