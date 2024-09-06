@@ -120,7 +120,11 @@ export const useSignupStore = create((set) => {
     if (NICKNAME_REG.test(userNickName)) {
       try {
         // 닉네임에 해당하는 첫 번째 사용자 항목을 가져옵니다.
-        const result = await getFirstListItem('nickName', userNickName);
+        const result = await getFirstListItem(
+          'users',
+          'nickName',
+          userNickName
+        );
 
         // 상태를 업데이트합니다.
         set(
@@ -184,7 +188,7 @@ export const useSignupStore = create((set) => {
     if (isValid) {
       try {
         // 이메일에 해당하는 첫 번째 사용자 항목을 가져옵니다.
-        const result = await getFirstListItem('email', userEmail);
+        const result = await getFirstListItem('users', 'email', userEmail);
 
         // 상태를 업데이트합니다.
         set(
@@ -258,7 +262,11 @@ export const useSignupStore = create((set) => {
 
     try {
       // 전화번호에 해당하는 첫 번째 사용자 항목을 가져옵니다.
-      const userExists = await getFirstListItem('phoneNumber', userPhoneNumber);
+      const userExists = await getFirstListItem(
+        'users',
+        'phoneNumber',
+        userPhoneNumber
+      );
 
       // 상태를 업데이트합니다.
       set(

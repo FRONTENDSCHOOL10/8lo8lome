@@ -64,7 +64,11 @@ export const useFindIdStore = create((set) => {
       // 인증번호가 일치하는지 확인
       if (userVerificationCode === verificationCode) {
         // 전화번호로 사용자 데이터 가져오기
-        const user = await getFirstListItem('phoneNumber', userPhoneNumber);
+        const user = await getFirstListItem(
+          'users',
+          'phoneNumber',
+          userPhoneNumber
+        );
         if (user) {
           set(
             produce((draft) => {
