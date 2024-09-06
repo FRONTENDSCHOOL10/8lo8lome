@@ -24,7 +24,9 @@ function Home() {
         </Link>
         <Link
           to="/login"
-          className={LinkClass + `border-2 border-solid border-mainColor`}
+          className={
+            LinkClass + `border-2 border-solid border-mainColor bg-mainBg`
+          }
         >
           로그인하기
         </Link>
