@@ -31,7 +31,11 @@ function AppHeader({ className, children, logo }) {
       <h1 className="text-white mx-auto">{children}</h1>
     </>
   );
-  let headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full my-s38 ${className}`;
+  let headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full mt-s38`;
+
+  if (className) {
+    headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full mt-s38 ${className}`;
+  }
 
   return <header className={headerBaseClass}>{isLogo}</header>;
 }
