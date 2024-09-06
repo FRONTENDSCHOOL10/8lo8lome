@@ -1,7 +1,8 @@
 import { AppHeader } from '@/components';
 import AppMeta from '@/components/AppMeta';
+import { memo } from 'react';
 
-export default function EditProfile() {
+function EditProfile() {
   return (
     <>
       <AppMeta title="프로필 편집" description="프로필 편집페이지 입니다." />
@@ -9,3 +10,5 @@ export default function EditProfile() {
     </>
   );
 }
+
+export default memo(EditProfile);
