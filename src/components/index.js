@@ -5,7 +5,6 @@ export { default as AppHeader } from './AppHeader.jsx';
 export { default as AppFooter } from './AppFooter.jsx';
 export { default as AppButton } from './AppButton.jsx';
 // export { default as AppSwitch } from './AppSwitch.jsx';
-export { default as AppInput } from './AppInput.jsx';
 export { default as AppForm } from './AppForm.jsx';
 export { default as AppLink } from './AppLink.jsx';
 export { default as AppNav } from './AppNav.jsx';

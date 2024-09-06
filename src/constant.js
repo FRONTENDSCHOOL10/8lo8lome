@@ -1,5 +1,5 @@
 // 닉네임 정규식
-export const NINKNAME_REG = /^[가-힣a-zA-Z0-9]{1,8}$/;
+export const NICKNAME_REG = /^[가-힣a-zA-Z0-9]{1,8}$/;
 // 이메일 정규식
 export const EMAIL_REG = /^[^\s@]+@[^\s@]+\.(com|net)$/;
 // 핸드폰번호 정규식

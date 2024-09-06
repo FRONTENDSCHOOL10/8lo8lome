@@ -1,8 +1,8 @@
+import pb from '@/api/pb';
 import { create } from 'zustand';
 import { produce } from 'immer';
-import pb from '@/api/pb';
-
 import { setStorageData } from '@/utils/web-storage';
+import { EMAIL_REG } from '@/constant';
 
 export const useLoginStore = create((set) => {
   const INITIAL_STATE = {
@@ -13,41 +13,25 @@ export const useLoginStore = create((set) => {
     userInput: { email: '', password: '' },
   };
 
-  const setUserField = (field, value) =>
-    set(
-      produce((draft) => {
-        draft.userInput[field] = value;
-      })
-    );
-
-  const activateAuthMessage = (field) => {
-    set(
-      produce((draft) => {
-        draft[field] = true;
-      })
-    );
-  };
-
-  const deactivateAuthMessage = (field) => {
-    set(
-      produce((draft) => {
-        draft[field] = false;
-      })
-    );
-  };
-
   const handleEmailChange = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(value)) {
-      setUserField('email', value);
-      deactivateAuthMessage('emailVerification');
-    } else {
-      activateAuthMessage('emailVerification');
-    }
+    set(
+      produce((draft) => {
+        if (EMAIL_REG.test(value)) {
+          draft.userInput.email = value;
+          draft.emailVerification = false;
+        } else {
+          draft.emailVerification = true;
+        }
+      })
+    );
   };
 
   const handlePasswordChange = (value) => {
-    setUserField('password', value);
+    set(
+      produce((draft) => {
+        draft.userInput.password = value;
+      })
+    );
   };
 
   const handleAutoLoginCheck = () => {
@@ -56,20 +40,6 @@ export const useLoginStore = create((set) => {
         draft.autoLogin = !draft.autoLogin;
       })
     );
-  };
-
-  // PocketBase SDK로 사용자 데이터를 가져오는 함수
-  const fetchUserData = async () => {
-    try {
-      const userData = await pb.collection('users').getFullList(); // 모든 사용자 데이터 가져오기
-      set(
-        produce((draft) => {
-          draft.userData = userData; // 상태에 사용자 데이터 저장
-        })
-      );
-    } catch (error) {
-      console.error('Failed to fetch user data:', error);
-    }
   };
 
   // PocketBase SDK로 로그인 처리하는 함수
@@ -114,7 +84,6 @@ export const useLoginStore = create((set) => {
     handleEmailChange,
     handlePasswordChange,
     handleAutoLoginCheck,
-    fetchUserData,
     handleLoginButtonClick,
   };
 });

@@ -46,9 +46,10 @@ function AppButton({
   }
 
   const buttonBaseClass =
-    'opacity-100 flex items-center justify-center rounded text-f14 py-s12 border disabled:opacity-50 disabled:cursor-not-allowed w-full';
+    'opacity-100 flex items-center justify-center rounded text-f14 py-s12 border disabled:opacity-50 disabled:cursor-not-allowed w-full ';
   const filledClass = 'bg-mainColor text-black font-semibold border-none';
-  const outlinedClass = 'border-solid border-white bg-transparent text-white';
+  const outlinedClass =
+    'border-solid border-white bg-transparent text-white focus:outline-none focus:border-mainColor';
 
   const buttonClasses =
     `${buttonBaseClass} ${isFilled ? filledClass : outlinedClass} ${buttonClassName} ${className}`.trim();

@@ -38,7 +38,7 @@ function AppPasswordInput({
         id={id}
         name={id}
         onChange={handleChange}
-        className={`bg-transparent border border-solid border-white rounded p-s12 w-full ${className || ''}`}
+        className={`bg-transparent border border-solid border-white rounded p-s12 w-full focus:outline-none focus:border-mainColor ${className || ''}`}
         required={required}
         {...restProps}
       />
