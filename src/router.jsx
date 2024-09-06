@@ -21,16 +21,19 @@ import AppSuccess from '@/components/AppSuccess';
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
   {
-    text: '메인',
+    text: '홈',
     path: '/main',
+    svgId: 'home',
   },
   {
-    text: '채팅',
+    text: '상담',
     path: '/chat',
+    svgId: 'chat',
   },
   {
-    text: '마이페이지',
+    text: 'MY',
     path: '/mypage',
+    svgId: 'my',
   },
 ];
 
