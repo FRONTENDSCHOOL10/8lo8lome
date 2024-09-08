@@ -1,22 +1,15 @@
-// import pb from '@/api/pb';
+import { create } from 'zustand';
 
-// export const useMainStore = create((set) => {
-//   const INITIAL_STATE = {
-//     autoLogin: false,
-//     emailVerification: false,
-//     passwordVerification: false,
-//     userData: [],
-//     userInput: { email: '', password: '' },
-//   };
+export const useSearchStore = create((set) => ({
+  inputValue: '',
+  setInputValue: (value) => set({ inputValue: value }),
 
-//   const setUserField = (field, value) =>
-//     set(
-//       produce((draft) => {
-//         draft.userInput[field] = value;
-//       })
-//     );
+  searchWord: '',
+  setSearchWord: (value) => set({ searchWord: value }),
 
-//   return {
-//     ...INITIAL_STATE,
-//   };
-// });
+  gymsList: [],
+  setGymsList: (value) => set({ gymsList: value }),
+
+  filterGyms: [],
+  setFilterGyms: (value) => set({ filterGyms: value }),
+}));

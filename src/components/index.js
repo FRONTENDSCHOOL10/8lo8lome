@@ -15,3 +15,4 @@ export { default as AppPasswordInput } from './AppPasswordInput.jsx';
 export { default as AppRadioInput } from './AppRadioInput.jsx';
 export { default as AppTextInput } from './AppTextInput.jsx';
 export { default as AppEmailInput } from './AppEmailInput.jsx';
+export { default as AppSearchInput } from './AppSearchInput.jsx';
