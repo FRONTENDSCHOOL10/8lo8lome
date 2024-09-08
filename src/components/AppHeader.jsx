@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 AppHeader.propTypes = {
   className: string,
-  children: node.isRequired,
+  children: node,
   logo: bool,
 };
 
