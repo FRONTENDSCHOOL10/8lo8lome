@@ -4,13 +4,12 @@ import { navigationItems } from '@/router';
 
 function AppNav() {
   const [items] = useState(navigationItems);
-  console.log(items);
 
   return (
-    <nav className="bg-mainBg fixed bottom-[129px] w-[38%] border border-solid border-white">
+    <nav className="bg-mainBg fixed bottom-[129px] w-[340px] border border-solid border-white">
       <h2 className="sr-only">페이지 탐색</h2>
       {items.length > 0 && (
-        <ul className="py-s16 w-4/5 max-w-6xl mx-auto flex justify-around gap-8">
+        <ul className="py-s10 w-4/5 max-w-6xl mx-auto flex justify-around gap-8">
           {items.map((item, index) => (
             <li key={item.path ?? index}>
               <NavLink
