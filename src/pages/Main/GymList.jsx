@@ -7,7 +7,7 @@ function GymList() {
   const filterGyms = useSearchStore((state) => state.filterGyms);
   // console.log(filterGyms);
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
@@ -17,13 +17,7 @@ function GymList() {
               className="text-white flex gap-[0.625rem]
             bg-subBg rounded p-[0.625rem]"
             >
-              <img
-                src={imgUrl[0]}
-                alt="헬스장 사진"
-                width={112}
-                height={78}
-                className="max-w-[112px] max-h-[78px] object-fill"
-              />
+              <img src={imgUrl[0]} alt="헬스장 사진" className="max-w-[90px]" />
               <div className="flex flex-col w-full">
                 <div className="flex justify-between items-center">
                   <h2 className="text-base">{item.name}</h2>
