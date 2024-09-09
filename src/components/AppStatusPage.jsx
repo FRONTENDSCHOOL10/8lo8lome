@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import AppMeta from '@/components/AppMeta';
 import { string } from 'prop-types';
 
-AppSuccess.propTypes = {
+AppStatusPage.propTypes = {
   status: string.isRequired,
 };
 
-function AppSuccess({ status }) {
+function AppStatusPage({ status }) {
   let title, description, svgId, message, subMessage, linkText, linkTo;
   let textColorClass = 'text-mainColor'; // 기본 색상
   let svgColor = 'border-mainColor'; // 기본 테두리 색상
@@ -74,4 +74,4 @@ function AppSuccess({ status }) {
   );
 }
 
-export default memo(AppSuccess);
+export default memo(AppStatusPage);
