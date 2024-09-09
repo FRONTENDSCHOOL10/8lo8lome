@@ -53,10 +53,10 @@ export default function MyCoupon() {
       >
         {coupon.map((item) => (
           <SwiperSlide key={item.id}>
-            <ul className="flex flex-row rounded-md shadow-md p-s20 bg-gradient-to-br from-mainColor to-green-900">
+            <ul className="flex flex-row rounded-md shadow-md p-s20 bg-gradient-to-br from-mainColor to-green-900 h-s156">
               <li className="flex flex-col text-base text-black ">
                 <p className="font-semibold text-f14 mb-s6">{item.subTitle1}</p>
-                <p className="font-extrabold text-f24 mb-s6">{item.title}</p>
+                <p className="font-extrabold text-f20 mb-s6">{item.title}</p>
                 <p className="text-f14">{item.subTitle2}</p>
                 <p className="font-bold text-f16 pt-s20">{item.dateInfo}</p>
               </li>
