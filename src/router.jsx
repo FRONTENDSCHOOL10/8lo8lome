@@ -16,7 +16,8 @@ import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
 import Map from '@/pages/Main/Map/Map';
 import Gym from '@/pages/Main/Gym/Gym';
 import Filter from '@/pages/Main/Filter/Filter';
-import AppSuccess from '@/components/AppSuccess';
+import AppStatusPage from '@/components/AppStatusPage';
+import ChatRoom from './pages/Chat/ChatRoom';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -58,6 +59,7 @@ export const routes = createRoutesFromElements(
         return { Component: Chat };
       }}
     />
+    <Route path="/chat/:roomId" element={<ChatRoom />} />
     <Route
       path="/mypage"
       lazy={async () => {
@@ -71,7 +73,7 @@ export const routes = createRoutesFromElements(
     <Route path="/findPassword" element={<FindPassword />} />
     <Route
       path="/findPassword/success"
-      element={<AppSuccess status="password" />}
+      element={<AppStatusPage status="password" />}
     />
     <Route path="/signup" element={<Signup />} />
   </Route>
