@@ -1,7 +1,7 @@
 import getPbImageURL from '@/utils/getPbImageURL';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import pb from '@/api/pb'; // 포켓베이스 인스턴스
+import pb from '@/api/pb';
 
 export default function MyProfile() {
   // 상태 선언: 유저 정보 저장
@@ -30,7 +30,7 @@ export default function MyProfile() {
 
     fetchUserData();
   }, []);
-
+  console.log(userData.profileImage);
   return (
     <section
       className="w-full h-24 border-b border-solid px-s20 border-strokeBlack"
