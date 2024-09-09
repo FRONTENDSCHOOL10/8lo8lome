@@ -1,6 +1,7 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
 import { useSearchStore } from '@/stores/mainStore';
+import getPbImageURL from '@/utils/getPbImageURL';
 
 function GymList() {
   const filterGyms = useSearchStore((state) => state.filterGyms);
@@ -8,8 +9,7 @@ function GymList() {
   return (
     <ul className="flex flex-col gap-4">
       {filterGyms.map((item) => {
-        const imgUrl = `https://eightloeightlome.pockethost.io/api/files/${item.collectionId}/${item.id}/${item.image[0]}`;
-
+        const imgUrl = getPbImageURL(item);
         return (
           <li key={item.id}>
             <a
@@ -17,8 +17,13 @@ function GymList() {
               className="text-white flex gap-[0.625rem]
             bg-subBg rounded p-[0.625rem]"
             >
-              <img src={imgUrl} alt="헬스장 사진" width={112} height={78} />
-
+              <img
+                src={imgUrl[0]}
+                alt="헬스장 사진"
+                width={112}
+                height={78}
+                className="max-w-[112px] max-h-[78px] object-fill"
+              />
               <div className="flex flex-col w-full">
                 <div className="flex justify-between items-center">
                   <h2 className="text-base">{item.name}</h2>

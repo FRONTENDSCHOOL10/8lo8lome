@@ -16,21 +16,20 @@ export default function MyProfile() {
     // 포켓베이스에서 로그인된 유저 데이터 가져오기
     const fetchUserData = async () => {
       const authData = pb.authStore.model;
-
       if (authData) {
         // 유저 정보 설정
         setUserData({
           id: authData.id,
           nickname: authData.nickName,
           email: authData.email,
-          profileImage: getPbImageURL(authData.id, authData.profile), // 프로필 이미지 URL 생성
+          profileImage: getPbImageURL(authData),
         });
       }
     };
 
     fetchUserData();
   }, []);
-  console.log(userData.profileImage);
+
   return (
     <section
       className="w-full h-24 border-b border-solid px-s20 border-strokeBlack"
