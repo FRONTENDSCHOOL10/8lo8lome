@@ -440,7 +440,7 @@ export const useSignupStore = create((set) => {
       email: user.email,
       gender: user.gender,
       age: user.age,
-      agreementTerms: JSON.stringify(user.agreementTerms),
+      agreementTerms: user.agreementTerms,
     };
 
     try {
