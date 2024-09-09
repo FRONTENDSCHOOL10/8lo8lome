@@ -22,7 +22,7 @@ import LogOut from '@/pages/MyPage/LogOut/LogOut';
 import Map from '@/pages/Main/Map/Map';
 import Gym from '@/pages/Main/Gym/Gym';
 import Filter from '@/pages/Main/Filter/Filter';
-import AppSuccess from '@/components/AppSuccess';
+import AppStatusPage from '@/components/AppStatusPage';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -84,7 +84,7 @@ export const routes = createRoutesFromElements(
     <Route path="/findPassword" element={<FindPassword />} />
     <Route
       path="/findPassword/success"
-      element={<AppSuccess status="password" />}
+      element={<AppStatusPage status="password" />}
     />
     <Route path="/signup" element={<Signup />} />
   </Route>
