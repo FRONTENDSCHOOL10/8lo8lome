@@ -17,6 +17,8 @@ export default function Map() {
         <FilterLink />
       </header>
 
+      <h2>지도 api</h2>
+
       <AppNav />
     </>
   );
