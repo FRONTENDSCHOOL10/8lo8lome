@@ -65,6 +65,7 @@ export const routes = createRoutesFromElements(
         return { Component: Chat };
       }}
     />
+    <Route path="/chat/:roomId" element={<ChatRoom />} />
     <Route
       path="/mypage"
       lazy={async () => {
