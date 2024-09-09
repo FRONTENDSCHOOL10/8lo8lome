@@ -1,15 +1,10 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
-import pb from '@/api/pb';
 
-const list = await pb.collection('gyms').getFullList({
-  sort: '-created',
-});
-
-function GymList() {
+function GymList({ gyms }) {
   return (
     <ul className="flex flex-col gap-4">
-      {list.map((item) => {
+      {gyms.map((item) => {
         const imgUrl = `https://eightloeightlome.pockethost.io/api/files/${item.collectionId}/${item.id}/${item.image[0]}`;
 
         return (
