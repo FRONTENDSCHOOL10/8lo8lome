@@ -4,7 +4,7 @@ import { useSearchStore } from '@/stores/mainStore';
 
 function GymList() {
   const filterGyms = useSearchStore((state) => state.filterGyms);
-  console.log(filterGyms);
+  // console.log(filterGyms);
   return (
     <ul className="flex flex-col gap-4">
       {filterGyms.map((item) => {
