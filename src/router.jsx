@@ -23,6 +23,7 @@ import Map from '@/pages/Main/Map/Map';
 import Gym from '@/pages/Main/Gym/Gym';
 import Filter from '@/pages/Main/Filter/Filter';
 import AppStatusPage from '@/components/AppStatusPage';
+import ChatRoom from './pages/Chat/ChatRoom';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -64,7 +65,7 @@ export const routes = createRoutesFromElements(
         return { Component: Chat };
       }}
     />
-    {/* MyPage */}
+    <Route path="/chat/:roomId" element={<ChatRoom />} />
     <Route
       path="/mypage"
       lazy={async () => {

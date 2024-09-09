@@ -9,8 +9,8 @@ AppStatusPage.propTypes = {
 
 function AppStatusPage({ status }) {
   let title, description, svgId, message, subMessage, linkText, linkTo;
-  let textColorClass = 'text-mainColor'; // 기본 색상
-  let svgColor = 'border-mainColor'; // 기본 테두리 색상
+  let textColorClass = 'text-white'; // 기본 색상
+  let svgColor = 'text-mainColor'; // 기본 테두리 색상
 
   switch (status) {
     case 'password':
@@ -39,8 +39,8 @@ function AppStatusPage({ status }) {
       subMessage = '로그인 후 이용 해주세요.';
       linkText = '로그인 하러 가기';
       linkTo = '/login';
-      textColorClass = 'text-white'; // 빨간색 텍스트
-      svgColor = 'text-red-500'; // 빨간색 테두리
+      textColorClass = 'text-white';
+      svgColor = 'text-red-500';
       break;
   }
 

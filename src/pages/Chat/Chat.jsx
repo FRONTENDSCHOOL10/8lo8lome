@@ -1,12 +1,13 @@
-import { AppNav } from '@/components';
-import AppMeta from '@/components/AppMeta';
+import { useChatStore } from '@/stores/chatStore';
+import LoggedIn from './LoggedIn';
+import LoggedOut from './LoggedOut';
 
 export default function Chat() {
-  return (
-    <>
-      <AppMeta title="채팅 목록 페이지" description="채팅 목록 페이지입니다." />
-      <h2>채팅페이지</h2>
-      <AppNav />
-    </>
-  );
+  const { isLoggedIn } = useChatStore((s) => ({
+    isLoggedIn: s.isLoggedIn,
+  }));
+
+  const component = isLoggedIn ? <LoggedIn /> : <LoggedOut />;
+
+  return <>{component}</>;
 }
