@@ -6,14 +6,27 @@ import { Link } from 'react-router-dom';
 
 function GymList() {
   const filterGyms = useSearchStore((state) => state.filterGyms);
-  // console.log(filterGyms);
+
   return (
     <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
-          <li key={item.id}>
+          <li key={item.id} className="relative">
             {/* Link 이동은 아직 안 넣음 */}
+            <div className="absolute top-2 right-2 pl-7 pb-7">
+              <AppCheckboxInput
+                label={'헬스장 정보 찜하기'}
+                isHiddenLabel
+                // name="over14"
+                // isChecked={over14}
+                // onChange={handleCheckboxChange}
+                unCheckedSvgId="heart-unclick"
+                checkedSvgId="heart-click"
+                checkedColor="text-red-500"
+              />
+            </div>
+
             <Link to={'/filter'} aria-label="헬스장 상세 정보 페이지">
               <div
                 className="text-white flex gap-[0.625rem]
@@ -26,17 +39,7 @@ function GymList() {
                 />
                 <div className="flex flex-col w-full">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-base">{item.name}</h2>
-                    <AppCheckboxInput
-                      label={'헬스장 정보 찜하기'}
-                      isHiddenLabel
-                      // name="over14"
-                      // isChecked={over14}
-                      // onChange={handleCheckboxChange}
-                      unCheckedSvgId="heart-unclick"
-                      checkedSvgId="heart-click"
-                      checkedColor="text-red-500"
-                    />
+                    <h2 className="text-base w-[70%]">{item.name}</h2>
                   </div>
 
                   <p className="text-f12">
