@@ -8,7 +8,6 @@ function SearchBar({ onSearch }) {
   // }); // 상태 선택
   const inputValue = useSearchStore((state) => state.InputValue);
   const setInputValue = useSearchStore((state) => state.setInputValue); // 상태 업데이트 함수 선택
-  console.log(inputValue);
 
   const handleSubmit = (e) => {
     e.preventDefault();

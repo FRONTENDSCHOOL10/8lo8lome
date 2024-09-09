@@ -20,7 +20,6 @@ function Main() {
     const getGymsList = async () => {
       try {
         const data = await getAllData('gyms', '-created');
-        console.log('데이터:', data);
 
         if (data && Array.isArray(data)) {
           useSearchStore.getState().setGymsList(data);
