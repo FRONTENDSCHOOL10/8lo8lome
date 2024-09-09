@@ -10,7 +10,6 @@ import { useSearchStore } from '../../stores/mainStore';
 
 function Main() {
   const gymsList = useSearchStore((state) => state.gymsList);
-  const filterGyms = useSearchStore((state) => state.filterGyms);
   const searchWord = useSearchStore((state) => state.searchWord);
 
   const handleSearch = (value) => {
@@ -58,7 +57,7 @@ function Main() {
         <MapLink />
       </header>
       <FilterList />
-      <GymList gyms={filterGyms} />
+      <GymList />
       <AppNav />
     </>
   );

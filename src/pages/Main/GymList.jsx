@@ -1,10 +1,13 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
+import { useSearchStore } from '@/stores/mainStore';
 
-function GymList({ gyms }) {
+function GymList() {
+  const filterGyms = useSearchStore((state) => state.filterGyms);
+  console.log(filterGyms);
   return (
     <ul className="flex flex-col gap-4">
-      {gyms.map((item) => {
+      {filterGyms.map((item) => {
         const imgUrl = `https://eightloeightlome.pockethost.io/api/files/${item.collectionId}/${item.id}/${item.image[0]}`;
 
         return (
