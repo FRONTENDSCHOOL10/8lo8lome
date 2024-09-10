@@ -18,18 +18,25 @@ function Main() {
 
   useEffect(() => {
     const getGymsList = async () => {
-      try {
-        const data = await getAllData('gyms', '-created');
+      const data = await getAllData('gyms', '-created');
 
-        if (data && Array.isArray(data)) {
-          useSearchStore.getState().setGymsList(data);
-          useSearchStore.getState().setFilterGyms(data);
-        } else {
-          console.error('데이터를 가져오지 못했습니다.');
-        }
-      } catch (error) {
-        console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+      if (data && Array.isArray(data)) {
+        useSearchStore.getState().setGymsList(data);
+        useSearchStore.getState().setFilterGyms(data);
       }
+
+      // try {
+      //   const data = await getAllData('gyms', '-created');
+
+      //   if (data && Array.isArray(data)) {
+      //     useSearchStore.getState().setGymsList(data);
+      //     useSearchStore.getState().setFilterGyms(data);
+      //   } else {
+      //     console.error('데이터를 가져오지 못했습니다.');
+      //   }
+      // } catch (error) {
+      //   console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+      // }
     };
     getGymsList();
   }, []);

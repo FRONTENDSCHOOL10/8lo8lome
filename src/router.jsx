@@ -20,10 +20,10 @@ import Setting from '@/pages/MyPage/Setting/Setting';
 import LogOut from '@/pages/MyPage/LogOut/LogOut';
 // Main페이지 하위 컴포넌트
 import Map from '@/pages/Main/Map/Map';
-import Gym from '@/pages/Main/Gym/Gym';
 import Filter from '@/pages/Main/Filter/Filter';
 import AppStatusPage from '@/components/AppStatusPage';
-import ChatRoom from './pages/Chat/ChatRoom';
+import ChatRoom from '@/pages/Chat/ChatRoom';
+import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -56,7 +56,7 @@ export const routes = createRoutesFromElements(
       }}
     />
     <Route path="/map" element={<Map />} />
-    <Route path="/gym" element={<Gym />} />
+    <Route path="/main/:gymId" element={<GymDetail />} />
     <Route path="/filter" element={<Filter />} />
     <Route
       path="/chat"

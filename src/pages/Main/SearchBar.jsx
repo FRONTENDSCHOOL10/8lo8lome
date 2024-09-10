@@ -24,7 +24,6 @@ function SearchBar({ onSearch }) {
         isHiddenLabel
         placeholder="검색어를 입력해 주세요."
         className="bg-transparent outline-none text-sm border-none"
-        // vaule={inputValue}
         onChange={setInputValue}
       />
       <button type="submit" aria-label="검색">
