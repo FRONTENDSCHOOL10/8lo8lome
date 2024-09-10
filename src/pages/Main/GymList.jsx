@@ -1,11 +1,13 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
-import { useSearchStore } from '@/stores/mainStore';
+import { useMainStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
 
 function GymList() {
-  const filterGyms = useSearchStore((state) => state.filterGyms);
+  const { filterGyms } = useMainStore((s) => ({
+    filterGyms: s.searchInput.filterGyms,
+  }));
 
   return (
     <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
