@@ -13,7 +13,6 @@ function GymList() {
         const imgUrl = getPbImageURL(item);
         return (
           <li key={item.id} className="relative">
-            {/* Link 이동은 아직 안 넣음 */}
             <div className="absolute top-2 right-2 pl-7 pb-7">
               <AppCheckboxInput
                 label={'헬스장 정보 찜하기'}
@@ -27,37 +26,31 @@ function GymList() {
               />
             </div>
 
-            <Link to={'/filter'} aria-label="헬스장 상세 정보 페이지">
-              <div
-                className="text-white flex gap-[0.625rem]
+            <Link
+              to={`/main/${item.id}`}
+              className="text-white flex gap-[0.625rem]
             bg-subBg rounded p-[0.625rem]"
-              >
-                <img
-                  src={imgUrl[0]}
-                  alt="헬스장 사진"
-                  className="max-w-[90px]"
-                />
-                <div className="flex flex-col w-full">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-base w-[70%]">{item.name}</h2>
-                  </div>
+            >
+              <img src={imgUrl[0]} alt="헬스장 사진" className="max-w-[90px]" />
+              <div className="flex flex-col w-full">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-base w-[70%]">{item.name}</h2>
+                </div>
 
-                  <p className="text-f12">
-                    가격 : {item.oneDayPrice.toLocaleString()}원
-                  </p>
-                  <div className="flex justify-between text-[0.625rem] pt-4">
-                    <p>{item.address}km</p>
-                    <div className="flex items-center gap-1">
-                      <svg
-                        role="icon"
-                        aria-label="별점"
-                        className="w-3 h-3 fill-yellow-300"
-                      >
-                        <use href="/assets/sprite.svg#star" />
-                      </svg>
-
-                      <p>{item.rating}</p>
-                    </div>
+                <p className="text-f12">
+                  가격 : {item.oneDayPrice.toLocaleString()}원
+                </p>
+                <div className="flex justify-between text-[0.625rem] pt-4">
+                  <p>{item.address}km</p>
+                  <div className="flex items-center gap-1">
+                    <svg
+                      role="icon"
+                      aria-label="별점"
+                      className="w-3 h-3 fill-yellow-300"
+                    >
+                      <use href="/assets/sprite.svg#star" />
+                    </svg>
+                    <p>{item.rating}</p>
                   </div>
                 </div>
               </div>
