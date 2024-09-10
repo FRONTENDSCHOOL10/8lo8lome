@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import pb from '@/api/pb'; // PocketBase 인스턴스
-import getPbImageURL from '@/utils/getPbImageURL'; // 이미지 URL 생성 함수
+import pb from '@/api/pb'; 
+import getPbImageURL from '@/utils/getPbImageURL'; 
 
-// Zustand 스토어 정의
+
 export const useUserStore = create((set) => ({
   userData: {
     id: '',
@@ -18,7 +18,7 @@ export const useUserStore = create((set) => ({
       })
     ),
 
-  // 유저 데이터를 포켓베이스에서 가져오는 함수
+ 
   fetchUserData: async () => {
     const authData = pb.authStore.model;
     if (authData) {
@@ -36,7 +36,7 @@ export const useUserStore = create((set) => ({
     }
   },
 
-  // 프로필 업데이트 (이미지, 이메일, 닉네임 모두)
+
   updateProfile: async (profileImageFile, newNickname, newEmail) => {
     const authData = pb.authStore.model;
 
@@ -49,7 +49,6 @@ export const useUserStore = create((set) => ({
           formData.append('photo', profileImageFile);
         }
 
-        // 닉네임과 이메일도 업데이트
         formData.append('nickname', newNickname || authData.nickName);
         formData.append('email', newEmail || authData.email);
 

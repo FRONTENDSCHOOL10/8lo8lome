@@ -41,11 +41,12 @@ function EditImage() {
             className="relative mx-auto my-30px"
           >
             <img
-              className="border-2 border-white border-solid rounded-full"
+              className="object-cover border-2 border-white border-solid rounded-full"
               src={profileImage}
               alt="내 프로필 사진"
               width={76}
               height={76}
+              style={{ width: '76px', height: '76px' }}
             />
             <svg
               role="icon"
