@@ -2,18 +2,18 @@ import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
 import { useSearchStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
+import { Link } from 'react-router-dom';
 
 function GymList() {
   const filterGyms = useSearchStore((state) => state.filterGyms);
-  // console.log(filterGyms);
   return (
     <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
           <li key={item.id}>
-            <a
-              href=""
+            <Link
+              to={`/main/${item.id}`}
               className="text-white flex gap-[0.625rem]
             bg-subBg rounded p-[0.625rem]"
             >
@@ -32,7 +32,6 @@ function GymList() {
                     checkedColor="text-red-500"
                   />
                 </div>
-
                 <p className="text-f12">
                   가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
@@ -51,7 +50,7 @@ function GymList() {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
           </li>
         );
       })}
