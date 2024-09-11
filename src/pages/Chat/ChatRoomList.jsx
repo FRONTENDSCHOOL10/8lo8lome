@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import pb from '@/api/pb';
 
 function ChatRoomList() {
-  const { getChatList, chatRooms, setGymOwner } = useChatStore((s) => ({
-    getChatList: s.getChatList,
+  const { getChatRoomList, chatRooms, setGymOwner } = useChatStore((s) => ({
+    getChatRoomList: s.getChatRoomList,
     chatRooms: s.chatRooms,
     setGymOwner: s.setGymOwner,
   }));
@@ -16,7 +16,7 @@ function ChatRoomList() {
   useEffect(() => {
     const fetchData = async () => {
       await setGymOwner(); // 헬스장 owner일때 채팅방 리스트 가져오기
-      await getChatList(); // 채팅방 목록 가져오기
+      await getChatRoomList(); // 채팅방 목록 가져오기
     };
 
     fetchData();
@@ -27,7 +27,7 @@ function ChatRoomList() {
     });
 
     pb.collection('messages').subscribe('*', async () => {
-      await fetchData();
+      await fetchData(); // 메시지가 들어오면 채팅방 목록을 다시 가져옴
     });
 
     // 컴포넌트 언마운트 시 구독 해제
@@ -35,7 +35,7 @@ function ChatRoomList() {
       pb.collection('chatRooms').unsubscribe('*');
       pb.collection('messages').unsubscribe('*');
     };
-  }, [setGymOwner, getChatList]);
+  }, [setGymOwner, getChatRoomList]);
 
   return (
     <>

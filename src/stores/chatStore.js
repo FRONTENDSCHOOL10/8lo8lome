@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import { createData, getData, getFirstListItem } from '@/api/CRUD';
+import { createData, getData, getFirstListItem, updateData } from '@/api/CRUD';
 
 // Zustand 스토어 생성
 export const useChatStore = create((set) => {
@@ -12,7 +12,7 @@ export const useChatStore = create((set) => {
     chatRooms: [], // 채팅방 목록
     currentRoomMessages: {}, // 현재 채팅방의 메시지들
     newMessage: '', // 새 메시지 입력값
-    gymId: '', //  헬스장 ID
+    gymId: '', //  헬스장 owner인지 확인한 후 헬스장 ID 저장
     gymName: '', // 헬스장 이름
   };
 
@@ -30,8 +30,8 @@ export const useChatStore = create((set) => {
   const getState = () => useChatStore.getState();
 
   const setGymOwner = async () => {
-    const { userId } = getState();
-    if (!userId) throw new Error('User is not logged in');
+    const { userId, isLoggedIn } = getState();
+    if (!isLoggedIn) return;
 
     // 로그인한 사용자의 정보를 가져옵니다.
     const user = await getData('users', userId);
@@ -54,7 +54,7 @@ export const useChatStore = create((set) => {
   };
 
   // 채팅방 목록을 가져오는 함수
-  const getChatList = async () => {
+  const getChatRoomList = async () => {
     const { isLoggedIn, userId, gymId } = getState();
     if (!isLoggedIn) return;
 
@@ -155,23 +155,14 @@ export const useChatStore = create((set) => {
 
     // 메시지 저장
     await createData('messages', data);
-
-    set(
-      produce((draft) => {
-        draft.newMessage = ''; // 메시지 입력값 초기화
-      })
-    );
-
     // 채팅방 메시지 새로 가져오기
-    await getMessages(roomId);
+    await getChatMessages(roomId);
     // 채팅방의 마지막 메시지 업데이트
-    await updateChatRoom(roomId, {
-      lastMessage: newMessage,
-    });
+    await updateChatRoom(roomId, newMessage);
   };
 
   // 채팅방의 메시지를 가져오는 함수
-  const getMessages = async (roomId) => {
+  const getChatMessages = async (roomId) => {
     const { isLoggedIn } = getState();
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
@@ -189,22 +180,36 @@ export const useChatStore = create((set) => {
   };
 
   // 채팅방 정보 업데이트 함수
-  const updateChatRoom = async (roomId, updates) => {
+  const updateChatRoom = async (roomId, newMessage) => {
     const { isLoggedIn } = getState();
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
-    // 채팅방 정보 업데이트
-    await pb.collection('chatRooms').update(roomId, updates);
+    // 채팅방 정보 업데이트를 위한 데이터 객체
+    const data = {
+      lastMessage: newMessage, // 마지막 메시지 필드 업데이트
+    };
+
+    try {
+      await updateData('chatRooms', roomId, data);
+      // 상태를 최신으로 업데이트
+      set(
+        produce((s) => {
+          s.lastMessage = newMessage;
+        })
+      );
+    } catch (error) {
+      console.error('Error updating chat room:', error);
+    }
   };
 
   // 상태와 API 호출 함수 반환
   return {
     ...INITIAL_STATE,
-    getChatList,
+    getChatRoomList,
     createChatRoom,
     sendMessage,
     setGymOwner,
-    getMessages,
+    getChatMessages,
     updateChatRoom,
     getNewMessage,
   };
