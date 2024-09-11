@@ -5,7 +5,7 @@ import pb from './pb'; // 또는 'pocketbase' 경로에 맞게 수정
 export const getData = async (resource, id) => {
   try {
     const response = await pb.collection(resource).getOne(id);
-    return response.items;
+    return response.items || response;
   } catch (error) {
     return false;
   }

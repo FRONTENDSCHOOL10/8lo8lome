@@ -1,71 +1,92 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useChatStore } from '@/stores/chatStore';
+import { AppHeader, AppTextInput } from '@/components';
 import pb from '@/api/pb';
-import { AppHeader } from '@/components';
+import ChatMessages from './ChatMessages';
 
 function ChatRoom() {
-  const { roomId } = useParams(); // URL에서 roomId를 가져옵니다.
-  const { fetchMessages, currentRoomMessages, sendMessage } = useChatStore(
-    (s) => ({
-      fetchMessages: s.fetchMessages,
-      currentRoomMessages: s.currentRoomMessages,
-      sendMessage: s.sendMessage,
-    })
-  );
-
-  const [newMessage, setNewMessage] = useState('');
+  const { roomId } = useParams();
+  const {
+    getMessages,
+    sendMessage,
+    getNewMessage,
+    newMessage,
+    gymName,
+    getChatList,
+  } = useChatStore((s) => ({
+    getMessages: s.getMessages,
+    sendMessage: s.sendMessage,
+    getNewMessage: s.getNewMessage,
+    newMessage: s.newMessage,
+    gymName: s.gymName,
+    getChatList: s.getChatList,
+  }));
 
   useEffect(() => {
-    fetchMessages(roomId);
-  }, [roomId, fetchMessages]);
+    // 데이터 가져오기 함수
+    const fetchData = async () => {
+      try {
+        await getMessages(roomId);
 
-  const handleSendMessage = async () => {
-    if (!newMessage.trim()) {
-      return;
-    }
+        await getChatList();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    try {
-      const userId = pb.authStore.model.id; // 로그인된 사용자의 ID
-      await sendMessage(roomId, userId, newMessage);
-      setNewMessage('');
-      fetchMessages(roomId); // 새 메시지를 가져옵니다.
-    } catch (error) {
-      console.error('Failed to send message:', error);
+    fetchData();
+
+    // 메시지와 채팅방 구독 설정
+    pb.collection('messages').subscribe('*', async () => {
+      await fetchData();
+    });
+    pb.collection('chatRooms').subscribe('*', async () => {
+      await fetchData();
+    });
+
+    // 컴포넌트 언마운트 시 구독 해제
+    return () => {
+      pb.collection('messages').unsubscribe();
+      pb.collection('chatRooms').unsubscribe();
+    };
+  }, [roomId, getMessages, getChatList]);
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      sendMessage(roomId);
     }
   };
 
   return (
-    <div className="flex flex-col">
-      <AppHeader>짐박스</AppHeader>
-      <main className=" overflow-y-auto p-4 bg-mainBg min-h-[468px]">
-        <div className="space-y-4">
-          {currentRoomMessages[roomId] &&
-            currentRoomMessages[roomId].map((msg) => (
-              <div key={msg.id} className="bg-white p-3 rounded-lg shadow-sm">
-                <p className="text-gray-900">{msg.content}</p>
-              </div>
-            ))}
-        </div>
-      </main>
-      <footer className=" p-4">
-        <div className="flex items-center">
-          <input
-            type="text"
-            value={newMessage}
-            className="flex-1 p-2 rounded border border-solid border-white text-white bg-transparent"
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="메시지를 입력하세요"
-          />
-          <button
-            onClick={handleSendMessage}
-            className="ml-2 bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+    <>
+      <AppHeader chat>{gymName}</AppHeader>
+      <ChatMessages roomId={roomId} />
+      <form
+        className="flex items-center px-4 py-[14px] gap-2 w-[339px] fixed bottom-[129px] bg-subBg border-t border-b border-solid border-white"
+        onSubmit={(e) => {
+          e.preventDefault(); // 페이지 새로고침 방지
+          handleSendMessage(); // 메시지 전송 함수 호출
+        }}
+      >
+        <AppTextInput
+          label="메시지"
+          isHiddenLabel
+          className="rounded-full border border-solid border-white text-white bg-transparent py-s6 text-f14"
+          onChange={getNewMessage}
+          placeholder="메시지를 입력하세요"
+        />
+        <button type="submit">
+          <svg
+            className={`w-5 h-5 text-mainColor`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
           >
-            전송
-          </button>
-        </div>
-      </footer>
-    </div>
+            <use href={`../assets/sprite.svg#send`} />
+          </svg>
+        </button>
+      </form>
+    </>
   );
 }
 

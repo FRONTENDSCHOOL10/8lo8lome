@@ -1,156 +1,211 @@
-import pb from '@/api/pb';
 import { create } from 'zustand';
 import { produce } from 'immer';
+import pb from '@/api/pb';
+import { createData, getData, getFirstListItem } from '@/api/CRUD';
 
+// Zustand 스토어 생성
 export const useChatStore = create((set) => {
+  // 상태의 초기값 설정
   const INITIAL_STATE = {
     isLoggedIn: pb.authStore.isValid,
-    chatRooms: [],
-    noChatRoomsMessage: '',
-    currentRoomMessages: {}, // 채팅방별 메시지 저장
+    userId: pb.authStore.model?.id || '',
+    chatRooms: [], // 채팅방 목록
+    currentRoomMessages: {}, // 현재 채팅방의 메시지들
+    newMessage: '', // 새 메시지 입력값
+    gymId: '', //  헬스장 ID
+    gymName: '', // 헬스장 이름
   };
 
+  // 인증 상태 변경 시 상태 업데이트
   pb.authStore.onChange(() => {
     set(
-      produce((s) => {
-        s.isLoggedIn = pb.authStore.isValid;
+      produce((draft) => {
+        draft.isLoggedIn = pb.authStore.isValid; // 로그인 상태 업데이트
+        draft.userId = pb.authStore.model?.id || ''; // 사용자 ID 업데이트
       })
     );
   });
 
-  const fetchChatRooms = async () => {
-    if (!pb.authStore.isValid) {
-      return;
+  // 상태 가져오는 헬퍼 함수
+  const getState = () => useChatStore.getState();
+
+  const setGymOwner = async () => {
+    const { userId } = getState();
+    if (!userId) throw new Error('User is not logged in');
+
+    // 로그인한 사용자의 정보를 가져옵니다.
+    const user = await getData('users', userId);
+
+    // 사용자가 `isGymOwner`인지 확인합니다.
+    if (user.isGymOwner) {
+      // `ownerId`를 사용하여 헬스장 정보를 가져옵니다.
+      const gym = await getData('gyms', user.ownerId);
+      // 상태를 업데이트합니다.
+      set(
+        produce((draft) => {
+          draft.gymId = user.ownerId;
+          draft.gymName = gym.name;
+        })
+      );
+      console.log('헬스장 계정입니다.');
+    } else {
+      console.log('일반 계정입니다.');
+    }
+  };
+
+  // 채팅방 목록을 가져오는 함수
+  const getChatList = async () => {
+    const { isLoggedIn, userId, gymId } = getState();
+    if (!isLoggedIn) return;
+
+    let filterCondition;
+    // owner가 true라면 gymId가 owner.ownerId인 채팅방을 가져옴
+    if (gymId) {
+      filterCondition = `gymId="${gymId}"`;
+    } else {
+      // owner가 false인 경우, 현재 로그인한 사용자의 채팅방을 가져옴
+      filterCondition = `userId="${userId}"`;
     }
 
     try {
-      const userId = pb.authStore.model.id;
+      // 필터링된 채팅방 목록 가져오기
       const chatRooms = await pb.collection('chatRooms').getFullList({
-        filter: `participants~ "${userId}"`,
+        filter: filterCondition,
         sort: '-created',
       });
 
       set(
-        produce((s) => {
-          s.chatRooms = chatRooms;
-          if (chatRooms.length === 0) {
-            s.noChatRoomsMessage = '참여 중인 채팅방이 없습니다.';
-          }
+        produce((draft) => {
+          const existingIds = new Set(draft.chatRooms.map((room) => room.id));
+          draft.chatRooms = [
+            ...draft.chatRooms,
+            ...chatRooms.filter((room) => !existingIds.has(room.id)),
+          ];
         })
       );
     } catch (error) {
-      console.error('Failed to fetch chatrooms:', error);
+      console.error('Error fetching chat rooms:', error);
     }
   };
 
-  const createChatRoom = async (participants, onSuccess) => {
-    if (!pb.authStore.isValid) {
-      return;
-    }
+  // 채팅방을 생성하는 함수
+  const createChatRoom = async (gymId, onSuccess) => {
+    const { isLoggedIn, userId } = getState();
+    if (!isLoggedIn) return;
 
     try {
-      const gymId = 'ijt4sbokd8dlz19'; // 고정된 헬스장 ID
-      const userId = pb.authStore.model.id;
-
-      // 기존 채팅방 확인
-      const existingRooms = await pb.collection('chatRooms').getFullList({
-        filter: `participants~"${userId}" && participants~"${gymId}"`,
-      });
-
-      if (existingRooms.length > 0) {
-        onSuccess(existingRooms[0].id); // 기존 채팅방으로 이동
+      // 기존 채팅방을 userId와 gymId 모두로 확인
+      const existingChatRoomByUser = await getFirstListItem(
+        'chatRooms',
+        'gymId',
+        gymId
+      );
+      if (existingChatRoomByUser.gymId === gymId) {
+        // 이미 해당 gymId와 관련된 채팅방이 존재하면, 그 채팅방 정보를 사용
+        onSuccess(existingChatRoomByUser.id);
         return;
       }
 
-      // 중복되지 않도록 참가자 배열 생성
-      const uniqueParticipants = [...new Set([...participants, gymId])];
-
-      const newRoom = await pb.collection('chatRooms').create({
-        participants: uniqueParticipants,
-        name: '헬스장 채팅방',
-        lastMessage: '',
+      // 채팅방이 존재하지 않으면 새로운 채팅방을 생성
+      const gymData = await getData('gyms', gymId);
+      const newChatRoomData = {
+        userId,
+        gymId,
+        name: gymData.name,
+        lastMessage: '아직 시작한 대화가 없습니다.',
         unreadCount: 0,
-      });
-
-      console.log('New Chat Room Created:', newRoom);
-
-      onSuccess(newRoom.id); // 새 채팅방으로 이동
-
-      await fetchChatRooms();
-    } catch (error) {
-      console.error('Failed to create chat room:', error);
-    }
-  };
-
-  const sendMessage = async (roomId, senderId, content) => {
-    if (!pb.authStore.isValid) {
-      return;
-    }
-
-    try {
-      const newMessage = await pb.collection('messages').create({
-        roomId,
-        senderId,
-        content,
-        timestamp: new Date().toISOString(),
-      });
-      console.log('Message Sent:', newMessage);
-
-      await fetchMessages(roomId);
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
-  };
-
-  const fetchMessages = async (roomId) => {
-    if (!pb.authStore.isValid) {
-      return;
-    }
-
-    try {
-      const messages = await pb.collection('messages').getFullList({
-        filter: `roomId="${roomId}"`,
-      });
+      };
+      const newChatRoom = await createData('chatRooms', newChatRoomData);
+      onSuccess(newChatRoom.id);
       set(
-        produce((s) => {
-          s.currentRoomMessages[roomId] = messages;
+        produce((draft) => {
+          draft.isLoading = true;
+          draft.gymName = gymData.name;
+          draft.gymId = gymId;
         })
       );
     } catch (error) {
-      console.error('Failed to fetch messages:', error);
+      console.error('createChatRoom - Error:', error);
     }
   };
 
-  const updateChatRoom = async (roomId, updates) => {
-    if (!pb.authStore.isValid) {
-      return;
-    }
-
-    try {
-      await pb.collection('chatRooms').update(roomId, updates);
-      console.log('Chat Room Updated:', updates);
-
-      await fetchChatRooms();
-    } catch (error) {
-      console.error('Failed to update chat room:', error);
-    }
-  };
-
-  const setIsLoggedIn = (isLoggedIn) => {
+  // 새 메시지 입력값 상태 업데이트
+  const getNewMessage = (value) => {
     set(
-      produce((s) => {
-        s.isLoggedIn = isLoggedIn;
+      produce((draft) => {
+        draft.newMessage = value;
       })
     );
   };
 
+  // // 메시지 전송 함수
+  const sendMessage = async (roomId) => {
+    const { isLoggedIn, newMessage, userId } = getState();
+    if (!isLoggedIn) return;
+    // 메시지 데이터 설정
+    const data = {
+      roomId,
+      senderId: userId,
+      content: newMessage,
+      timestamp: new Date().toLocaleDateString('en-US', {
+        month: 'numeric',
+        weekday: 'short',
+      }),
+    };
+
+    // 메시지 저장
+    await createData('messages', data);
+
+    set(
+      produce((draft) => {
+        draft.newMessage = ''; // 메시지 입력값 초기화
+      })
+    );
+
+    // 채팅방 메시지 새로 가져오기
+    await getMessages(roomId);
+    // 채팅방의 마지막 메시지 업데이트
+    await updateChatRoom(roomId, {
+      lastMessage: newMessage,
+    });
+  };
+
+  // 채팅방의 메시지를 가져오는 함수
+  const getMessages = async (roomId) => {
+    const { isLoggedIn } = getState();
+    if (!isLoggedIn) return; // 로그인하지 않았으면 반환
+
+    // 메시지 목록 가져오기
+    const messages = await pb.collection('messages').getFullList({
+      filter: `roomId="${roomId}"`,
+    });
+
+    set(
+      produce((s) => {
+        // 메시지가 없는 경우 빈 배열로 처리
+        s.currentRoomMessages[roomId] = messages.length > 0 ? messages : [];
+      })
+    );
+  };
+
+  // 채팅방 정보 업데이트 함수
+  const updateChatRoom = async (roomId, updates) => {
+    const { isLoggedIn } = getState();
+    if (!isLoggedIn) return; // 로그인하지 않았으면 반환
+
+    // 채팅방 정보 업데이트
+    await pb.collection('chatRooms').update(roomId, updates);
+  };
+
+  // 상태와 API 호출 함수 반환
   return {
     ...INITIAL_STATE,
-    setIsLoggedIn,
-    fetchChatRooms,
+    getChatList,
     createChatRoom,
     sendMessage,
-    fetchMessages,
+    setGymOwner,
+    getMessages,
     updateChatRoom,
+    getNewMessage,
   };
 });
