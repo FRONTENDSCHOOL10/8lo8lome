@@ -31,7 +31,7 @@ function AppStatusPage({ status }) {
       linkText = '홈으로 가기';
       linkTo = '/main';
       break;
-    case 'LoggedOut':
+    case 'Logout':
       title = '로그인 이동 페이지';
       description = '로그인 이동 페이지입니다.';
       svgId = 'warning';
