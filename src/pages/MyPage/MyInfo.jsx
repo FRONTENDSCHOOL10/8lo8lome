@@ -10,7 +10,6 @@ const myInfo = [
         aria-label="결제"
         className="text-white w-s16 h-s20 mx-s10"
       >
-        {' '}
         <use href="/assets/sprite.svg#receipt" />
       </svg>
     ),

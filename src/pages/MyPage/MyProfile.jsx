@@ -1,52 +1,29 @@
-import getPbImageURL from '@/utils/getPbImageURL';
-import { useEffect, useState } from 'react';
+import { useMyPageStore } from '@/stores/myPageStore';
+import { memo } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import pb from '@/api/pb';
 
-export default function MyProfile() {
+function MyProfile() {
   // 상태 선언: 유저 정보 저장
-  const [userData, setUserData] = useState({
-    id: '',
-    nickname: '',
-    email: '',
-    profileImage: '',
-  });
-
+  const { userData, fetchUserData } = useMyPageStore();
   useEffect(() => {
-    // 포켓베이스에서 로그인된 유저 데이터 가져오기
-    const fetchUserData = async () => {
-      const authData = pb.authStore.model;
-      if (authData) {
-        // 유저 정보 설정
-        setUserData({
-          id: authData.id,
-          nickname: authData.nickName,
-          email: authData.email,
-          profileImage: getPbImageURL(authData),
-        });
-      }
-    };
-
     fetchUserData();
-  }, []);
-
+  }, [fetchUserData]);
   return (
     <section
       className="w-full h-24 border-b border-solid px-s20 border-strokeBlack"
       aria-label="내 프로필"
     >
       <div className="flex items-center h-full text-white">
-        {/* 유저 프로필 이미지 */}
         <span className="h-64px w-64px">
           <img
             className="rounded-full"
-            src={userData.profileImage} // 프로필 이미지 사용
+            src={userData.profileImage}
             alt="내 프로필 사진"
             width={64}
             height={64}
           />
         </span>
-        {/* 유저 정보 */}
         <div className="flex text-white flex-low ml-s20">
           <ul className="items-center">
             <li className="flex items-center font-bold mb-s10 text-f18">
@@ -70,3 +47,5 @@ export default function MyProfile() {
     </section>
   );
 }
+
+export default memo(MyProfile);
