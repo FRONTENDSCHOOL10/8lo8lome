@@ -4,13 +4,13 @@ import ChatMessages from './ChatMessages';
 import ChatSubmitForm from './ChatSubmitForm';
 
 function ChatRoom() {
-  const { gymName } = useChatStore((s) => ({
-    gymName: s.gymName,
+  const { chatRooms } = useChatStore((s) => ({
+    chatRooms: s.chatRooms,
   }));
-
+  console.log(chatRooms);
   return (
     <>
-      <AppHeader chat>{gymName}</AppHeader>
+      <AppHeader chat>{'상담 채팅'}</AppHeader>
       <ChatMessages />
       <ChatSubmitForm />
     </>
