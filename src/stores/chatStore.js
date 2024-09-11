@@ -79,11 +79,7 @@ export const useChatStore = create((set) => {
 
       set(
         produce((draft) => {
-          const existingIds = new Set(draft.chatRooms.map((room) => room.id));
-          draft.chatRooms = [
-            ...draft.chatRooms,
-            ...chatRooms.filter((room) => !existingIds.has(room.id)),
-          ];
+          draft.chatRooms = chatRooms;
         })
       );
     } catch (error) {
