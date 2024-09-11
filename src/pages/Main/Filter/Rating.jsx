@@ -11,7 +11,7 @@ function Rating() {
   const { star1, star2, star3, star4, star5 } = rating;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
+    <fieldset className="pl-[1.9375rem] pr-[1.9375rem] mt-[100px]">
       <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
         별점순
       </legend>
