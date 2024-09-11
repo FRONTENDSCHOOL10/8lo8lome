@@ -3,9 +3,7 @@ import { produce } from 'immer';
 import pb from '@/api/pb';
 import { createData, getData, getFirstListItem, updateData } from '@/api/CRUD';
 
-// Zustand 스토어 생성
 export const useChatStore = create((set) => {
-  // 상태의 초기값 설정
   const INITIAL_STATE = {
     isLoggedIn: pb.authStore.isValid,
     userId: pb.authStore.model?.id || '',
@@ -16,12 +14,11 @@ export const useChatStore = create((set) => {
     gymName: '', // 헬스장 이름
   };
 
-  // 인증 상태 변경 시 상태 업데이트
   pb.authStore.onChange(() => {
     set(
       produce((draft) => {
-        draft.isLoggedIn = pb.authStore.isValid; // 로그인 상태 업데이트
-        draft.userId = pb.authStore.model?.id || ''; // 사용자 ID 업데이트
+        draft.isLoggedIn = pb.authStore.isValid;
+        draft.userId = pb.authStore.model?.id || '';
       })
     );
   });
