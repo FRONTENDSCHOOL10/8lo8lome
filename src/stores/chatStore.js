@@ -1,27 +1,30 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import { createData, getData, getFirstListItem } from '@/api/CRUD';
+import {
+  createData,
+  deleteData,
+  getData,
+  getFirstListItem,
+  updateData,
+} from '@/api/CRUD';
 
-// Zustand 스토어 생성
 export const useChatStore = create((set) => {
-  // 상태의 초기값 설정
   const INITIAL_STATE = {
     isLoggedIn: pb.authStore.isValid,
     userId: pb.authStore.model?.id || '',
     chatRooms: [], // 채팅방 목록
     currentRoomMessages: {}, // 현재 채팅방의 메시지들
     newMessage: '', // 새 메시지 입력값
-    gymId: '', //  헬스장 ID
+    gymId: '', //  헬스장 owner인지 확인한 후 헬스장 ID 저장
     gymName: '', // 헬스장 이름
   };
 
-  // 인증 상태 변경 시 상태 업데이트
   pb.authStore.onChange(() => {
     set(
       produce((draft) => {
-        draft.isLoggedIn = pb.authStore.isValid; // 로그인 상태 업데이트
-        draft.userId = pb.authStore.model?.id || ''; // 사용자 ID 업데이트
+        draft.isLoggedIn = pb.authStore.isValid;
+        draft.userId = pb.authStore.model?.id || '';
       })
     );
   });
@@ -30,8 +33,8 @@ export const useChatStore = create((set) => {
   const getState = () => useChatStore.getState();
 
   const setGymOwner = async () => {
-    const { userId } = getState();
-    if (!userId) throw new Error('User is not logged in');
+    const { userId, isLoggedIn } = getState();
+    if (!isLoggedIn) return;
 
     // 로그인한 사용자의 정보를 가져옵니다.
     const user = await getData('users', userId);
@@ -54,7 +57,7 @@ export const useChatStore = create((set) => {
   };
 
   // 채팅방 목록을 가져오는 함수
-  const getChatList = async () => {
+  const getChatRoomList = async () => {
     const { isLoggedIn, userId, gymId } = getState();
     if (!isLoggedIn) return;
 
@@ -71,7 +74,7 @@ export const useChatStore = create((set) => {
       // 필터링된 채팅방 목록 가져오기
       const chatRooms = await pb.collection('chatRooms').getFullList({
         filter: filterCondition,
-        sort: '-created',
+        sort: '-lastTime',
       });
 
       set(
@@ -114,6 +117,7 @@ export const useChatStore = create((set) => {
         name: gymData.name,
         lastMessage: '아직 시작한 대화가 없습니다.',
         unreadCount: 0,
+        lastTime: null, // 생성된 시간 추가
       };
       const newChatRoom = await createData('chatRooms', newChatRoomData);
       onSuccess(newChatRoom.id);
@@ -142,36 +146,29 @@ export const useChatStore = create((set) => {
   const sendMessage = async (roomId) => {
     const { isLoggedIn, newMessage, userId } = getState();
     if (!isLoggedIn) return;
+
+    const currentTime = new Date().toISOString();
     // 메시지 데이터 설정
     const data = {
       roomId,
       senderId: userId,
       content: newMessage,
-      timestamp: new Date().toLocaleDateString('en-US', {
-        month: 'numeric',
-        weekday: 'short',
-      }),
+      timestamp: currentTime, // 생성된 시간 추가
     };
 
     // 메시지 저장
     await createData('messages', data);
-
-    set(
-      produce((draft) => {
-        draft.newMessage = ''; // 메시지 입력값 초기화
-      })
-    );
-
     // 채팅방 메시지 새로 가져오기
-    await getMessages(roomId);
+    await getChatMessages(roomId);
     // 채팅방의 마지막 메시지 업데이트
     await updateChatRoom(roomId, {
       lastMessage: newMessage,
+      lastTime: currentTime,
     });
   };
 
   // 채팅방의 메시지를 가져오는 함수
-  const getMessages = async (roomId) => {
+  const getChatMessages = async (roomId) => {
     const { isLoggedIn } = getState();
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
@@ -189,23 +186,52 @@ export const useChatStore = create((set) => {
   };
 
   // 채팅방 정보 업데이트 함수
-  const updateChatRoom = async (roomId, updates) => {
+  const updateChatRoom = async (roomId, data) => {
     const { isLoggedIn } = getState();
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
-    // 채팅방 정보 업데이트
-    await pb.collection('chatRooms').update(roomId, updates);
+    // 채팅방 정보 업데이트를 위한 데이터 객체
+
+    try {
+      await updateData('chatRooms', roomId, data);
+      // 상태를 최신으로 업데이트
+      set(
+        produce((s) => {
+          s.lastMessage = data.newMessage;
+          s.lastTime = data.lastTime;
+        })
+      );
+    } catch (error) {
+      console.error('Error updating chat room:', error);
+    }
+  };
+
+  const deleteChatRoom = async (roomId) => {
+    try {
+      await deleteData('chatRooms', roomId);
+      // 상태에서 채팅방 제거
+      set(
+        produce((draft) => {
+          draft.chatRooms = draft.chatRooms.filter(
+            (room) => room.id !== roomId
+          );
+        })
+      );
+    } catch (error) {
+      console.error('Error removing chat room:', error);
+    }
   };
 
   // 상태와 API 호출 함수 반환
   return {
     ...INITIAL_STATE,
-    getChatList,
+    getChatRoomList,
     createChatRoom,
     sendMessage,
     setGymOwner,
-    getMessages,
+    getChatMessages,
     updateChatRoom,
     getNewMessage,
+    deleteChatRoom,
   };
 });
