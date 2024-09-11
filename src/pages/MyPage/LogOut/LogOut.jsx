@@ -1,7 +1,8 @@
-import { AppHeader, AppButton } from '@/components';
+import { AppHeader } from '@/components';
 import AppMeta from '@/components/AppMeta';
 import { animate } from 'motion';
 import { memo, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 function LogOut() {
   const liRef = useRef([]);
@@ -17,7 +18,6 @@ function LogOut() {
       );
     });
   }, []);
-
   return (
     <>
       <AppMeta title="로그아웃" description="로그아웃 페이지 입니다." />
@@ -47,8 +47,12 @@ function LogOut() {
               </li>
             </ul>
           </div>
-
-          <AppButton className=" w-s278 h-s46">홈으로 가기</AppButton>
+          <Link
+            to="/"
+            className="flex items-center justify-center font-bold text-center border border-solid rounded text-f14 w-s278 h-s46 border-mainColor bg-mainBg"
+          >
+            홈으로 가기
+          </Link>
         </div>
       </section>
     </>
