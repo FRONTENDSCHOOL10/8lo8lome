@@ -11,16 +11,22 @@ function AuthLinks() {
           아이디 찾기
         </Link>
       </li>
-      <li aria-hidden="true">|</li>
+      {/* <li aria-hidden="true">|</li>
       <li>
         <Link to={'/findPassword'} className={defaultClass}>
-          비밀번호 찾기
+          비밀번호 변경
         </Link>
-      </li>
+      </li> */}
       <li aria-hidden="true">|</li>
       <li>
         <Link to={'/signup'} className={defaultClass}>
           회원가입
+        </Link>
+      </li>
+      <li aria-hidden="true">|</li>
+      <li>
+        <Link to={'/main'} className={defaultClass}>
+          지점 둘러보기
         </Link>
       </li>
     </ul>
