@@ -44,6 +44,8 @@ function AppCheckboxInput({
     }
   };
 
+  const starClass = isChecked ? 'border-red-500' : ' ';
+
   return (
     <div className="relative">
       <input
@@ -58,7 +60,7 @@ function AppCheckboxInput({
       />
       <label
         htmlFor={id}
-        className={`flex items-center gap-1 text-f12 focus-visible:ring-1 focus-visible:ring-mainColor ${className || ''}`}
+        className={`flex items-center gap-1 text-f12 focus-visible:ring-1 focus-visible:ring-mainColor ${className || ''} ${starClass}`}
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >
