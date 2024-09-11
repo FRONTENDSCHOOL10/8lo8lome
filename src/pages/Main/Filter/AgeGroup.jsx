@@ -2,68 +2,68 @@ import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { AppCheckboxInput } from '@/components';
 
-function Rating() {
-  const { handleCheckboxChange, rating } = mainStore((s) => ({
+function AgeGroup() {
+  const { handleCheckboxChange, ageGroup } = mainStore((s) => ({
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
-    rating: s.searchFilter.rating,
+    ageGroup: s.searchFilter.ageGroup,
   }));
 
-  const { star1, star2, star3, star4, star5 } = rating;
+  const { teenTo20, twentyTo30, thirtyTo40, fortyTo50, fiftyTo60 } = ageGroup;
 
   return (
     <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
       <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
-        별점순
+        연령순
       </legend>
       <ul className="flex gap-4 flex-wrap pt-4 justify-center">
         <li>
           <AppCheckboxInput
-            label={'⭐'}
-            name="star1"
-            isChecked={star1}
+            label={'10~20대'}
+            name="teenTo20"
+            isChecked={teenTo20}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="ageGroup"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐'}
-            name="star2"
-            isChecked={star2}
+            label={'20~30대'}
+            name="twentyTo30"
+            isChecked={twentyTo30}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="ageGroup"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐⭐'}
-            name="star3"
-            isChecked={star3}
+            label={'30~40대'}
+            name="thirtyTo40"
+            isChecked={thirtyTo40}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="ageGroup"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐⭐⭐'}
-            name="star4"
-            isChecked={star4}
+            label={'40~50대'}
+            name="fortyTo50"
+            isChecked={fortyTo50}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="ageGroup"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐⭐⭐⭐'}
-            name="star5"
-            isChecked={star5}
+            label={'50~60대'}
+            name="fiftyTo60"
+            isChecked={fiftyTo60}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="ageGroup"
           />
         </li>
       </ul>
@@ -71,4 +71,4 @@ function Rating() {
   );
 }
 
-export default memo(Rating);
+export default memo(AgeGroup);

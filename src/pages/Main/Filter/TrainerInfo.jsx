@@ -2,68 +2,59 @@ import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { AppCheckboxInput } from '@/components';
 
-function Rating() {
-  const { handleCheckboxChange, rating } = mainStore((s) => ({
+function TrainerInfo() {
+  const { handleCheckboxChange, trainerInfo } = mainStore((s) => ({
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
-    rating: s.searchFilter.rating,
+    trainerInfo: s.searchFilter.trainerInfo,
   }));
 
-  const { star1, star2, star3, star4, star5 } = rating;
+  const { healthManager, sportInstructor, sportUniGraduate, bodybuilder } =
+    trainerInfo;
 
   return (
     <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
       <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
-        별점순
+        트레이너 정보
       </legend>
       <ul className="flex gap-4 flex-wrap pt-4 justify-center">
         <li>
           <AppCheckboxInput
-            label={'⭐'}
-            name="star1"
-            isChecked={star1}
+            label={'건강 운동관리사'}
+            name="healthManager"
+            isChecked={healthManager}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="trainerInfo"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐'}
-            name="star2"
-            isChecked={star2}
+            label={'생활 체육 지도사'}
+            name="sportInstructor"
+            isChecked={sportInstructor}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="trainerInfo"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐⭐'}
-            name="star3"
-            isChecked={star3}
+            label={'체육 대학 출신'}
+            name="sportUniGraduate"
+            isChecked={sportUniGraduate}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
+            filterName="trainerInfo"
           />
         </li>
         <li>
           <AppCheckboxInput
-            label={'⭐⭐⭐⭐'}
-            name="star4"
-            isChecked={star4}
+            label={'보디빌더 출전'}
+            name="bodybuilder"
+            isChecked={bodybuilder}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="rating"
-          />
-        </li>
-        <li>
-          <AppCheckboxInput
-            label={'⭐⭐⭐⭐⭐'}
-            name="star5"
-            isChecked={star5}
-            onChange={handleCheckboxChange}
-            isFilterClass
-            filterName="rating"
+            filterName="trainerInfo"
           />
         </li>
       </ul>
@@ -71,4 +62,4 @@ function Rating() {
   );
 }
 
-export default memo(Rating);
+export default memo(TrainerInfo);

@@ -1,11 +1,11 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
-import { useMainStore } from '@/stores/mainStore';
+import { mainStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
 
 function GymList() {
-  const { filterGyms } = useMainStore((s) => ({
+  const { filterGyms } = mainStore((s) => ({
     filterGyms: s.searchInput.filterGyms,
   }));
 

@@ -5,10 +5,10 @@ import GymList from './GymList';
 import { AppNav } from '@/components';
 import AppMeta from '@/components/AppMeta';
 import { memo } from 'react';
-import { useMainStore } from '@/stores/mainStore';
+import { mainStore } from '@/stores/mainStore';
 
 function Main() {
-  const { initializeGyms } = useMainStore((s) => ({
+  const { initializeGyms } = mainStore((s) => ({
     initializeGyms: s.handleMethod.initializeGyms,
   }));
 
