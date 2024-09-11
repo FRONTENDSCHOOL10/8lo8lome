@@ -1,17 +1,33 @@
 import { AppCheckboxInput } from '@/components';
 import { memo } from 'react';
-import { useSearchStore } from '@/stores/mainStore';
+import { mainStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
 
 function GymList() {
-  const filterGyms = useSearchStore((state) => state.filterGyms);
+  const { filterGyms } = mainStore((s) => ({
+    filterGyms: s.searchInput.filterGyms,
+  }));
+
   return (
     <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
-          <li key={item.id}>
+          <li key={item.id} className="relative">
+            <div className="absolute top-2 right-2 pl-7 pb-7">
+              <AppCheckboxInput
+                label={'헬스장 정보 찜하기'}
+                isHiddenLabel
+                // name="over14"
+                // isChecked={over14}
+                // onChange={handleCheckboxChange}
+                unCheckedSvgId="heart-unclick"
+                checkedSvgId="heart-click"
+                checkedColor="text-red-500"
+              />
+            </div>
+
             <Link
               to={`/main/${item.id}`}
               className="text-white flex gap-[0.625rem]
@@ -20,18 +36,9 @@ function GymList() {
               <img src={imgUrl[0]} alt="헬스장 사진" className="max-w-[90px]" />
               <div className="flex flex-col w-full">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-base">{item.name}</h2>
-                  <AppCheckboxInput
-                    label={'헬스장 정보 찜하기'}
-                    isHiddenLabel
-                    // name="over14"
-                    // isChecked={over14}
-                    // onChange={handleCheckboxChange}
-                    unCheckedSvgId="heart-unclick"
-                    checkedSvgId="heart-click"
-                    checkedColor="text-red-500"
-                  />
+                  <h2 className="text-base w-[70%]">{item.name}</h2>
                 </div>
+
                 <p className="text-f12">
                   가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
@@ -45,7 +52,6 @@ function GymList() {
                     >
                       <use href="/assets/sprite.svg#star" />
                     </svg>
-
                     <p>{item.rating}</p>
                   </div>
                 </div>

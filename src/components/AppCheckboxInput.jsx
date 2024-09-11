@@ -12,6 +12,7 @@ AppCheckboxInput.propTypes = {
   unCheckedSvgId: string,
   checkedColor: string,
   unCheckedColor: string,
+  isFilterClass: bool,
 };
 
 function AppCheckboxInput({
@@ -25,6 +26,7 @@ function AppCheckboxInput({
   unCheckedSvgId = '',
   checkedColor = 'text-mainColor',
   unCheckedColor = 'text-white',
+  isFilterClass = false,
   ...restProps
 }) {
   const id = useId();
@@ -44,7 +46,10 @@ function AppCheckboxInput({
     }
   };
 
-  const starClass = isChecked ? 'border-red-500' : ' ';
+  const filterCheckedClass = isChecked ? 'border-mainColor' : ' ';
+  const filterClass = isFilterClass
+    ? 'p-3 border-2 border-solid border-grayBoder rounded-3xl'
+    : ' ';
 
   return (
     <div className="relative">
@@ -60,7 +65,7 @@ function AppCheckboxInput({
       />
       <label
         htmlFor={id}
-        className={`flex items-center gap-1 text-f12 focus-visible:ring-1 focus-visible:ring-mainColor ${className || ''} ${starClass}`}
+        className={`flex items-center gap-1 text-f12 focus-visible:ring-1 focus-visible:ring-mainColor ${className || ''} ${filterCheckedClass} ${filterClass}`}
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >
