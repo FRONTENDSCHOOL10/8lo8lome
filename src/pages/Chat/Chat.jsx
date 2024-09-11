@@ -1,13 +1,13 @@
 import { useChatStore } from '@/stores/chatStore';
-import LoggedIn from './LoggedIn';
-import LoggedOut from './LoggedOut';
+import ChatRoomList from './ChatRoomList';
+import Logout from './Logout';
 
 export default function Chat() {
   const { isLoggedIn } = useChatStore((s) => ({
     isLoggedIn: s.isLoggedIn,
   }));
 
-  const component = isLoggedIn ? <LoggedIn /> : <LoggedOut />;
+  const component = isLoggedIn ? <ChatRoomList /> : <Logout />;
 
   return <>{component}</>;
 }

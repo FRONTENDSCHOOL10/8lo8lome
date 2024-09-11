@@ -6,13 +6,16 @@ AppHeader.propTypes = {
   className: string,
   children: node,
   logo: bool,
+  chat: bool,
 };
 
-function AppHeader({ className, children, logo }) {
+function AppHeader({ className, children, logo, chat }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    chat
+      ? navigate('/chat', { replace: true })
+      : navigate(-1, { replace: true });
   };
 
   const isLogo = logo ? (
@@ -31,13 +34,17 @@ function AppHeader({ className, children, logo }) {
       <h1 className="text-white mx-auto">{children}</h1>
     </>
   );
-  let headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full mt-s38`;
+  let headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20  `;
 
   if (className) {
-    headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 w-full mt-s38 ${className}`;
+    headerBaseClass = `flex p-s22 bg-subBg font-bold text-f20 ${className}`;
   }
 
-  return <header className={headerBaseClass}>{isLogo}</header>;
+  return (
+    <div className="fixed w-[338px] py-[18px] bg-mainBg z-[1]">
+      <header className={headerBaseClass}>{isLogo}</header>
+    </div>
+  );
 }
 
 export default memo(AppHeader);
