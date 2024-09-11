@@ -1,7 +1,14 @@
 import { memo } from 'react';
+import { mainStore } from '@/stores/mainStore';
 import FilterLink from './FilterLink';
 
 function FilterList() {
+  const { handleSelectedFilters } = mainStore((s) => ({
+    handleSelectedFilters: s.handleMethod.handleSelectedFilters,
+  }));
+
+  handleSelectedFilters();
+
   return (
     <section className="bg-mainBg p-4">
       <div className="flex justify-between items-center">
@@ -17,25 +24,13 @@ function FilterList() {
       </div>
 
       <ul className="flex text-f12 pb-3">
-        <li>
-          <span className="whitespace-nowrap">별점 4점</span>
-          <span>&nbsp;|&nbsp;</span>
-        </li>
-        <li>
-          <span>월 5만원</span>
-          <span>&nbsp;|&nbsp;</span>
-        </li>
-        <li>
-          <span>주차장</span>
-          <span>&nbsp;|&nbsp;</span>
-        </li>
-        <li>
-          <span>추천순</span>
-          <span>&nbsp;|&nbsp;</span>
-        </li>
-        <li>
-          <span>WIFI</span>
-        </li>
+        {/* {searchFilter.map((item) => {
+          return console.log(item);
+          <li>
+            <span className="whitespace-nowrap">{item}</span>
+            <span>&nbsp;|&nbsp;</span>
+          </li>
+        })} */}
       </ul>
     </section>
   );
