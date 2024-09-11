@@ -1,8 +1,9 @@
-import { AppHeader } from '@/components';
+import { AppHeader, AppButton } from '@/components';
 import AppMeta from '@/components/AppMeta';
 import EditImage from './EditImage';
 import EditNickname from './EditNickname';
 import EditEmail from './EditEmail';
+import EditNumber from './EditNumber';
 import { memo } from 'react';
 
 function EditProfile() {
@@ -13,6 +14,10 @@ function EditProfile() {
       <EditImage />
       <EditNickname />
       <EditEmail />
+      <EditNumber />
+      <form className="mt-10 px-s20">
+        <AppButton className="min-h-[46px]">수정하기</AppButton>
+      </form>
     </>
   );
 }
