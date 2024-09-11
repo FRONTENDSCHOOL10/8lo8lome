@@ -1,17 +1,18 @@
-import { useState, memo } from 'react';
-import { useMyPageStore } from '@/stores/myPageStore';
 import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
-function EditNickname() {
+import { useMyPageStore } from '@/stores/myPageStore';
+import { memo } from 'react';
+
+function EditEmail() {
   return (
     <>
       <article>
-        <h2 className="sr-only">닉네임 입력</h2>
+        <h2 className="sr-only">이메일 입력</h2>
         <fieldset className="gap-2 felx">
           <AppTextInput
-            label="닉네임"
-            className="min-w-[200px]"
-            placeholder="닉네임"
+            label="이메일"
+            placeholder="이메일"
             isHiddenLabel
+            className="min-w-[200px]"
             onChange
             required
           />
@@ -19,9 +20,8 @@ function EditNickname() {
             중복확인
           </AppButton>
         </fieldset>
-        <AppAuthMessage warning>중복된 닉네임입니다.</AppAuthMessage>
+        <AppAuthMessage warning>중복된 이메일 입니다.</AppAuthMessage>
       </article>
     </>
   );
 }
-export default memo(EditNickname);

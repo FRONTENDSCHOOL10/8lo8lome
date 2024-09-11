@@ -1,10 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import pb from '@/api/pb'; 
-import getPbImageURL from '@/utils/getPbImageURL'; 
+import pb from '@/api/pb';
+import getPbImageURL from '@/utils/getPbImageURL';
 
-
-export const useUserStore = create((set) => ({
+export const useMyPageStore = create((set) => ({
   userData: {
     id: '',
     nickName: '',
@@ -18,7 +17,15 @@ export const useUserStore = create((set) => ({
       })
     ),
 
- 
+  // setNickname: (value) => {
+  //   console.log(value);
+  //   set(
+  //     produce((s) => {
+  //       s.userData.nickName = value;
+  //     })
+  //   );
+  // },
+
   fetchUserData: async () => {
     const authData = pb.authStore.model;
     if (authData) {
@@ -35,7 +42,6 @@ export const useUserStore = create((set) => ({
       );
     }
   },
-
 
   updateProfile: async (profileImageFile, newNickname, newEmail) => {
     const authData = pb.authStore.model;

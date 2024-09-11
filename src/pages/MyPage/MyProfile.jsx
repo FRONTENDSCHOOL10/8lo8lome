@@ -1,11 +1,11 @@
-import { useUserStore } from '@/stores/myPageStore';
+import { useMyPageStore } from '@/stores/myPageStore';
 import { memo } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function MyProfile() {
   // 상태 선언: 유저 정보 저장
-  const { userData, fetchUserData } = useUserStore();
+  const { userData, fetchUserData } = useMyPageStore();
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);

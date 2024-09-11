@@ -1,8 +1,8 @@
 import { memo, useState, useRef } from 'react';
-import { useUserStore } from '@/stores/myPageStore';
+import { useMyPageStore } from '@/stores/myPageStore';
 
 function EditImage() {
-  const { userData, updateProfile } = useUserStore();
+  const { userData, updateProfile } = useMyPageStore();
   const [profileImage, setProfileImage] = useState(userData.profileImage);
   const fileInputRef = useRef(null);
 

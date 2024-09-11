@@ -2,6 +2,7 @@ import { AppHeader } from '@/components';
 import AppMeta from '@/components/AppMeta';
 import EditImage from './EditImage';
 import EditNickname from './EditNickname';
+import EditEmail from './EditEmail';
 import { memo } from 'react';
 
 function EditProfile() {
@@ -11,6 +12,7 @@ function EditProfile() {
       <AppHeader>프로필 변경</AppHeader>
       <EditImage />
       <EditNickname />
+      <EditEmail />
     </>
   );
 }
