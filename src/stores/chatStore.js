@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import { createData, getData, getFirstListItem, updateData } from '@/api/CRUD';
+import {
+  createData,
+  deleteData,
+  getData,
+  getFirstListItem,
+  updateData,
+} from '@/api/CRUD';
 
 export const useChatStore = create((set) => {
   const INITIAL_STATE = {
@@ -68,7 +74,7 @@ export const useChatStore = create((set) => {
       // 필터링된 채팅방 목록 가져오기
       const chatRooms = await pb.collection('chatRooms').getFullList({
         filter: filterCondition,
-        sort: '-created',
+        sort: '-lastTime',
       });
 
       set(
@@ -111,6 +117,7 @@ export const useChatStore = create((set) => {
         name: gymData.name,
         lastMessage: '아직 시작한 대화가 없습니다.',
         unreadCount: 0,
+        lastTime: null, // 생성된 시간 추가
       };
       const newChatRoom = await createData('chatRooms', newChatRoomData);
       onSuccess(newChatRoom.id);
@@ -139,15 +146,14 @@ export const useChatStore = create((set) => {
   const sendMessage = async (roomId) => {
     const { isLoggedIn, newMessage, userId } = getState();
     if (!isLoggedIn) return;
+
+    const currentTime = new Date().toISOString();
     // 메시지 데이터 설정
     const data = {
       roomId,
       senderId: userId,
       content: newMessage,
-      timestamp: new Date().toLocaleDateString('en-US', {
-        month: 'numeric',
-        weekday: 'short',
-      }),
+      timestamp: currentTime, // 생성된 시간 추가
     };
 
     // 메시지 저장
@@ -155,7 +161,10 @@ export const useChatStore = create((set) => {
     // 채팅방 메시지 새로 가져오기
     await getChatMessages(roomId);
     // 채팅방의 마지막 메시지 업데이트
-    await updateChatRoom(roomId, newMessage);
+    await updateChatRoom(roomId, {
+      lastMessage: newMessage,
+      lastTime: currentTime,
+    });
   };
 
   // 채팅방의 메시지를 가져오는 함수
@@ -177,25 +186,39 @@ export const useChatStore = create((set) => {
   };
 
   // 채팅방 정보 업데이트 함수
-  const updateChatRoom = async (roomId, newMessage) => {
+  const updateChatRoom = async (roomId, data) => {
     const { isLoggedIn } = getState();
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
     // 채팅방 정보 업데이트를 위한 데이터 객체
-    const data = {
-      lastMessage: newMessage, // 마지막 메시지 필드 업데이트
-    };
 
     try {
       await updateData('chatRooms', roomId, data);
       // 상태를 최신으로 업데이트
       set(
         produce((s) => {
-          s.lastMessage = newMessage;
+          s.lastMessage = data.newMessage;
+          s.lastTime = data.lastTime;
         })
       );
     } catch (error) {
       console.error('Error updating chat room:', error);
+    }
+  };
+
+  const deleteChatRoom = async (roomId) => {
+    try {
+      await deleteData('chatRooms', roomId);
+      // 상태에서 채팅방 제거
+      set(
+        produce((draft) => {
+          draft.chatRooms = draft.chatRooms.filter(
+            (room) => room.id !== roomId
+          );
+        })
+      );
+    } catch (error) {
+      console.error('Error removing chat room:', error);
     }
   };
 
@@ -209,5 +232,6 @@ export const useChatStore = create((set) => {
     getChatMessages,
     updateChatRoom,
     getNewMessage,
+    deleteChatRoom,
   };
 });
