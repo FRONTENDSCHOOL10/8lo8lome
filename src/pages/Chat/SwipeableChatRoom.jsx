@@ -2,6 +2,7 @@ import { useSwipeable } from 'react-swipeable';
 import { useNavigate } from 'react-router-dom';
 import { shape, func, string } from 'prop-types';
 import { memo, useState } from 'react';
+import { formatLastTime } from '@/utils';
 
 SwipeableChatRoom.propTypes = {
   chatRoom: shape({
@@ -13,7 +14,7 @@ SwipeableChatRoom.propTypes = {
 };
 
 function SwipeableChatRoom({ chatRoom, onDelete }) {
-  const { id, name, lastMessage } = chatRoom;
+  const { id, name, lastMessage, lastTime } = chatRoom;
   const navigate = useNavigate();
 
   // 삭제 버튼의 가시성 상태를 관리
@@ -51,7 +52,6 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
       navigate(`/chat/${id}`);
     }
   };
-  console.log(lastMessage);
   return (
     <div
       {...handlers}
@@ -87,6 +87,9 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
           <h3 className="text-f16 font-semibold">{name}</h3>
           {lastMessage && <p className="text-f12 mt-2">{lastMessage}</p>}
         </div>
+        <p className="pt-[24px] text-gray-400 text-f12 flex-1 text-end">
+          {formatLastTime(lastTime)}
+        </p>
       </div>
     </div>
   );
