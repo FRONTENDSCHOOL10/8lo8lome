@@ -87,9 +87,11 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
           <h3 className="text-f16 font-semibold">{name}</h3>
           {lastMessage && <p className="text-f12 mt-2">{lastMessage}</p>}
         </div>
-        <p className="pt-[24px] text-gray-400 text-f12 flex-1 text-end">
-          {formatLastTime(lastTime)}
-        </p>
+        {lastTime && (
+          <p className="pt-[24px] text-gray-400 text-f12 flex-1 text-end">
+            {formatLastTime(lastTime)}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ function ChatMessages() {
         {currentRoomMessages.map((message) => (
           <div
             key={message.id}
-            className={`flex flex-col gap-1 ${message.senderId === userId ? 'items-end' : 'items-start'} p-3`}
+            className={`flex flex-col gap-1 ${message.senderId === userId ? 'items-end' : 'items-start'} py-2`}
             ref={messagesEndRef}
           >
             <div
