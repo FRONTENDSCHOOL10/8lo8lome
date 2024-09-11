@@ -5,23 +5,24 @@ import { memo } from 'react';
 function EditEmail() {
   return (
     <>
-      <article>
+      <article className="px-s20">
         <h2 className="sr-only">이메일 입력</h2>
-        <fieldset className="gap-2 felx">
+        <fieldset className="flex gap-2">
           <AppTextInput
             label="이메일"
             placeholder="이메일"
             isHiddenLabel
-            className="min-w-[200px]"
+            className="min-w-[208px]"
             onChange
             required
           />
-          <AppButton isFilled={false} onClick disabled>
+          <AppButton isFilled={false} onclick disabled>
             중복확인
           </AppButton>
         </fieldset>
-        <AppAuthMessage warning>중복된 이메일 입니다.</AppAuthMessage>
+        <AppAuthMessage warning>이메일 양식을 입력해 주새요.</AppAuthMessage>
       </article>
     </>
   );
 }
+export default memo(EditEmail);

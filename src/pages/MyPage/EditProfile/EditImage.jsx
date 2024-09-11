@@ -26,7 +26,10 @@ function EditImage() {
 
   return (
     <>
-      <form className="mx-auto my-0 w-340px py-s30" onSubmit={handleSubmit}>
+      <form
+        className="mb-10 border-b border-solid border-strokeBlack w-340px py-s30"
+        onSubmit={handleSubmit}
+      >
         <input
           ref={fileInputRef}
           id="fileInput"

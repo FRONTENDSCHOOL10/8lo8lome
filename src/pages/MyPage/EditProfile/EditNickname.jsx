@@ -4,12 +4,12 @@ import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
 function EditNickname() {
   return (
     <>
-      <article>
+      <article className="px-s20">
         <h2 className="sr-only">닉네임 입력</h2>
-        <fieldset className="gap-2 felx">
+        <fieldset className="flex gap-2 ">
           <AppTextInput
             label="닉네임"
-            className="min-w-[200px]"
+            className="min-w-[208px]"
             placeholder="닉네임"
             isHiddenLabel
             onChange
