@@ -40,7 +40,7 @@ function AppStatusPage({ status }) {
       linkText = '로그인 하러 가기';
       linkTo = '/login';
       textColorClass = 'text-white';
-      svgColor = 'text-red-500';
+      svgColor = 'text-white';
       break;
   }
 
