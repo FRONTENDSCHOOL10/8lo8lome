@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getAllData } from '@/api/CRUD';
+import { getAllData, getData } from '@/api/CRUD';
 
 export const mainStore = create((set) => {
   const INITIAL_STATE = {
@@ -11,6 +11,7 @@ export const mainStore = create((set) => {
       filterGyms: [],
       isGymsLoaded: false,
       selectedFilters: [],
+      gymData: {},
     },
 
     searchFilter: {
@@ -151,6 +152,17 @@ export const mainStore = create((set) => {
     );
   };
 
+  //gyms에서 아이디가 일치하는 데이터 값을 가져오는 함수
+  const fetchGymDetails = async (gymId) => {
+    const data = await getData('gyms', gymId);
+    console.log(data);
+    set(
+      produce((draft) => {
+        draft.searchInput.gymData = data;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -159,6 +171,7 @@ export const mainStore = create((set) => {
       handleSearchInput,
       handleSearchSubmit,
       handleSelectedFilters,
+      fetchGymDetails,
     },
   };
 });
