@@ -13,5 +13,5 @@ export default function AppAuthMessage({ children, className, warning }) {
     baseClass = ` ${baseClass} ${className}`;
   }
 
-  return <span className={`text-f12 py-2 block ${baseClass}`}>{children}</span>;
+  return <span className={`text-f12 py-2 ${baseClass}`}>{children}</span>;
 }

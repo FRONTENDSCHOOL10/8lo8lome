@@ -17,8 +17,8 @@ function Email() {
 
   return (
     <article>
-      <fieldset className="sr-only">이메일 입력</fieldset>
       <fieldset className="flex gap-2">
+        <legend className="sr-only">이메일 입력</legend>
         <AppEmailInput
           label="이메일"
           placeholder="이메일"
@@ -35,7 +35,7 @@ function Email() {
           중복확인
         </AppButton>
       </fieldset>
-      {message && <AppAuthMessage warning={warning}>{message}</AppAuthMessage>}
+      <AppAuthMessage warning={warning}>{message}</AppAuthMessage>
     </article>
   );
 }

@@ -1,0 +1,11 @@
+{
+  "icons": [
+    { "src": "/assets/logo.png", "type": "image/png", "sizes": "615x406" },
+    {
+      "src": "/assets/logo.png",
+      "type": "image/png",
+      "sizes": "615x406",
+      "purpose": "maskable"
+    }
+  ]
+}

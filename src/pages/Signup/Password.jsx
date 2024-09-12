@@ -9,6 +9,7 @@ function Password() {
       passwordVerification: s.authMessages.passwordVerification,
     })
   );
+  const isShow = passwordVerification ? 'block' : 'hidden';
 
   return (
     <article>
@@ -23,11 +24,9 @@ function Password() {
           required
         />
       </fieldset>
-      {passwordVerification && (
-        <AppAuthMessage warning>
-          비밀번호 양식은 문자와 숫자 8글자 이상입니다.
-        </AppAuthMessage>
-      )}
+      <AppAuthMessage warning className={isShow}>
+        비밀번호 양식은 문자와 숫자 8글자 이상입니다.
+      </AppAuthMessage>
     </article>
   );
 }
