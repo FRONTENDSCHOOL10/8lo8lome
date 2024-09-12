@@ -1,5 +1,6 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { animate } from 'motion'; // motion.js 예시
 import AppMeta from '@/components/AppMeta';
 import { string } from 'prop-types';
 
@@ -8,6 +9,7 @@ AppStatusPage.propTypes = {
 };
 
 function AppStatusPage({ status }) {
+  const refs = useRef([]); // 배열 형태로 각 요소를 참조
   let title, description, position, message, subMessage, linkText, linkTo, alt;
 
   switch (status) {
@@ -16,7 +18,7 @@ function AppStatusPage({ status }) {
       description = '회원탈퇴 완료 페이지입니다.';
       position = 'object-[0px_0px]';
       alt = '우는 이모지';
-      message = '회원탈퇴가 완료되었습니다!';
+      message = '회원탈퇴가 완료 되었습니다!';
       subMessage = '이용해주셔서 감사합니다.';
       linkText = '홈으로 가기';
       linkTo = '/';
@@ -73,22 +75,47 @@ function AppStatusPage({ status }) {
       break;
   }
 
+  useEffect(() => {
+    if (status !== 'notLogin') {
+      // 각각의 요소에 순차적으로 애니메이션 적용
+      refs.current.forEach((el, index) => {
+        animate(
+          el,
+          {
+            opacity: [0, 1],
+            transform: ['translateY(50px)', 'translateY(0)'],
+          },
+          { duration: 1, delay: index * 0.3 }
+        );
+      });
+    }
+  }, [status]);
+
   return (
     <>
       <AppMeta title={title} description={description} />
-      <section className="p-[20px] h-[100vh] flex flex-col justify-center items-center ${textColorClass}">
+      <section className="p-[20px] h-[100vh] flex flex-col justify-center items-center">
         <img
+          ref={(el) => (refs.current[0] = el)}
           src={`/assets/imojiSprite.png`}
           width={200}
           height={200}
           alt={alt}
           className={`w-[200px] h-[200px] object-cover ${position}`}
         />
-        <strong className="text-f18 mt-[28px] mb-[12px]">{message}</strong>
-        <p className="text-f12">{subMessage}</p>
+        <strong
+          ref={(el) => (refs.current[1] = el)}
+          className="text-f18 mt-[28px] mb-[12px]"
+        >
+          {message}
+        </strong>
+        <p ref={(el) => (refs.current[2] = el)} className="text-f12">
+          {subMessage}
+        </p>
         <Link
+          ref={(el) => (refs.current[3] = el)}
           to={linkTo}
-          className={`mt-[100px] w-full px-3 text-center block border border-solid border-mainColor py-s14 rounded `}
+          className="mt-[100px] w-full px-3 text-center block border border-solid border-mainColor py-s14 rounded"
         >
           {linkText}
         </Link>
