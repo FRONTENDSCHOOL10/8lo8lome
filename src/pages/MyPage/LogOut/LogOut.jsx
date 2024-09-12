@@ -28,19 +28,19 @@ function LogOut() {
       >
         <div className="flex flex-col items-center justify-center mx-auto my-0">
           <div className=" rounded-md w-s278 h-s296 from-neutral-950 from-1% bg-gradient-to-t bg-subBg flex flex-col justify-center items-center mb-s62">
-            {/* <svg
+            <svg
               role="icon"
               aria-label="체크"
               className=" fill-mainColor w-s120 h-s120 mb-s22"
             >
               <use href="/assets/sprite.svg#checkmark-circle-click"></use>
-            </svg> */}
-            <img
+            </svg>
+            {/* <img
               width={100}
               height={100}
               src="/public/image/탈퇴.png"
               alt="슬픈"
-            />
+            /> */}
             <ul className="flex flex-col items-center justify-center text-white">
               <li
                 ref={(el) => (liRef.current[0] = el)}
