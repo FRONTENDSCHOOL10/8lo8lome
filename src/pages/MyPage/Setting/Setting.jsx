@@ -10,12 +10,15 @@ function Setting() {
       <AppHeader>설정</AppHeader>
 
       <section
-        className="flex items-center justify-center w-340px px-s20 mt-[100px]"
+        className="flex items-center justify-center w-full mt-[100px]"
         aria-label="설정목록"
       >
-        <ul className="flex flex-col items-start justify-center">
-          <li className="flex items-center border-b border-solid py-s20 w-s278 h-s62 border-strokeBlack">
-            <Link to="/SignOut" className="flex items-center ">
+        <ul className="w-full p-s20">
+          <li>
+            <Link
+              to="/SignOut"
+              className="flex items-center border-b border-solid py-s20 h-s62 border-strokeBlack"
+            >
               <svg
                 role="icon"
                 aria-label="탈퇴"
@@ -36,8 +39,11 @@ function Setting() {
               </svg>
             </Link>
           </li>
-          <li className="flex items-center border-b border-solid py-s20 w-s278 h-s62 border-strokeBlack">
-            <Link to="/FindPassword" className="flex items-center ">
+          <li>
+            <Link
+              to="/FindPassword"
+              className="flex items-center border-b border-solid py-s20 h-s62 border-strokeBlack "
+            >
               <svg
                 role="icon"
                 aria-label="비밀번호 변경"

@@ -78,17 +78,20 @@ export default function MyInfo() {
     <section className="flex flex-row w-full" aria-label="내 정보 목록">
       <ul className="w-full p-s20">
         {myInfo.map((item) => (
-          <li
-            key={item.id}
-            className="flex items-center border-b border-solid w-s278 h-s62 border-strokeBlack py-s20"
-          >
-            <span className="text-white ">{item.icon}</span>
-            <h2 className="font-semibold text-white text-f16">{item.title}</h2>
-            <Link to={item.link} className="ml-s10">
+          <li key={item.id}>
+            <Link
+              to={item.link}
+              className="flex items-center border-b border-solid h-s62 border-strokeBlack py-s20"
+            >
+              <span className="text-white ">{item.icon}</span>
+              <h2 className="font-semibold text-white text-f16">
+                {item.title}
+              </h2>
+
               <svg
                 role="icon"
                 aria-label="페이지 이동 버튼"
-                className="text-white w-s18 h-s18"
+                className="text-white w-s18 h-s18 mr-s10"
               >
                 <use href="/assets/sprite.svg#arrow-forward" />
               </svg>
