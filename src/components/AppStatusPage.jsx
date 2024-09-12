@@ -2,14 +2,23 @@ import { memo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { animate } from 'motion'; // motion.js 예시
 import AppMeta from '@/components/AppMeta';
-import { string } from 'prop-types';
+import { oneOf } from 'prop-types';
+
+const statusValues = [
+  'deleteId',
+  'logout',
+  'changePassword',
+  'payment',
+  'notLogin',
+  'signup',
+];
 
 AppStatusPage.propTypes = {
-  status: string.isRequired,
+  status: oneOf(statusValues).isRequired,
 };
 
 function AppStatusPage({ status }) {
-  const refs = useRef([]); // 배열 형태로 각 요소를 참조
+  const refs = useRef([]);
   let title, description, position, message, subMessage, linkText, linkTo, alt;
 
   switch (status) {
