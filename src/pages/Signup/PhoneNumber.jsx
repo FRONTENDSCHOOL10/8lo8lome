@@ -76,8 +76,8 @@ function PhoneNumber() {
 
   return (
     <article>
-      <h2 className="sr-only">전화번호 입력</h2>
       <fieldset className="flex gap-2">
+        <legend className="sr-only">전화번호 입력</legend>
         <AppTextInput
           label="전화번호"
           placeholder="전화번호"

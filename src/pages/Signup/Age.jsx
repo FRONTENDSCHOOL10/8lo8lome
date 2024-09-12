@@ -9,9 +9,10 @@ function Age() {
   }));
 
   return (
-    <section>
+    <article>
       <h2 className="font-semibold text-f16 mb-s12">나이를 선택해 주세요.</h2>
       <fieldset className="grid gap-x-3 gap-y-4 grid-cols-2">
+        <legend className="sr-only">나이</legend>
         <AppRadioInput
           label="10대"
           name="ageGroup"
@@ -61,7 +62,7 @@ function Age() {
           required
         />
       </fieldset>
-    </section>
+    </article>
   );
 }
 

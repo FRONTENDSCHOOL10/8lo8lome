@@ -12,8 +12,8 @@ function Password() {
 
   return (
     <article>
-      <h2 className="sr-only">비밀번호 입력</h2>
       <fieldset className="flex gap-3">
+        <legend className="sr-only">비밀번호 입력</legend>
         <AppPasswordInput
           label="비밀번호"
           placeholder="비밀번호"
