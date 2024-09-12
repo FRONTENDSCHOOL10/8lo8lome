@@ -29,7 +29,7 @@ function Setting() {
 
               <svg
                 role="icon"
-                aria-label="페이지 이동 버튼"
+                aria-label="탈퇴 하기로 이동하는 버튼"
                 className="text-white w-s18 h-s18"
               >
                 <use href="/assets/sprite.svg#arrow-forward" />
@@ -51,7 +51,7 @@ function Setting() {
 
               <svg
                 role="icon"
-                aria-label="페이지 이동 버튼"
+                aria-label="비밀번호 변경 페이지 이동 버튼"
                 className="text-white w-s18 h-s18"
               >
                 <use href="/assets/sprite.svg#arrow-forward" />
