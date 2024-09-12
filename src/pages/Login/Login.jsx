@@ -30,7 +30,7 @@ function Login() {
             background: 'black',
             color: '#fff',
           },
-          duration: 500,
+          duration: 1000,
         });
         setTimeout(() => navigate('/main'), 500);
       } else {

@@ -68,7 +68,6 @@ export const useLoginStore = create((set) => {
             }
           })
         );
-        console.log('Login successful');
         return true;
       } else {
         console.error('Invalid email or password');
