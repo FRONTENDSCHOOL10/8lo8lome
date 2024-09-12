@@ -2,31 +2,68 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
 import getPbImageURL from '@/utils/getPbImageURL';
+import { NICKNAME_REG } from '@/constant';
+import { getFirstListItem } from '@/api/CRUD';
 
-export const useMyPageStore = create((set) => ({
-  userData: {
-    id: '',
-    nickName: '',
-    email: '',
-    profileImage: '',
-  },
-  setUserData: (newData) =>
+// Zustand store 생성
+export const useMyPageStore = create((set) => {
+  const INITIAL_STATE = {
+    userData: {
+      id: pb.authStore.model?.id || '',
+      nickName: '',
+      email: '',
+      profileImage: '',
+    },
+    isLogin: pb.authStore.isValid,
+    isNicknameDisabled: true,
+    isNickname: null,
+  };
+
+  // 상태를 설정하는 함수
+  const setUserData = (newData) => {
     set(
       produce((state) => {
         state.userData = { ...state.userData, ...newData };
       })
-    ),
+    );
+  };
 
-  // setNickname: (value) => {
-  //   console.log(value);
-  //   set(
-  //     produce((s) => {
-  //       s.userData.nickName = value;
-  //     })
-  //   );
-  // },
+  // 닉네임을 설정하는 함수
+  const getNickName = (value) => {
+    const { isLogin } = useMyPageStore.getState();
+    if (!isLogin) {
+      return;
+    }
+    const isValid = NICKNAME_REG.test(value);
+    set(
+      produce((state) => {
+        if (isValid) {
+          state.userData.nickName = value;
+          state.isNicknameDisabled = true;
+        } else {
+          state.isNicknameDisabled = false;
+        }
+      })
+    );
+  };
 
-  fetchUserData: async () => {
+  const checkNickname = async () => {
+    const { isLogin } = useMyPageStore.getState();
+    const { nickName } = useMyPageStore.getState().userData;
+    if (!isLogin) {
+      return;
+    }
+    const data = await getFirstListItem('users', 'nickName', nickName);
+    set(
+      produce((state) => {
+        state.isNickname = true;
+      })
+    );
+    return data ? false : true;
+  };
+
+  // 사용자 데이터를 가져오는 함수
+  const fetchUserData = async () => {
     const authData = pb.authStore.model;
     if (authData) {
       const userProfileData = {
@@ -41,9 +78,10 @@ export const useMyPageStore = create((set) => ({
         })
       );
     }
-  },
+  };
 
-  updateProfile: async (profileImageFile, newNickname, newEmail) => {
+  // 프로필을 업데이트하는 함수
+  const updateProfile = async (profileImageFile, newNickname, newEmail) => {
     const authData = pb.authStore.model;
 
     if (authData) {
@@ -80,5 +118,14 @@ export const useMyPageStore = create((set) => ({
         console.error('프로필 변경에 실패 하였습니다.:', error);
       }
     }
-  },
-}));
+  };
+
+  return {
+    ...INITIAL_STATE,
+    setUserData,
+    getNickName,
+    fetchUserData,
+    updateProfile,
+    checkNickname,
+  };
+});

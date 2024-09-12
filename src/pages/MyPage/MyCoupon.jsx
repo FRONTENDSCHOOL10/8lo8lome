@@ -49,7 +49,6 @@ export default function MyCoupon() {
         spaceBetween={16}
         slidesPerView={1.1}
         pagination={{ clickable: true }}
-        className="max-w-[300px]"
       >
         {coupon.map((item) => (
           <SwiperSlide key={item.id}>

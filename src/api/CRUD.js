@@ -71,24 +71,3 @@ export const deleteData = async (resource, id) => {
     return false;
   }
 };
-
-// api/CRUD.js
-
-export const requestPasswordReset = async (email) => {
-  try {
-    await pb.collection('users').requestPasswordReset(email);
-  } catch (error) {
-    throw new Error(
-      '비밀번호 재설정 요청 중 오류가 발생했습니다: ' + error.message
-    );
-  }
-};
-
-export const confirmPasswordReset = async (token, newPassword) => {
-  try {
-    await pb.collection('users').confirmPasswordReset(token, newPassword);
-    console.log('비밀번호 정상 변경');
-  } catch (error) {
-    throw new Error('비밀번호 재설정 중 오류가 발생했습니다: ' + error.message);
-  }
-};

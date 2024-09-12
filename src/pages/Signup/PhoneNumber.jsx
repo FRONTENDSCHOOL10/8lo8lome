@@ -52,7 +52,7 @@ function PhoneNumber() {
       toast.custom(
         () => (
           <div
-            className="w-w$16 h-h$102 bg-subBg border-2 border-solid border-white px-4 py-4 rounded"
+            className="w-w$16 h-h$102 bg-subBg border border-solid border-white px-4 py-4 rounded"
             role="alert"
           >
             <svg
