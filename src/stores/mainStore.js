@@ -87,7 +87,7 @@ export const mainStore = create((set) => {
       produce((draft) => {
         Object.keys(draft.searchFilter).forEach((key) => {
           const trueFilters = Object.entries(draft.searchFilter[key])
-            .filter(([_, value]) => value === true)
+            .filter(([, value]) => value === true)
             .map(([k]) => k);
 
           if (trueFilters.length > 0) {

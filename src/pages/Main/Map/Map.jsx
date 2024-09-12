@@ -19,7 +19,8 @@ export default function Map() {
           level: 3, // 확대 레벨
           // tileAnimation: false,
         };
-        const map = new window.kakao.maps.Map(container, options); // 지도 생성
+        // const map =
+        new window.kakao.maps.Map(container, options); // 지도 생성
       });
     };
 
