@@ -27,7 +27,7 @@ function ChatSubmitForm() {
   return (
     <footer>
       <form
-        className="flex px-4 py-[14px] gap-2 w-[339px] fixed bottom-[129px] bg-subBg border-t border-b border-solid border-white"
+        className="flex px-4 py-[14px] gap-2 w-full fixed bottom-0 bg-subBg border-t border-b border-solid border-white"
         onSubmit={handleSendMessage}
       >
         <div className="w-[900%]">

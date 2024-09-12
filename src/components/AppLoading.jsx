@@ -24,16 +24,20 @@ export default function AppLoading() {
     return () => clearTimeout(timer);
   }, []);
 
+  // const loadingStart = document.querySelector('#loading-start');
+  // const loadingEnd = document.querySelector('#loading-end');
+
   return (
     <>
-      {loading && createPortal(
+      {loading &&
+        createPortal(
           <div className="fixed inset-y-0 z-50 flex items-center justify-center w-full h-full bg-white bg-opacity-50">
             <AppSpinner size={50} duration={1.5} />
             <p>{message}</p>
           </div>,
           document.body
         )}
-        {!loading && <p>{message}</p> }
+      {!loading && <p>{message}</p>}
     </>
   );
 }

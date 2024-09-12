@@ -17,7 +17,7 @@ function Email() {
 
   return (
     <article>
-      <h2 className="sr-only">이메일 입력</h2>
+      <fieldset className="sr-only">이메일 입력</fieldset>
       <fieldset className="flex gap-2">
         <AppEmailInput
           label="이메일"

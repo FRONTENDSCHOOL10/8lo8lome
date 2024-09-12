@@ -47,25 +47,21 @@ function AppStatusPage({ status }) {
   return (
     <>
       <AppMeta title={title} description={description} />
-      <section className="p-[20px] mt-[50px]">
-        <div
-          className={`bg-subBg w-full h-[312px] px-2 flex flex-col justify-center items-center ${textColorClass}`}
+      <section className="p-[20px] h-[100vh] flex flex-col justify-center items-center ${textColorClass}">
+        <svg
+          className={`w-32 ${svgColor}`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
         >
-          <svg
-            className={`w-32 ${svgColor}`}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-          >
-            <use href={`../assets/sprite.svg#${svgId}`} />
-          </svg>
-          <strong className={`text-f18 mt-[28px] mb-[12px] ${textColorClass}`}>
-            {message}
-          </strong>
-          <p className={`text-f12 ${textColorClass}`}>{subMessage}</p>
-        </div>
+          <use href={`../assets/sprite.svg#${svgId}`} />
+        </svg>
+        <strong className={`text-f18 mt-[28px] mb-[12px] ${textColorClass}`}>
+          {message}
+        </strong>
+        <p className={`text-f12 ${textColorClass}`}>{subMessage}</p>
         <Link
           to={linkTo}
-          className={`text-center block border-2 border-solid border-mainColor py-s14 rounded mt-[100px]`}
+          className={`mt-[100px] px-3 text-center block border-2 border-solid border-mainColor py-s14 rounded `}
         >
           {linkText}
         </Link>

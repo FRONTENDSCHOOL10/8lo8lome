@@ -9,9 +9,10 @@ function Gender() {
   }));
 
   return (
-    <section>
+    <article>
       <h2 className="font-semibold text-f16 mb-s12">성별을 선택해 주세요.</h2>
       <fieldset className="flex gap-3">
+        <legend className="sr-only">성별</legend>
         <AppRadioInput
           label="남성"
           name="genderGroup"
@@ -29,7 +30,7 @@ function Gender() {
           required
         />
       </fieldset>
-    </section>
+    </article>
   );
 }
 

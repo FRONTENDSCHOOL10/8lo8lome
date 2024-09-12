@@ -60,7 +60,7 @@ function Login() {
     <>
       <AppMeta title="로그인 페이지" description="로그인 페이지입니다." />
       <AppHeader>로그인</AppHeader>
-      <main className="container flex flex-col gap-s20 pb-s20 mt-[100px]">
+      <main className="container flex flex-col gap-s20 pb-s20 mt-[110px]">
         <h2 className="sr-only">로그인 입력</h2>
         <fieldset className="w-full mb-s40">
           <form
