@@ -33,7 +33,7 @@ function AppStatusPage({ status }) {
       linkText = '홈으로 가기';
       linkTo = '/';
       break;
-    case 'passwordChange':
+    case 'changePassword':
       title = '비밀번호 변경 완료 페이지';
       description = '비밀번호 변경 완료 페이지입니다.';
       position = 'object-[0px_-400px]';
