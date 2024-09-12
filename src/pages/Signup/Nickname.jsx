@@ -23,29 +23,27 @@ function Nickname() {
   const { warning, message } = isNickNameExist;
 
   return (
-    <>
-      <article>
-        <fieldset className="flex gap-2">
-          <legend className="sr-only">닉네임 입력</legend>
-          <AppTextInput
-            label="닉네임"
-            placeholder="닉네임"
-            isHiddenLabel
-            className="min-w-[200px]"
-            onChange={handleNickNameChange}
-            required
-          />
-          <AppButton
-            isFilled={false}
-            onClick={handleNickNameCheck}
-            disabled={isNickNameButtonDisabled}
-          >
-            중복확인
-          </AppButton>
-        </fieldset>
-        <AppAuthMessage warning={warning}>{message}</AppAuthMessage>
-      </article>
-    </>
+    <article>
+      <fieldset className="flex gap-2">
+        <legend className="sr-only">닉네임 입력</legend>
+        <AppTextInput
+          label="닉네임"
+          placeholder="닉네임"
+          isHiddenLabel
+          className="min-w-[200px]"
+          onChange={handleNickNameChange}
+          required
+        />
+        <AppButton
+          isFilled={false}
+          onClick={handleNickNameCheck}
+          disabled={isNickNameButtonDisabled}
+        >
+          중복확인
+        </AppButton>
+      </fieldset>
+      <AppAuthMessage warning={warning}>{message}</AppAuthMessage>
+    </article>
   );
 }
 

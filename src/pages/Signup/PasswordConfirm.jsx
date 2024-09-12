@@ -10,6 +10,8 @@ function PasswordConfirm() {
     })
   );
 
+  const isShow = confirmPassword ? 'block' : 'hidden';
+
   return (
     <article>
       <fieldset className="flex gap-3">
@@ -23,9 +25,9 @@ function PasswordConfirm() {
           required
         />
       </fieldset>
-      {confirmPassword && (
-        <AppAuthMessage warning>비밀번호가 일치하지 않습니다.</AppAuthMessage>
-      )}
+      <AppAuthMessage warning className={isShow}>
+        비밀번호가 일치하지 않습니다.
+      </AppAuthMessage>
     </article>
   );
 }

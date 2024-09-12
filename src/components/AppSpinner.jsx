@@ -2,7 +2,7 @@ import colors from 'tailwindcss/colors';
 import { number, string } from 'prop-types';
 import { memo } from 'react';
 
-const { indigo } = colors;
+const { green } = colors;
 
 AppSpinner.propTypes = {
   color: string,
@@ -11,8 +11,8 @@ AppSpinner.propTypes = {
 };
 
 function AppSpinner({
-  color = indigo[700],
-  size = 36,
+  color = green[600],
+  size = 50,
   duration = 1.2,
   ...restProps
 }) {
