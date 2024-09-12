@@ -80,7 +80,7 @@ export default function MyInfo() {
         {myInfo.map((item) => (
           <li
             key={item.id}
-            className="flex items-center border-b border-solid w-s278 h-s62 border-subBg py-s20"
+            className="flex items-center border-b border-solid w-s278 h-s62 border-strokeBlack py-s20"
           >
             <span className="text-white ">{item.icon}</span>
             <h2 className="font-semibold text-white text-f16">{item.title}</h2>

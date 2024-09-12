@@ -27,7 +27,7 @@ function EditImage() {
   return (
     <>
       <form
-        className="mb-10 border-b border-solid border-strokeBlack w-340px py-s30"
+        className="mb-10 border-b border-solid border-strokeBlack w-340px py-s30 mt-[100px]"
         onSubmit={handleSubmit}
       >
         <input
