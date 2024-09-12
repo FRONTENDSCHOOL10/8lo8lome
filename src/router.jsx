@@ -5,12 +5,14 @@ import {
 } from 'react-router-dom';
 import { getNavigationItems } from '@/utils';
 import RootLayout from '@/layouts/RootLayout';
-
 import Home from '@/pages/Home';
+// Login 컴포넌트
 import Login from '@/pages/Login/Login';
-import Signup from '@/pages/Signup/Signup';
+
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
+// 회원가입 컴포넌트
+import Signup from '@/pages/Signup/Signup';
 // MyPage 하위 컴포넌트
 import EditProfile from '@/pages/MyPage/EditProfile/EditProfile';
 import PaymentHistory from '@/pages/MyPage/PaymentHistory/PaymentHistory';

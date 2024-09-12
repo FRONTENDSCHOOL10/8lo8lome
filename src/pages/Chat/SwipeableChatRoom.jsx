@@ -59,7 +59,7 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
     >
       <button
         id={`delete-btn-${id}`}
-        className={`absolute right-0 bg-red-500 px-4 py-2 rounded transition-all duration-300 transform ${isButtonVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
+        className={`absolute right-0 bg-red-500 px-5 py-2 rounded transition-all duration-300 transform ${isButtonVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
         onClick={handleDelete}
       >
         <svg
