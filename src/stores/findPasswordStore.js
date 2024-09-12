@@ -118,10 +118,6 @@ export const useFindPasswordStore = create((set) => {
 
     // 비밀번호 변경 요청
     try {
-      await pb.authStore.authWithPassword(
-        pb.authStore.model.email,
-        oldPassword
-      );
       await updateData('users', id, {
         password: newPassword,
         oldPassword: oldPassword,
