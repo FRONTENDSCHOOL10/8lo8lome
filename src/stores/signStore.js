@@ -50,6 +50,7 @@ export const useSignupStore = create((set) => {
     },
     allChecked: false,
     isSignupButtonDisabled: true,
+    isSignup: false,
   };
 
   // Signup 버튼의 상태를 업데이트하는 함수
@@ -115,7 +116,6 @@ export const useSignupStore = create((set) => {
   const handleNickNameCheck = async () => {
     // 현재 상태에서 사용자 닉네임을 가져옵니다.
     const userNickName = useSignupStore.getState().user.nickName;
-
     // 닉네임이 유효할 때만 중복 확인을 진행합니다.
     if (NICKNAME_REG.test(userNickName)) {
       try {
@@ -189,7 +189,7 @@ export const useSignupStore = create((set) => {
       try {
         // 이메일에 해당하는 첫 번째 사용자 항목을 가져옵니다.
         const result = await getFirstListItem('users', 'email', userEmail);
-
+        console.log(userEmail, result);
         // 상태를 업데이트합니다.
         set(
           produce((draft) => {
@@ -446,6 +446,12 @@ export const useSignupStore = create((set) => {
     try {
       // 사용자 데이터를 서버에 제출합니다.
       const data = await createData('users', userData);
+      set(
+        produce((draft) => {
+          // 사용자 데이터를 저장합니다.
+          draft.isSignup = true;
+        })
+      );
       console.log('response', data); // 응답 데이터를 콘솔에 출력합니다.
     } catch (error) {
       console.error('Error:', error.message); // 오류 메시지를 콘솔에 출력합니다.

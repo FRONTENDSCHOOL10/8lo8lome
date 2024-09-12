@@ -1,4 +1,4 @@
-import { AppButton, AppHeader, AppDivider } from '@/components';
+import { AppButton, AppHeader, AppDivider, AppStatusPage } from '@/components';
 import { useSignupStore } from '@/stores/signStore';
 import Nickname from './Nickname.jsx';
 import Email from './Email.jsx';
@@ -12,12 +12,16 @@ import AppMeta from '@/components/AppMeta';
 import { memo } from 'react';
 
 function Signup() {
-  const { isSignupButtonDisabled, handleSignupButtonClick } = useSignupStore(
-    (s) => ({
+  const { isSignupButtonDisabled, handleSignupButtonClick, isSignup } =
+    useSignupStore((s) => ({
       isSignupButtonDisabled: s.isSignupButtonDisabled,
       handleSignupButtonClick: s.handleMethod.handleSignupButtonClick,
-    })
-  );
+      isSignup: s.isSignup,
+    }));
+
+  if (isSignup) {
+    return <AppStatusPage status="signup" />;
+  }
 
   return (
     <>
@@ -48,4 +52,5 @@ function Signup() {
     </>
   );
 }
+
 export default memo(Signup);
