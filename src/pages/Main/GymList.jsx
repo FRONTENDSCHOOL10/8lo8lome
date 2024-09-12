@@ -33,7 +33,11 @@ function GymList() {
               className="text-white flex gap-[0.625rem]
             bg-subBg rounded p-[0.625rem]"
             >
-              <img src={imgUrl[0]} alt="헬스장 사진" className="max-w-[90px]" />
+              <img
+                src={imgUrl[0]}
+                alt={`${item.name} 헬스장 이미지`}
+                className="max-w-[90px]"
+              />
               <div className="flex flex-col w-full">
                 <div className="flex justify-between items-center">
                   <h2 className="text-base w-[70%]">{item.name}</h2>
@@ -43,7 +47,7 @@ function GymList() {
                   가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
                 <div className="flex justify-between text-[0.625rem] pt-4">
-                  <p>{item.address}km</p>
+                  <p className="text-f12">{item.address}km</p>
                   <div className="flex items-center gap-1">
                     <svg
                       role="icon"
@@ -52,7 +56,7 @@ function GymList() {
                     >
                       <use href="/assets/sprite.svg#star" />
                     </svg>
-                    <p>{item.rating}</p>
+                    <p className="text-f12">{item.rating}</p>
                   </div>
                 </div>
               </div>

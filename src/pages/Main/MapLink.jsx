@@ -3,7 +3,7 @@ import { memo } from 'react';
 
 function MapLink() {
   return (
-    <Link to={'/map'} aria-label="지도로 보기">
+    <Link to={'/map'} aria-label="지도로 보기 링크">
       <svg
         role="icon"
         aria-label="지도로 보기"
