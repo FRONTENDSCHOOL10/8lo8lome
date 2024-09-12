@@ -31,7 +31,7 @@ function MyProfile() {
               <Link to={'/mypage/editProfile'}>
                 <svg
                   role="icon"
-                  aria-label="프로필 편집 버튼"
+                  aria-label="프로필 편집으로가는 버튼"
                   className="text-white w-s18 h-s18"
                 >
                   <use href="/assets/sprite.svg#arrow-forward" />
