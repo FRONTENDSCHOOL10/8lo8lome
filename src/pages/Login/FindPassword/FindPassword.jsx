@@ -35,10 +35,7 @@ function FindPassword() {
         <OldPasswordInput />
         <NewPasswordInput />
         <NewPasswordInputConfirm />
-        <AppButton
-          isFilled
-          onClick={onResetPasswordRequest} // 비밀번호 변경 요청 시 호출될 함수입니다.
-        >
+        <AppButton isFilled onClick={onResetPasswordRequest}>
           비밀번호 변경
         </AppButton>
         <Link to={'/findId'} className="text-center block text-f14">

@@ -6,7 +6,7 @@ function AppNav() {
   const [items] = useState(navigationItems);
 
   return (
-    <footer className="fixed w-full bottom-0 w-[338px] bg-mainBg ">
+    <footer className="fixed w-full bottom-0 bg-mainBg ">
       <nav>
         <h2 className="sr-only">페이지 탐색</h2>
         {items.length > 0 && (
