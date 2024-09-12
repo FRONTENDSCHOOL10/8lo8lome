@@ -11,10 +11,10 @@ function MyProfile() {
   }, [fetchUserData]);
   return (
     <section
-      className="w-full h-24 border-b border-solid px-s20 border-strokeBlack"
+      className="w-full h-24 border-b border-solid px-s20 border-strokeBlack mt-[100px] "
       aria-label="내 프로필"
     >
-      <div className="flex items-center h-full text-white">
+      <div className="flex items-center h-full text-white ">
         <span className="h-64px w-64px">
           <img
             className="rounded-full"
