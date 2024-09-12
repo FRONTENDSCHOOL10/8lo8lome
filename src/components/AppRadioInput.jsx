@@ -48,7 +48,7 @@ function AppRadioInput({
         type="radio"
         id={id}
         name={name}
-        className="hidden"
+        className="opacity-0 absolute w-0 h-0"
         checked={isChecked}
         onChange={handleChange}
         required={required}

@@ -6,7 +6,7 @@ function AppNav() {
   const [items] = useState(navigationItems);
 
   return (
-    <footer className="fixed bottom-[129px] w-[338px] bg-mainBg border-b border-t border-solid border-white">
+    <footer className="fixed w-full bottom-0 w-[338px] bg-mainBg ">
       <nav>
         <h2 className="sr-only">페이지 탐색</h2>
         {items.length > 0 && (
@@ -28,7 +28,7 @@ function AppNav() {
                     >
                       <use href={`../assets/sprite.svg#${item.svgId}`} />
                     </svg>
-                    <p className="text-center text-f10">{item.text}</p>
+                    <p className="text-center text-f12">{item.text}</p>
                   </div>
                 </NavLink>
               </li>

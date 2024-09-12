@@ -22,7 +22,7 @@ function AgreementTerms() {
   } = agreementTerms;
 
   return (
-    <section>
+    <article>
       <fieldset>
         <legend className="sr-only">동의 사항</legend>
         <AppCheckboxInput
@@ -115,7 +115,7 @@ function AgreementTerms() {
           </li>
         </ul>
       </fieldset>
-    </section>
+    </article>
   );
 }
 

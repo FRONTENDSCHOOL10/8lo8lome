@@ -22,7 +22,7 @@ function AppHeader({ className, children, logo, chat }) {
     <h1 className="text-f20 text-center text-mainColor font-bold">다있짐</h1>
   ) : (
     <>
-      <button type="button" onClick={handleGoBack}>
+      <button type="button" onClick={handleGoBack} aria-label="뒤로가기">
         <svg
           className={`w-5 h-5`}
           xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ function AppHeader({ className, children, logo, chat }) {
   }
 
   return (
-    <div className="fixed w-[338px] py-[18px] bg-mainBg z-[1]">
+    <div className="fixed w-full py-[18px] bg-mainBg z-[5]">
       <header className={headerBaseClass}>{isLogo}</header>
     </div>
   );
