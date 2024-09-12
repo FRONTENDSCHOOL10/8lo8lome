@@ -6,7 +6,7 @@ import OldPasswordInput from './OldPasswordInput';
 import { AppHeader, AppButton, AppStatusPage, AppMeta } from '@/components';
 import { useFindPasswordStore } from '@/stores/findPasswordStore';
 import { Link } from 'react-router-dom';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 
 import toast from 'react-hot-toast';
 
@@ -17,7 +17,12 @@ function FindPassword() {
       isChangePassword: s.isChangePassword,
     }));
 
-  useEffect(() => {
+  const handlePasswordChange = async () => {
+    try {
+      await handlePasswordChangeButtonClick();
+    } catch (error) {
+      console.error('토스트 메시지 표시 중 오류 발생:', error);
+    }
     if (isChangePassword === false) {
       toast.error('기존 비밀번호를 확인해 주세요', {
         style: {
@@ -28,7 +33,7 @@ function FindPassword() {
         duration: 1000,
       });
     }
-  }, [isChangePassword]);
+  };
 
   if (isChangePassword === true) {
     return <AppStatusPage status="changePassword" />;
@@ -47,7 +52,7 @@ function FindPassword() {
         <OldPasswordInput />
         <NewPasswordInput />
         <NewPasswordInputConfirm />
-        <AppButton isFilled onClick={handlePasswordChangeButtonClick}>
+        <AppButton isFilled onClick={handlePasswordChange}>
           비밀번호 변경
         </AppButton>
         <Link to={'/findId'} className="text-center block text-f14">
