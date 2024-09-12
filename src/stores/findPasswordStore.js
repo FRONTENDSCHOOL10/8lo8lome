@@ -1,11 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { EMAIL_REG, PASSWORD_REG } from '@/constant';
-import PocketBase from 'pocketbase';
-import { getFirstListItem } from '@/api/CRUD';
-
-// PocketBase 인스턴스 생성
-const pb = new PocketBase('https://eightloeightlome.pockethost.io');
+import pb from '@/api/pb';
+import { updateData } from '@/api/CRUD';
+import { removeStorageData } from '@/utils';
 
 export const useFindPasswordStore = create((set) => {
   const INITIAL_STATE = {
@@ -17,6 +15,7 @@ export const useFindPasswordStore = create((set) => {
     isNewPasswordInput: false,
     isEmailExists: false,
     verificationCode: null,
+    isLogin: pb.authStore.isValid,
     userData: {
       id: '',
       email: '',
@@ -24,18 +23,16 @@ export const useFindPasswordStore = create((set) => {
       newPassword: '',
       newPasswordConfirm: '',
     },
-    resetStatus: '', // 비밀번호 재설정 상태 추가
+    isChangePassword: null,
   };
 
   const handleEmailCheck = async () => {
     const email = useFindPasswordStore.getState().userData.email;
-
+    const user = pb.authStore.model;
     try {
-      // 이메일로 사용자 데이터 가져오기
-      const user = await getFirstListItem('users', 'email', email);
       set(
         produce((draft) => {
-          if (user) {
+          if (email === user.email) {
             draft.isNewPasswordInput = true; // 인증 코드 입력 필드 활성화
             draft.isEmailExists = true;
             draft.userData.id = user.id; // 사용자의 ID 값을 저장
@@ -96,7 +93,6 @@ export const useFindPasswordStore = create((set) => {
 
   const handleNewPasswordConfirmChange = (value) => {
     const { newPassword } = useFindPasswordStore.getState().userData;
-
     set(
       produce((draft) => {
         if (PASSWORD_REG.test(value) && newPassword === value) {
@@ -113,99 +109,40 @@ export const useFindPasswordStore = create((set) => {
   const handlePasswordChangeButtonClick = async () => {
     const { id, newPassword, oldPassword, newPasswordConfirm } =
       useFindPasswordStore.getState().userData;
+    const isLogin = useFindPasswordStore.getState().isLogin;
+
+    if (!isLogin) {
+      console.error('사용자가 로그인되어 있지 않습니다.');
+      return;
+    }
+
+    // 비밀번호 변경 요청
     try {
-      // 사용자가 로그인 중인 경우 비밀번호 변경을 위해 API 호출
-      await pb.collection('users').update(id, {
+      await pb.authStore.authWithPassword(
+        pb.authStore.model.email,
+        oldPassword
+      );
+      await updateData('users', id, {
         password: newPassword,
         oldPassword: oldPassword,
         passwordConfirm: newPasswordConfirm,
       });
 
-      set(
-        produce((draft) => {
-          draft.resetStatus = '비밀번호가 성공적으로 변경되었습니다.';
-        })
-      );
-    } catch (error) {
-      set(
-        produce((draft) => {
-          draft.resetStatus =
-            '비밀번호 변경 중 오류가 발생했습니다: ' + error.message;
-        })
-      );
-      console.error('비밀번호 변경 중 오류가 발생했습니다:', error.message);
-    }
-  };
+      // 인증 토큰을 새로고침하고 저장된 데이터를 삭제
+      pb.authStore.clear();
+      removeStorageData('autoLogin');
 
-  const requestPasswordReset = async (email) => {
-    try {
-      await pb.collection('users').requestPasswordReset(email);
-    } catch (error) {
-      throw new Error(
-        '비밀번호 재설정 요청 중 오류가 발생했습니다: ' + error.message
-      );
-    }
-  };
-
-  const confirmPasswordReset = async (token, newPassword) => {
-    console.log('Token:', token);
-    console.log('New Password:', newPassword);
-    try {
-      // 서버에서 비밀번호 확인도 필요할 수 있습니다.
-      await pb.collection('users').confirmPasswordReset(token, {
-        password: newPassword,
-        passwordConfirm: newPassword, // 비밀번호 확인이 필요한 경우
-      });
-      console.log('비밀번호 정상 변경 완료!!');
-    } catch (error) {
-      throw new Error(
-        '비밀번호 재설정 중 오류가 발생했습니다: ' + error.message
-      );
-    }
-  };
-
-  const handlePasswordResetRequest = async () => {
-    const email = useFindPasswordStore.getState().userData.email;
-    try {
-      await requestPasswordReset(email);
       set(
         produce((draft) => {
-          draft.resetStatus = '비밀번호 재설정을 위한 이메일이 발송되었습니다.';
+          draft.isChangePassword = true;
         })
       );
     } catch (error) {
       set(
         produce((draft) => {
-          draft.resetStatus =
-            '비밀번호 재설정 요청 중 오류가 발생했습니다: ' + error.message;
+          draft.isChangePassword = false;
         })
       );
-      console.error(
-        '비밀번호 재설정 요청 중 오류가 발생했습니다:',
-        error.message
-      );
-    }
-  };
-
-  const handlePasswordResetConfirmation = async (token, newPassword) => {
-    console.log('Token:', token);
-    console.log('New Password:', newPassword);
-    try {
-      await confirmPasswordReset(token, newPassword);
-      console.log('비밀번호 변경 완료!!');
-      set(
-        produce((draft) => {
-          draft.resetStatus = '비밀번호가 성공적으로 변경되었습니다.';
-        })
-      );
-    } catch (error) {
-      set(
-        produce((draft) => {
-          draft.resetStatus =
-            '비밀번호 재설정 중 오류가 발생했습니다: ' + error.message;
-        })
-      );
-      console.error('비밀번호 재설정 중 오류가 발생했습니다:', error.message);
     }
   };
 
@@ -217,7 +154,5 @@ export const useFindPasswordStore = create((set) => {
     handleNewPasswordConfirmChange,
     handleNewPasswordChange,
     handlePasswordChangeButtonClick,
-    handlePasswordResetRequest,
-    handlePasswordResetConfirmation,
   };
 });

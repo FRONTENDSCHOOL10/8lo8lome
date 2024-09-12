@@ -1,26 +1,38 @@
-import AppMeta from '@/components/AppMeta';
 import EmailInput from './EmailInput';
 import NewPasswordInput from './NewPasswordInput';
-import { AppHeader, AppButton } from '@/components';
-import { useFindPasswordStore } from '@/stores/findPasswordStore';
-
-import { Link } from 'react-router-dom';
-import { memo } from 'react';
-
 import NewPasswordInputConfirm from './NewPasswordInputConfirm';
 import OldPasswordInput from './OldPasswordInput';
 
+import { AppHeader, AppButton, AppStatusPage, AppMeta } from '@/components';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
+import { Link } from 'react-router-dom';
+import { memo, useEffect } from 'react';
+
+import toast from 'react-hot-toast';
+
 function FindPassword() {
-  const { handlePasswordResetRequest, handlePasswordResetConfirmation } =
+  const { handlePasswordChangeButtonClick, isChangePassword } =
     useFindPasswordStore((s) => ({
-      handlePasswordResetRequest: s.handlePasswordResetRequest,
-      handlePasswordResetConfirmation: s.handlePasswordResetConfirmation,
+      handlePasswordChangeButtonClick: s.handlePasswordChangeButtonClick,
+      isChangePassword: s.isChangePassword,
     }));
 
-  const onResetPasswordRequest = async () => {
-    await handlePasswordResetRequest();
-    await handlePasswordResetConfirmation();
-  };
+  useEffect(() => {
+    if (isChangePassword === false) {
+      toast.error('기존 비밀번호를 확인해 주세요', {
+        style: {
+          borderRadius: '5px',
+          background: 'black',
+          color: '#fff',
+        },
+        duration: 1000,
+      });
+    }
+  }, [isChangePassword]);
+
+  if (isChangePassword === true) {
+    return <AppStatusPage status="changePassword" />;
+  }
 
   return (
     <>
@@ -29,13 +41,13 @@ function FindPassword() {
         description="비밀번호 변경 페이지입니다."
       />
       <AppHeader>비밀번호 변경</AppHeader>
-      <section className="px-s20 flex flex-col gap-4 my-s82">
+      <section className="px-s20 flex flex-col gap-4 mb-s82 mt-[100px]">
         <h2 className="sr-only">비밀번호 변경 폼</h2>
         <EmailInput />
         <OldPasswordInput />
         <NewPasswordInput />
         <NewPasswordInputConfirm />
-        <AppButton isFilled onClick={onResetPasswordRequest}>
+        <AppButton isFilled onClick={handlePasswordChangeButtonClick}>
           비밀번호 변경
         </AppButton>
         <Link to={'/findId'} className="text-center block text-f14">

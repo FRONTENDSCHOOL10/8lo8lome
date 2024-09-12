@@ -20,6 +20,7 @@ export const useDeleteIdStore = create((set) => {
             draft.isDeleteId = true;
           })
         );
+        pb.authStore.clear();
         removeStorageData('autoLogin');
       } catch (error) {
         console.error('Error deleting user:', error.message);

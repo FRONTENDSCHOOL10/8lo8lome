@@ -19,11 +19,11 @@ function Setting() {
       <AppMeta title="설정" description="설정 페이지 입니다." />
       <AppHeader>설정</AppHeader>
       <section
-        className="flex items-center justify-center w-340px px-s20 mt-[100px]"
+        className="flex items-center justify-center px-s20 mt-[100px]"
         aria-label="설정목록"
       >
-        <ul className="flex flex-col items-start justify-center">
-          <li className="flex items-center border-b border-solid py-s20 w-s278 h-s62 border-strokeBlack">
+        <ul className="flex flex-col items-start justify-center w-full">
+          <li className="flex items-center border-b border-solid py-s20 h-s62 border-strokeBlack">
             <button
               to="/SignOut"
               className="flex items-center"
@@ -48,8 +48,8 @@ function Setting() {
               </svg>
             </button>
           </li>
-          <li className="flex items-center border-b border-solid py-s20 w-s278 h-s62 border-strokeBlack">
-            <Link to="/FindPassword" className="flex items-center ">
+          <li className="flex items-center border-b border-solid py-s20 h-s62 border-strokeBlack">
+            <Link to="/findPassword" className="flex items-center ">
               <svg
                 role="icon"
                 aria-label="비밀번호 변경"
