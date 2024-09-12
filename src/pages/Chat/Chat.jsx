@@ -1,13 +1,17 @@
 import { useChatStore } from '@/stores/chatStore';
 import ChatRoomList from './ChatRoomList';
-import NotLogin from './NotLogin';
+import AppStatusPage from '@/components/AppStatusPage';
 
 export default function Chat() {
   const { isLoggedIn } = useChatStore((s) => ({
     isLoggedIn: s.isLoggedIn,
   }));
 
-  const component = isLoggedIn ? <ChatRoomList /> : <NotLogin />;
+  const component = isLoggedIn ? (
+    <ChatRoomList />
+  ) : (
+    <AppStatusPage status="notLogin" />
+  );
 
   return <>{component}</>;
 }
