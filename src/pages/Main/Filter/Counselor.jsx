@@ -11,11 +11,11 @@ function Counselor() {
   const { available, notAvailable } = counselor;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         상담사
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex gap-2 flex-wrap justify-center">
         <li>
           <AppCheckboxInput
             label={'있음'}
@@ -24,6 +24,7 @@ function Counselor() {
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="counselor"
+            className="w-[8.4375rem] flex justify-center"
           />
         </li>
         <li>
@@ -34,6 +35,7 @@ function Counselor() {
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="counselor"
+            className="w-[8.4375rem] flex justify-center"
           />
         </li>
       </ul>

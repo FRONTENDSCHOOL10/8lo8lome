@@ -11,11 +11,11 @@ function Rating() {
   const { star1, star2, star3, star4, star5 } = rating;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem] mt-[100px]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem] mt-[100px]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         별점순
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex flex-wrap justify-center gap-s18 px-[0.3125rem]">
         <li>
           <AppCheckboxInput
             label={'⭐'}

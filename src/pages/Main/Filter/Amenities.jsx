@@ -12,11 +12,11 @@ function Amenities() {
     amenities;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         편의시설
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex gap-4 flex-wrap justify-center">
         <li>
           <AppCheckboxInput
             label={'주차장'}

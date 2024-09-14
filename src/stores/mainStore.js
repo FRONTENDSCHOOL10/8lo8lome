@@ -152,10 +152,26 @@ export const mainStore = create((set) => {
     );
   };
 
-  //gyms에서 아이디가 일치하는 데이터 값을 가져오는 함수
+  // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
+  // const fetchGymDetails = async (gymId) => {
+  //   const data = await getData('gyms', gymId);
+
+  //   set(
+  //     produce((draft) => {
+  //       draft.searchInput.gymData = data;
+  //     })
+  //   );
+  // };
+
   const fetchGymDetails = async (gymId) => {
+    const { gymData } = mainStore.getState().searchInput;
+
+    if (gymData && gymData.id === gymId) {
+      return;
+    }
+
     const data = await getData('gyms', gymId);
-    console.log(data);
+
     set(
       produce((draft) => {
         draft.searchInput.gymData = data;

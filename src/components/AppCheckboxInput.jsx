@@ -48,7 +48,7 @@ function AppCheckboxInput({
 
   const filterCheckedClass = isChecked ? 'border-mainColor' : ' ';
   const filterClass = isFilterClass
-    ? 'p-3 border-2 border-solid border-grayBoder rounded-3xl'
+    ? 'p-3 border border-solid border-grayBoder rounded-[1.5625rem] text-f16 font-semibold'
     : ' ';
 
   return (

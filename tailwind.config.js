@@ -40,6 +40,7 @@ export default {
         s20: '1.25rem ',
         s22: '1.375rem ',
         s30: '1.88rem',
+        s31: '1.9375rem',
         s34: '2.125rem',
         s38: '2.38rem',
         s46: '2.875rem',
