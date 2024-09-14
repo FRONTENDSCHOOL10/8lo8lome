@@ -91,9 +91,9 @@ export default {
         s454: '28.375rem',
         s665: '41.5625rem',
       },
-      // fontFamily: {
-      //   pretendard: ['Pretendard Variable', 'Pretendard', 'sans-serif'],
-      // },
+      fontFamily: {
+        pretendard: ['Pretendard Variable', 'Pretendard', 'sans-serif'],
+      },
     },
   },
   plugins: [],

@@ -50,6 +50,7 @@ export const useSignupStore = create((set) => {
     },
     allChecked: false,
     isSignupButtonDisabled: true,
+    isSignup: false,
   };
 
   // Signup 버튼의 상태를 업데이트하는 함수
@@ -92,7 +93,6 @@ export const useSignupStore = create((set) => {
   const handleNickNameChange = (value) => {
     // 닉네임 유효성 검사
     const isValid = NICKNAME_REG.test(value);
-
     set(
       produce((draft) => {
         // 닉네임 값을 업데이트
@@ -115,7 +115,6 @@ export const useSignupStore = create((set) => {
   const handleNickNameCheck = async () => {
     // 현재 상태에서 사용자 닉네임을 가져옵니다.
     const userNickName = useSignupStore.getState().user.nickName;
-
     // 닉네임이 유효할 때만 중복 확인을 진행합니다.
     if (NICKNAME_REG.test(userNickName)) {
       try {
@@ -156,7 +155,6 @@ export const useSignupStore = create((set) => {
   const handleEmailChange = (value) => {
     // 이메일 유효성 검사
     const isValid = EMAIL_REG.test(value);
-
     set(
       produce((draft) => {
         if (isValid) {
@@ -181,15 +179,12 @@ export const useSignupStore = create((set) => {
   const handleEmailCheck = async () => {
     // 현재 상태에서 사용자 이메일을 가져옵니다.
     const userEmail = useSignupStore.getState().user.email;
-
     // 이메일 유효성 검사
     const isValid = EMAIL_REG.test(userEmail);
-
     if (isValid) {
       try {
         // 이메일에 해당하는 첫 번째 사용자 항목을 가져옵니다.
         const result = await getFirstListItem('users', 'email', userEmail);
-
         // 상태를 업데이트합니다.
         set(
           produce((draft) => {
@@ -206,7 +201,6 @@ export const useSignupStore = create((set) => {
       } catch (error) {
         // 데이터 가져오기 실패 시 콘솔에 오류를 기록합니다.
         console.error('Error fetching user data:', error);
-
         // 오류 발생 시 이메일 버튼 비활성화
         set(
           produce((draft) => {
@@ -259,7 +253,6 @@ export const useSignupStore = create((set) => {
   const handlePhoneNumberCheck = async () => {
     // 현재 상태에서 사용자 전화번호를 가져옵니다.
     const userPhoneNumber = useSignupStore.getState().user.phoneNumber;
-
     try {
       // 전화번호에 해당하는 첫 번째 사용자 항목을 가져옵니다.
       const userExists = await getFirstListItem(
@@ -445,8 +438,13 @@ export const useSignupStore = create((set) => {
 
     try {
       // 사용자 데이터를 서버에 제출합니다.
-      const data = await createData('users', userData);
-      console.log('response', data); // 응답 데이터를 콘솔에 출력합니다.
+      await createData('users', userData);
+      set(
+        produce((draft) => {
+          // 사용자 데이터를 저장합니다.
+          draft.isSignup = true;
+        })
+      );
     } catch (error) {
       console.error('Error:', error.message); // 오류 메시지를 콘솔에 출력합니다.
     }

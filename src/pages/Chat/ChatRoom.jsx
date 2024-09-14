@@ -2,15 +2,17 @@ import { useChatStore } from '@/stores/chatStore';
 import { AppHeader } from '@/components';
 import ChatMessages from './ChatMessages';
 import ChatSubmitForm from './ChatSubmitForm';
+import { useLocation } from 'react-router-dom';
 
 function ChatRoom() {
-  const { chatRooms } = useChatStore((s) => ({
-    chatRooms: s.chatRooms,
+  const { state } = useLocation();
+  const { gymName } = useChatStore((s) => ({
+    gymName: s.gymName,
   }));
-  console.log(chatRooms);
+  const gymNameValue = state?.gymName || gymName;
   return (
     <>
-      <AppHeader chat>{'상담 채팅'}</AppHeader>
+      <AppHeader chat>{gymNameValue}</AppHeader>
       <ChatMessages />
       <ChatSubmitForm />
     </>

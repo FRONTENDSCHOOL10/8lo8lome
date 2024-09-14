@@ -1,65 +1,52 @@
 import { useSwipeable } from 'react-swipeable';
-import { useNavigate } from 'react-router-dom';
 import { shape, func, string } from 'prop-types';
 import { memo, useState } from 'react';
 import { formatLastTime } from '@/utils';
+import { Link } from 'react-router-dom';
 
 SwipeableChatRoom.propTypes = {
   chatRoom: shape({
     id: string.isRequired,
     name: string.isRequired,
     lastMessage: string,
+    lastTime: string,
   }).isRequired,
   onDelete: func.isRequired,
 };
 
 function SwipeableChatRoom({ chatRoom, onDelete }) {
   const { id, name, lastMessage, lastTime } = chatRoom;
-  const navigate = useNavigate();
 
-  // 삭제 버튼의 가시성 상태를 관리
   const [isButtonVisible, setButtonVisible] = useState(false);
 
-  // 스와이프 제스처 처리
   const onSwipedLeft = () => {
-    setButtonVisible(true); // 삭제 버튼 보이기
+    setButtonVisible(true);
   };
 
   const onSwipedRight = () => {
-    if (isButtonVisible) {
-      setButtonVisible(false); // 삭제 버튼 숨기기
-    }
+    setButtonVisible(false);
   };
 
   const handlers = useSwipeable({
     onSwipedLeft,
     onSwipedRight,
-    delta: { x: 20, y: 20 },
+    delta: { x: 30, y: 30 }, // 스와이프 감도 조정
     preventDefaultTouchmoveEvent: true,
-    trackMouse: true, // 마우스 스와이프 추적
+    trackMouse: true,
   });
 
   const handleDelete = () => {
-    try {
-      if (onDelete) onDelete(id);
-    } catch (error) {
-      console.error('Failed to delete chat room:', error);
-    }
+    onDelete?.(id);
   };
 
-  const handleClick = () => {
-    if (!isButtonVisible) {
-      navigate(`/chat/${id}`);
-    }
-  };
   return (
-    <div
+    <li
       {...handlers}
       className="relative flex items-center border-b border-solid border-strokeBlack cursor-pointer text-white py-4"
     >
       <button
         id={`delete-btn-${id}`}
-        className={`absolute right-0 bg-red-500 px-5 py-2 rounded transition-all duration-300 transform ${isButtonVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
+        className={`absolute z-10 right-0 bg-red-500 px-5 py-2 rounded transition-all duration-300 transform ${isButtonVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
         onClick={handleDelete}
       >
         <svg
@@ -70,9 +57,10 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
           <use href={`../assets/sprite.svg#trash`} />
         </svg>
       </button>
-      <div
+      <Link
+        to={`/chat/${id}`}
+        state={{ gymName: name }}
         className="flex gap-3 w-full"
-        onClick={handleClick} // 버튼이 보이지 않을 때만 채팅방으로 이동
       >
         <svg
           className="border-2 border-solid border-white rounded-full text-mainColor p-[6px]"
@@ -83,7 +71,7 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
         >
           <use href={`../assets/sprite.svg#barbell`} />
         </svg>
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-1">
           <h3 className="text-f16 font-semibold">{name}</h3>
           {lastMessage && <p className="text-f12 mt-2">{lastMessage}</p>}
         </div>
@@ -92,8 +80,8 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
             {formatLastTime(lastTime)}
           </p>
         )}
-      </div>
-    </div>
+      </Link>
+    </li>
   );
 }
 
