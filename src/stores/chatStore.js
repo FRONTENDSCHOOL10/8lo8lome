@@ -184,7 +184,6 @@ export const useChatStore = create((set) => {
     if (!isLoggedIn) return; // 로그인하지 않았으면 반환
 
     // 채팅방 정보 업데이트를 위한 데이터 객체
-
     try {
       await updateData('chatRooms', roomId, data);
       // 상태를 최신으로 업데이트
@@ -215,6 +214,37 @@ export const useChatStore = create((set) => {
     }
   };
 
+  const deleteMessage = async (messageId, roomId) => {
+    try {
+      // 메시지 삭제
+      await deleteData('messages', messageId);
+      // 채팅방의 최신 메시지 업데이트
+      await updateLastMessage(roomId);
+      await getChatMessages(roomId);
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
+  };
+
+  const updateLastMessage = async (roomId) => {
+    try {
+      // 현재 채팅방의 메시지를 가져옵니다.
+      const messages = await pb.collection('messages').getFullList({
+        filter: `roomId="${roomId}"`,
+        sort: '-timestamp', // 최신 메시지가 먼저 오도록 정렬
+      });
+      // 가장 최근 메시지를 가져옵니다.
+      const latestMessage = messages[0] || null;
+      // 채팅방 정보 업데이트
+      await updateData('chatRooms', roomId, {
+        lastMessage: latestMessage ? latestMessage.content : '대화가 없습니다.',
+        lastTime: latestMessage ? latestMessage.timestamp : null,
+      });
+    } catch (error) {
+      console.error('Error updating last message:', error);
+    }
+  };
+
   // 상태와 API 호출 함수 반환
   return {
     ...INITIAL_STATE,
@@ -226,5 +256,6 @@ export const useChatStore = create((set) => {
     updateChatRoom,
     getNewMessage,
     deleteChatRoom,
+    deleteMessage,
   };
 });

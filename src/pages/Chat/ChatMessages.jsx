@@ -2,7 +2,7 @@ import pb from '@/api/pb';
 import { useChatStore } from '@/stores/chatStore';
 import { useRef, useEffect, memo } from 'react';
 import { useParams } from 'react-router-dom';
-import { formatLastTime } from '@/utils';
+import SwipeableMessage from './SwipeableMessage';
 
 function ChatMessages() {
   const { roomId } = useParams();
@@ -43,28 +43,10 @@ function ChatMessages() {
 
   return (
     <main className="overflow-y-auto p-4 bg-mainBg min-h-[468px] mt-[100px] mb-[60px]">
-      <div>
-        {currentRoomMessages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex flex-col gap-1 ${message.senderId === userId ? 'items-end' : 'items-start'} py-2`}
-            ref={messagesEndRef}
-          >
-            <div
-              className={`p-3 rounded-lg shadow-sm text-f14 font-semibold ${
-                message.senderId === userId
-                  ? 'bg-mainColor text-mainBg'
-                  : 'bg-gray-100 text-black'
-              }`}
-            >
-              <p>{message.content}</p>
-            </div>
-            <p className="text-gray-400 text-f12 px-1">
-              {formatLastTime(message.timestamp)}
-            </p>
-          </div>
-        ))}
-      </div>
+      {currentRoomMessages.map((message) => (
+        <SwipeableMessage key={message.id} message={message} userId={userId} />
+      ))}
+      <div ref={messagesEndRef} />
     </main>
   );
 }

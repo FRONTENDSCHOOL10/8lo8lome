@@ -36,11 +36,7 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
   });
 
   const handleDelete = () => {
-    try {
-      if (onDelete) onDelete(id);
-    } catch (error) {
-      console.error('Failed to delete chat room:', error);
-    }
+    onDelete?.(id);
   };
 
   return (
