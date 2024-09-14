@@ -11,11 +11,11 @@ function HealthPrice() {
   const { monthly3, monthly5, monthly6 } = healthPrice;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         헬스 가격순(1개월 기준)
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex justify-center gap-s6">
         <li>
           <AppCheckboxInput
             label={'월 3만원'}

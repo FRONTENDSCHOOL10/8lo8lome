@@ -15,15 +15,16 @@ function Filter() {
     <>
       <AppHeader>필터</AppHeader>
       <AppMeta title="검색 필터 페이지" description="검색 필터 페이지입니다." />
-
-      <Rating />
-      <HealthPrice />
-      <PtPrice />
-      <Amenities />
-      <TrainerCount />
-      <TrainerInfo />
-      <Counselor />
-      <AgeGroup />
+      <div className="flex flex-col gap-s6">
+        <Rating />
+        <HealthPrice />
+        <PtPrice />
+        <Amenities />
+        <TrainerCount />
+        <TrainerInfo />
+        <Counselor />
+        <AgeGroup />
+      </div>
     </>
   );
 }

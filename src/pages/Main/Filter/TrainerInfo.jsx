@@ -12,14 +12,14 @@ function TrainerInfo() {
     trainerInfo;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         트레이너 정보
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex gap-2 flex-wrap justify-center">
         <li>
           <AppCheckboxInput
-            label={'건강 운동관리사'}
+            label={'건강운동관리사'}
             name="healthManager"
             isChecked={healthManager}
             onChange={handleCheckboxChange}
@@ -29,7 +29,7 @@ function TrainerInfo() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'생활 체육 지도사'}
+            label={'생활체육지도사'}
             name="sportInstructor"
             isChecked={sportInstructor}
             onChange={handleCheckboxChange}
@@ -39,12 +39,11 @@ function TrainerInfo() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'체육 대학 출신'}
+            label={'체육대학 출신'}
             name="sportUniGraduate"
             isChecked={sportUniGraduate}
             onChange={handleCheckboxChange}
             isFilterClass
-            filterName="trainerInfo"
           />
         </li>
         <li>
