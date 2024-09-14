@@ -1,11 +1,12 @@
 import { useChatStore } from '@/stores/chatStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppHeader } from '@/components';
-import GymDetailHeader from './GymDetailHeader';
 import { AppCheckboxInput } from '@/components';
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
+import GymDetailHeader from './GymDetailHeader';
+import PriceList from './PriceList';
 
 function GymDetail() {
   const { gymId } = useParams();
@@ -32,29 +33,7 @@ function GymDetail() {
 
       <div className="flex flex-col gap-s20">
         <GymDetailHeader />
-
-        <section className="mx-8">
-          <h3 className="text-f18 mb-2">가격</h3>
-          <ul className="flex flex-col gap-4 bg-subBg rounded px-s14 py-s10">
-            <li>
-              <ul className="text-f18 flex flex-col gap-s10">
-                헬스장
-                <li className="text-f16 flex justify-between">
-                  <p>1일권</p>
-                  <p>15,000원</p>
-                </li>
-                <li className="text-f16 flex justify-between">
-                  <p>1개월</p>
-                  <p>60,000원</p>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <ul className="text-f18">PT</ul>
-            </li>
-          </ul>
-        </section>
+        <PriceList />
 
         <section className="mx-8">
           <h3 className="text-f18 mb-2">편의시설</h3>
