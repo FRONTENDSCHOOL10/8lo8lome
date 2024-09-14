@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
+import { AppRating } from '@/components';
 
 function GymList() {
   const { filterGyms } = mainStore((s) => ({
@@ -48,16 +49,7 @@ function GymList() {
                 </p>
                 <div className="flex justify-between text-[0.625rem] pt-4 gap-1">
                   <p className="text-f12 font-normal">{item.address}</p>
-                  <div className="flex items-center gap-[0.125rem]">
-                    <svg
-                      role="icon"
-                      aria-label="별점"
-                      className="w-3 h-3 fill-yellow-300"
-                    >
-                      <use href="/assets/sprite.svg#star" />
-                    </svg>
-                    <p className="text-f12 font-normal">{item.rating}</p>
-                  </div>
+                  <AppRating gymData={item} className="text-f12" />
                 </div>
               </div>
             </Link>

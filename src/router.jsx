@@ -26,6 +26,7 @@ import Filter from '@/pages/Main/Filter/Filter';
 import AppStatusPage from '@/components/AppStatusPage';
 import ChatRoom from '@/pages/Chat/ChatRoom';
 import GymDetail from '@/pages/Main/GymDetail/GymDetail';
+import Review from '@/pages/Main/Review/Review';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -59,6 +60,7 @@ export const routes = createRoutesFromElements(
     />
     <Route path="/map" element={<Map />} />
     <Route path="/main/:gymId" element={<GymDetail />} />
+    <Route path="/Review" element={<Review />} />
     <Route path="/filter" element={<Filter />} />
     <Route
       path="/chat"
