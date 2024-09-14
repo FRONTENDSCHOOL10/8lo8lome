@@ -118,6 +118,7 @@ export const useChatStore = create((set) => {
             unreadCount: newChatRoomData.unreadCount,
             lastTime: newChatRoomData.lastTime,
           });
+          draft.gymName = gymData.name;
         })
       );
     } catch (error) {
