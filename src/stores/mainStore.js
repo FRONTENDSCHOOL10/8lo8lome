@@ -28,17 +28,17 @@ export const mainStore = create((set) => {
         monthly6: false,
       },
       ptPrice: {
-        pt15: false,
-        pt25: false,
-        pt30: false,
+        pt50: false,
+        pt60: false,
+        pt70: false,
       },
       amenities: {
         parking: false,
-        shower: false,
+        showerRoom: false,
         gxRoom: false,
         wifi: false,
-        personalLocker: false,
-        workoutClothes: false,
+        locker: false,
+        clothes: false,
       },
       trainerCount: {
         oneToTwo: false,
@@ -113,6 +113,24 @@ export const mainStore = create((set) => {
     return filters;
   };
 
+  const applyPtPriceFilter = (gym, filterNames) => {
+    const ptPrice = gym.PtPrice || {};
+    const tenSessionsPrice = ptPrice['10Sessions'] || 0;
+    const filter = filterNames.every((filterName) => {
+      const maxPrice = parseInt(filterName.replace('pt', ''), 10) * 10000;
+      return tenSessionsPrice <= maxPrice;
+    });
+    return filter;
+  };
+
+  // 편의시설 필터 처리 함수
+  const applyAmenitiesFilter = (gym, filterNames) => {
+    // 편의시설 데이터를 가져옵니다
+    const amenities = gym.amenities || {};
+    // 필터링된 편의시설 체크
+    return filterNames.every((filterName) => amenities[filterName] === true);
+  };
+
   // 필터링된 헬스장 목록 업데이트 함수
   const updateCheckedFilters = () => {
     const { searchFilter } = mainStore.getState();
@@ -142,6 +160,14 @@ export const mainStore = create((set) => {
           if (filterCategory === 'healthPrice') {
             // 가격 필터 처리
             return applyPriceFilter(gym, filterNames);
+          }
+          if (filterCategory === 'ptPrice') {
+            // PT 가격 필터 처리
+            return applyPtPriceFilter(gym, filterNames);
+          }
+          if (filterCategory === 'amenities') {
+            // 편의시설 필터 처리
+            return applyAmenitiesFilter(gym, filterNames);
           }
 
           // 다른 필터 카테고리 처리
