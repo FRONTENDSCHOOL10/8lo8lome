@@ -48,7 +48,7 @@ function Amenities() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'WIFI'}
+            label={'Wi-Fi'}
             name="wifi"
             isChecked={wifi}
             onChange={handleCheckboxChange}

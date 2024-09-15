@@ -31,7 +31,7 @@ function GymList() {
             <Link
               to={`/main/${item.id}`}
               className="text-white flex gap-s10
-            bg-subBg rounded items-center"
+            bg-subBg rounded p-s10 items-center"
               aria-label={`${item.name} 헬스장 상세 정보 링크`}
             >
               <img
@@ -39,10 +39,8 @@ function GymList() {
                 alt={`${item.name} 헬스장 이미지`}
                 className="w-[32.94%] h-[22.94%] max-w-[250px] max-h-[250px] object-cover rounded"
               />
-
               <div className="flex flex-col w-full">
                 <h2 className="text-f16 font-bold">{item.name}</h2>
-
                 <p className="text-f12 font-medium pt-s6">
                   일일권 가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
