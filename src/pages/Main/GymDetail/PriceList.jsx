@@ -6,12 +6,6 @@ function PriceList() {
     gymData: s.searchInput.gymData,
   }));
 
-  const isPriceAllNull = (priceType) => {
-    return Object.values(gymData.price[priceType]).every(
-      (value) => value === null
-    );
-  };
-
   const gymPriceName = {
     '1일권': '1day',
     '1개월': '1month',
@@ -28,6 +22,16 @@ function PriceList() {
     '10회': '10sessions',
   };
 
+  const isPriceAllNull = (priceType) => {
+    return Object.values(gymData.price[priceType]).every(
+      (value) => value === null
+    );
+  };
+
+  const getPriceLabel = (priceType, value, trueValue, falseValue) => {
+    return gymData.price[priceType][value] === '무료' ? trueValue : falseValue;
+  };
+
   return (
     <section className="mx-s31">
       <h3 className="text-f18 font-bold mb-s10">가격</h3>
@@ -39,13 +43,23 @@ function PriceList() {
               헬스장
               {Object.entries(gymPriceName).map(([key, value]) => {
                 if (gymData.price.gymPrice[value]) {
+                  const priceLabel = getPriceLabel('gymPrice', value, '', '원');
+
                   return (
                     <li
                       key={key}
                       className="text-f16 font-bold flex justify-between"
                     >
                       <p>{key}</p>
-                      <p>{gymData.price.gymPrice[value]}원</p>
+                      <p>
+                        {getPriceLabel(
+                          'gymPrice',
+                          value,
+                          gymData.price.gymPrice[value],
+                          Number(gymData.price.gymPrice[value]).toLocaleString()
+                        )}
+                        {priceLabel}
+                      </p>
                     </li>
                   );
                 }
@@ -60,13 +74,23 @@ function PriceList() {
               PT
               {Object.entries(ptPriceName).map(([key, value]) => {
                 if (gymData.price.ptPrice[value]) {
+                  const priceLabel = getPriceLabel('gymPrice', value, '', '원');
+
                   return (
                     <li
                       key={key}
                       className="text-f16 font-bold flex justify-between"
                     >
                       <p>{key}</p>
-                      <p>{gymData.price.ptPrice[value]}원</p>
+                      <p>
+                        {getPriceLabel(
+                          'ptPrice',
+                          value,
+                          gymData.price.ptPrice[value],
+                          Number(gymData.price.ptPrice[value]).toLocaleString()
+                        )}
+                        {priceLabel}
+                      </p>
                     </li>
                   );
                 }
