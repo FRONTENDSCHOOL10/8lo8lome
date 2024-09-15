@@ -28,17 +28,16 @@ function GymList() {
                 checkedColor="text-red-500"
               />
             </div>
-
             <Link
               to={`/main/${item.id}`}
               className="text-white flex gap-s10
-            bg-subBg rounded p-s10 items-center"
+            bg-subBg rounded items-center"
               aria-label={`${item.name} 헬스장 상세 정보 링크`}
             >
               <img
                 src={imgUrl[0]}
                 alt={`${item.name} 헬스장 이미지`}
-                className="w-[32.94%] h-[22.94%] object-cover rounded"
+                className="w-[32.94%] h-[22.94%] max-w-[250px] max-h-[250px] object-cover rounded"
               />
 
               <div className="flex flex-col w-full">

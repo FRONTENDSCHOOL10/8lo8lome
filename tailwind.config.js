@@ -25,7 +25,7 @@ export default {
         mainColor: '#16efa4',
         mainBg: '#171717',
         subBg: '#1E1E1E',
-        grayBoder: '#8E98A8',
+        grayBorder: '#8E98A8',
         warning: '#fd0000',
         borderPrimary: '#16efa4',
       },
