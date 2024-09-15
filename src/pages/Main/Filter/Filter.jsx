@@ -4,10 +4,10 @@ import Rating from './Rating.jsx';
 import HealthPrice from './HealthPrice.jsx';
 import PtPrice from './PtPrice.jsx';
 import Amenities from './Amenities.jsx';
-import TrainerCount from './TrainerCount.jsx';
-import TrainerInfo from './TrainerInfo.jsx';
-import Counselor from './Counselor.jsx';
-import AgeGroup from './AgeGroup.jsx';
+// import TrainerCount from './TrainerCount.jsx';
+// import TrainerInfo from './TrainerInfo.jsx';
+// import Counselor from './Counselor.jsx';
+// import AgeGroup from './AgeGroup.jsx';
 import { memo } from 'react';
 
 function Filter() {
@@ -20,10 +20,10 @@ function Filter() {
         <HealthPrice />
         <PtPrice />
         <Amenities />
-        <TrainerCount />
-        <TrainerInfo />
-        <Counselor />
-        <AgeGroup />
+        {/* <TrainerCount /> */}
+        {/* <TrainerInfo /> */}
+        {/* <Counselor /> */}
+        {/* <AgeGroup /> */}
       </div>
     </>
   );

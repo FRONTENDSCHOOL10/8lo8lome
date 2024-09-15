@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import { array, string } from 'prop-types';
+import { string, object } from 'prop-types';
 
 AppRating.propTypes = {
-  gymData: array,
+  gymData: object,
   className: string,
 };
 

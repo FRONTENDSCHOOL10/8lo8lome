@@ -8,8 +8,7 @@ function Amenities() {
     amenities: s.searchFilter.amenities,
   }));
 
-  const { parking, shower, gxRoom, wifi, personalLocker, workoutClothes } =
-    amenities;
+  const { parking, showerRoom, gxRoom, wifi, locker, clothes } = amenities;
 
   return (
     <fieldset className="mx-[1.9375rem]">
@@ -30,8 +29,8 @@ function Amenities() {
         <li>
           <AppCheckboxInput
             label={'샤워실'}
-            name="shower"
-            isChecked={shower}
+            name="showerRoom"
+            isChecked={showerRoom}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="amenities"
@@ -60,8 +59,8 @@ function Amenities() {
         <li>
           <AppCheckboxInput
             label={'개인락커'}
-            name="personalLocker"
-            isChecked={personalLocker}
+            name="locker"
+            isChecked={locker}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="amenities"
@@ -70,8 +69,8 @@ function Amenities() {
         <li>
           <AppCheckboxInput
             label={'운동복'}
-            name="workoutClothes"
-            isChecked={workoutClothes}
+            name="clothes"
+            isChecked={clothes}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="amenities"
