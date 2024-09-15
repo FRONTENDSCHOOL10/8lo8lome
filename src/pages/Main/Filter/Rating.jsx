@@ -7,7 +7,6 @@ function Rating() {
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
     rating: s.searchFilter.rating,
   }));
-
   const { star1, star2, star3, star4, star5 } = rating;
 
   return (
