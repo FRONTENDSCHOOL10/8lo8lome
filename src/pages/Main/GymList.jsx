@@ -31,7 +31,7 @@ function GymList() {
             <Link
               to={`/main/${item.id}`}
               className="text-white flex gap-s10
-            bg-subBg rounded items-center"
+            bg-subBg rounded p-s10 items-center"
               aria-label={`${item.name} 헬스장 상세 정보 링크`}
             >
               <img
