@@ -12,8 +12,8 @@ export const mainStore = create((set) => {
       isGymsLoaded: false,
       selectedFilters: [],
       gymData: {},
+      updatedFilters: [],
     },
-
     searchFilter: {
       rating: {
         star1: false,
@@ -45,23 +45,6 @@ export const mainStore = create((set) => {
         threeToFour: false,
         fiveToSix: false,
       },
-      trainerInfo: {
-        healthManager: false,
-        sportInstructor: false,
-        sportUniGraduate: false,
-        bodybuilder: false,
-      },
-      counselor: {
-        available: false,
-        notAvailable: false,
-      },
-      ageGroup: {
-        teenTo20: false,
-        twentyTo30: false,
-        thirtyTo40: false,
-        fortyTo50: false,
-        fiftyTo60: false,
-      },
     },
   };
 
@@ -88,38 +71,36 @@ export const mainStore = create((set) => {
     });
   };
 
-  const getMonthlyPrice = (priceData) => {
-    const monthlyPrices = {};
-    Object.entries(priceData).forEach(([duration, price]) => {
-      const months = parseInt(duration.replace('Months', ''), 10);
-      if (months > 0) {
-        // 월별 가격을 계산하고 천 단위로 반올림
-        const monthlyPrice = Math.round(parseInt(price, 10) / months);
-        monthlyPrices[duration] = monthlyPrice;
-      }
-    });
-    return monthlyPrices;
-  };
-
   const applyPriceFilter = (gym, filterNames) => {
     const gymPrices = gym.healthPrice || {};
-    const gymMonthlyPrices = getMonthlyPrice(gymPrices);
-    console.log(gymMonthlyPrices);
+
+    const oneMonthPrice = gymPrices['1Month']
+      ? parseInt(gymPrices['1Month'], 10)
+      : null;
+
+    if (!oneMonthPrice) return;
+
     const filters = filterNames.every((filterName) => {
       const maxPrice = parseInt(filterName.replace('monthly', ''), 10) * 10000;
-      return Object.values(gymMonthlyPrices).some((price) => price <= maxPrice);
+      return oneMonthPrice <= maxPrice;
     });
-    console.log(filters);
     return filters;
   };
 
   const applyPtPriceFilter = (gym, filterNames) => {
     const ptPrice = gym.PtPrice || {};
-    const tenSessionsPrice = ptPrice['10Sessions'] || 0;
+
+    const tenSessionsPrice = ptPrice['10Sessions']
+      ? parseInt(ptPrice['10Sessions'], 10)
+      : null;
+
+    if (!tenSessionsPrice) return;
+
     const filter = filterNames.every((filterName) => {
       const maxPrice = parseInt(filterName.replace('pt', ''), 10) * 10000;
       return tenSessionsPrice <= maxPrice;
     });
+
     return filter;
   };
 
@@ -187,22 +168,53 @@ export const mainStore = create((set) => {
     );
   };
 
-  // 선택한 필터 리스트를 새로운 배열로 반환해주는 핸들러
-  const handleSelectedFilters = () => {
-    let updatedFilters = [];
+  const amenitiesMapping = {
+    parking: '주차장',
+    wifi: 'Wi-Fi',
+    showerRoom: '샤워실',
+    locker: '개인락커',
+    clothes: '운동복',
+    gxRoom: 'GX룸',
+  };
 
+  const handleSelectedFilters = () => {
     set(
       produce((draft) => {
+        // 기존에 저장된 updatedFilters를 초기화
+        draft.searchInput.updatedFilters = [];
+
+        // searchFilter를 순회하며 true인 필터 추출 및 변환
         Object.keys(draft.searchFilter).forEach((key) => {
           const trueFilters = Object.entries(draft.searchFilter[key])
             .filter(([, value]) => value === true)
-            .map(([k]) => k);
+            .map(([filterName]) => {
+              // 별점 필터 변환
+              if (filterName.startsWith('star')) {
+                const stars = filterName.replace('star', '');
+                return '⭐'.repeat(parseInt(stars, 10));
+              }
+              // 헬스 가격 필터 변환
+              if (filterName.startsWith('monthly')) {
+                const price = filterName.replace('monthly', '');
+                return `월 ${price}만원 이하`;
+              }
+              // PT 가격 필터 변환
+              if (filterName.startsWith('pt')) {
+                const price = filterName.replace('pt', '');
+                return `PT 10회 ${price}만원 이하`;
+              }
+              // 어메니티 필터 변환 (편의시설)
+              if (amenitiesMapping[filterName]) {
+                return amenitiesMapping[filterName];
+              }
+              return filterName; // 변환 불가한 필터는 그대로 반환
+            });
 
+          // 변환된 필터가 있으면 updatedFilters 배열에 추가
           if (trueFilters.length > 0) {
-            updatedFilters.push(...trueFilters);
+            draft.searchInput.updatedFilters.push(...trueFilters);
           }
         });
-        // console.log(updatedFilters);
       })
     );
   };

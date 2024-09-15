@@ -18,7 +18,7 @@ function PtPrice() {
       <ul className="flex justify-center gap-s6">
         <li>
           <AppCheckboxInput
-            label={'50만원 이하'}
+            label={'50만원'}
             name="pt50"
             isChecked={pt50}
             onChange={handleCheckboxChange}
@@ -28,7 +28,7 @@ function PtPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'60만원 이하'}
+            label={'60만원'}
             name="pt60"
             isChecked={pt60}
             onChange={handleCheckboxChange}
@@ -38,7 +38,7 @@ function PtPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'70만원 이하'}
+            label={'70만원'}
             name="pt70"
             isChecked={pt70}
             onChange={handleCheckboxChange}
