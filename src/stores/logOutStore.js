@@ -7,7 +7,7 @@ import { removeStorageData } from '@/utils';
 export const useLogoutStore = create((set) => {
   const INITIAL_STATE = {
     isLoggedOut: false,
-    isLoggedIn: false,
+    
   };
 
   const handleLogout = async () => {
@@ -20,7 +20,7 @@ export const useLogoutStore = create((set) => {
         set(
           produce((draft) => {
             draft.isLoggedOut = true;
-            draft.isLoggedIn = false;
+            
           })
         );
         pb.authStore.clear();
