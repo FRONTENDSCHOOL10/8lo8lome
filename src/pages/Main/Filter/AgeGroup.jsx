@@ -11,11 +11,11 @@ function AgeGroup() {
   const { teenTo20, twentyTo30, thirtyTo40, fortyTo50, fiftyTo60 } = ageGroup;
 
   return (
-    <fieldset className="pl-[1.9375rem] pr-[1.9375rem]">
-      <legend className="text-f16 py-4 px-s10 border-b-2 border-solid border-strokeBlack w-full">
+    <fieldset className="mx-[1.9375rem]">
+      <legend className="text-f16 font-semibold py-4 px-s10 mb-4 border-b-2 border-solid border-strokeBlack w-full">
         연령순
       </legend>
-      <ul className="flex gap-4 flex-wrap pt-4 justify-center">
+      <ul className="flex gap-2 flex-wrap justify-center">
         <li>
           <AppCheckboxInput
             label={'10~20대'}

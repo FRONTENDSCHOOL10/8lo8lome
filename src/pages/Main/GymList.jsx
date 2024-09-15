@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import getPbImageURL from '@/utils/getPbImageURL';
 import { Link } from 'react-router-dom';
+import { AppRating } from '@/components';
 
 function GymList() {
   const { filterGyms } = mainStore((s) => ({
@@ -10,14 +11,14 @@ function GymList() {
   }));
 
   return (
-    <ul className="flex flex-col gap-4 mb-[3.6875rem] ">
+    <ul className="flex flex-col gap-4 mb-16 px-[1.9375rem]">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
           <li key={item.id} className="relative">
-            <div className="absolute top-2 right-2 pl-7 pb-7">
+            <div className="absolute top-[0.5625rem] right-2 pl-7 pb-7">
               <AppCheckboxInput
-                label={'헬스장 정보 찜하기'}
+                label={'헬스장 정보 찜하기 체크박스'}
                 isHiddenLabel
                 // name="over14"
                 // isChecked={over14}
@@ -27,37 +28,27 @@ function GymList() {
                 checkedColor="text-red-500"
               />
             </div>
-
             <Link
               to={`/main/${item.id}`}
-              className="text-white flex gap-[0.625rem]
-            bg-subBg rounded p-[0.625rem]"
+              className="text-white flex gap-s10
+            bg-subBg rounded items-center"
+              aria-label={`${item.name} 헬스장 상세 정보 링크`}
             >
               <img
                 src={imgUrl[0]}
                 alt={`${item.name} 헬스장 이미지`}
-                className="max-w-[90px]"
+                className="w-[32.94%] h-[22.94%] max-w-[250px] max-h-[250px] object-cover rounded"
               />
-              <div className="flex flex-col w-full">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-base w-[70%]">{item.name}</h2>
-                </div>
 
-                <p className="text-f12">
-                  가격 : {item.oneDayPrice.toLocaleString()}원
+              <div className="flex flex-col w-full">
+                <h2 className="text-f16 font-bold">{item.name}</h2>
+
+                <p className="text-f12 font-medium pt-s6">
+                  일일권 가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
-                <div className="flex justify-between text-[0.625rem] pt-4">
-                  <p className="text-f12">{item.address}km</p>
-                  <div className="flex items-center gap-1">
-                    <svg
-                      role="icon"
-                      aria-label="별점"
-                      className="w-3 h-3 fill-yellow-300"
-                    >
-                      <use href="/assets/sprite.svg#star" />
-                    </svg>
-                    <p className="text-f12">{item.rating}</p>
-                  </div>
+                <div className="flex justify-between text-[0.625rem] pt-4 gap-1">
+                  <p className="text-f12 font-normal">{item.address}</p>
+                  <AppRating gymData={item} className="text-f12" />
                 </div>
               </div>
             </Link>

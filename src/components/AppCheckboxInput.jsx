@@ -13,6 +13,7 @@ AppCheckboxInput.propTypes = {
   checkedColor: string,
   unCheckedColor: string,
   isFilterClass: bool,
+  filterName: string,
 };
 
 function AppCheckboxInput({
@@ -27,6 +28,7 @@ function AppCheckboxInput({
   checkedColor = 'text-mainColor',
   unCheckedColor = 'text-white',
   isFilterClass = false,
+  filterName = '',
   ...restProps
 }) {
   const id = useId();
@@ -48,7 +50,7 @@ function AppCheckboxInput({
 
   const filterCheckedClass = isChecked ? 'border-mainColor' : ' ';
   const filterClass = isFilterClass
-    ? 'p-3 border-2 border-solid border-grayBoder rounded-3xl'
+    ? 'p-3 border border-solid border-grayBorder rounded-[1.5625rem] text-f16 font-semibold'
     : ' ';
 
   return (
@@ -61,6 +63,7 @@ function AppCheckboxInput({
         checked={isChecked}
         onChange={handleChange}
         required={required}
+        data-filtername={filterName}
         {...restProps}
       />
       <label
