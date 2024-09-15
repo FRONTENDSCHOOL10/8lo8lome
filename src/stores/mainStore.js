@@ -79,11 +79,44 @@ export const mainStore = create((set) => {
     updateCheckedFilters();
   };
 
+  // 별점 필터를 처리하는 함수
+  const applyRatingFilter = (gym, filterNames) => {
+    const rating = gym.rating; // gym 객체에서 별점 값 가져오기
+    return filterNames.some((filterName) => {
+      const starRating = parseInt(filterName.replace('star', ''), 10);
+      return rating >= starRating; // 별점이 해당 필터보다 크거나 같은 경우
+    });
+  };
+
+  const getMonthlyPrice = (priceData) => {
+    const monthlyPrices = {};
+    Object.entries(priceData).forEach(([duration, price]) => {
+      const months = parseInt(duration.replace('Months', ''), 10);
+      if (months > 0) {
+        // 월별 가격을 계산하고 천 단위로 반올림
+        const monthlyPrice = Math.round(parseInt(price, 10) / months);
+        monthlyPrices[duration] = monthlyPrice;
+      }
+    });
+    return monthlyPrices;
+  };
+
+  const applyPriceFilter = (gym, filterNames) => {
+    const gymPrices = gym.healthPrice || {};
+    const gymMonthlyPrices = getMonthlyPrice(gymPrices);
+    console.log(gymMonthlyPrices);
+    const filters = filterNames.every((filterName) => {
+      const maxPrice = parseInt(filterName.replace('monthly', ''), 10) * 10000;
+      return Object.values(gymMonthlyPrices).some((price) => price <= maxPrice);
+    });
+    console.log(filters);
+    return filters;
+  };
+
+  // 필터링된 헬스장 목록 업데이트 함수
   const updateCheckedFilters = () => {
     const { searchFilter } = mainStore.getState();
     const { gymsList } = mainStore.getState().searchInput;
-    console.log(gymsList);
-    // 상태에서 searchFilter 및 gymsList 가져오기
     const checkedFilters = {};
 
     // 체크된 필터 추출
@@ -104,11 +137,11 @@ export const mainStore = create((set) => {
         ([filterCategory, filterNames]) => {
           if (filterCategory === 'rating') {
             // 별점 필터 처리
-            const rating = gym.rating; // gym 객체에서 별점 값 가져오기
-            return filterNames.some((filterName) => {
-              const starRating = parseInt(filterName.replace('star', ''), 10);
-              return rating >= starRating; // 별점이 해당 필터보다 크거나 같은 경우
-            });
+            return applyRatingFilter(gym, filterNames);
+          }
+          if (filterCategory === 'healthPrice') {
+            // 가격 필터 처리
+            return applyPriceFilter(gym, filterNames);
           }
 
           // 다른 필터 카테고리 처리

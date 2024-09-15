@@ -18,12 +18,12 @@ function Filter() {
       <div className="flex flex-col gap-s6">
         <Rating />
         <HealthPrice />
-        <PtPrice />
-        <Amenities />
-        <TrainerCount />
-        <TrainerInfo />
-        <Counselor />
-        <AgeGroup />
+        {/* <PtPrice /> */}
+        {/* <Amenities /> */}
+        {/* <TrainerCount /> */}
+        {/* <TrainerInfo /> */}
+        {/* <Counselor /> */}
+        {/* <AgeGroup /> */}
       </div>
     </>
   );
