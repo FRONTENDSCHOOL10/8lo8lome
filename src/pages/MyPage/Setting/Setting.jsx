@@ -24,7 +24,11 @@ function Setting() {
       >
         <ul className="flex flex-col items-start justify-center">
           <li className="flex items-center border-b border-solid py-s20 w-s278 h-s62 border-strokeBlack">
-            <Link to="/SignOut" className="flex items-center ">
+            <button
+              to="/SignOut"
+              className="flex items-center "
+              onClick={handleDeleteUser}
+            >
               <svg
                 role="icon"
                 aria-label="탈퇴"

@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom';
+import { memo } from 'react';
+import { useLogoutStore } from '@/stores/logOutStore';
+import { AppStatusPage } from '@/components';
 
 const myInfo = [
   {
@@ -57,26 +60,21 @@ const myInfo = [
     ),
     link: '/mypage/setting',
   },
-  {
-    id: 5,
-    title: '로그아웃',
-    icon: (
-      <svg
-        role="icon"
-        aria-label="로그아웃"
-        className="text-white w-s16 h-s20 mx-s10"
-      >
-        <use href="/assets/sprite.svg#log-out" />
-      </svg>
-    ),
-    link: '/mypage/logOut',
-  },
 ];
 
-export default function MyInfo() {
+function MyInfo() {
+  const { handleLogout, isLoggedOut } = useLogoutStore((s) => ({
+    handleLogout: s.handleLogout,
+    isLoggedOut: s.isLoggedOut,
+  }));
+
+  if (isLoggedOut) {
+    return <AppStatusPage status="logout" />;
+  }
+
   return (
     <section className="flex flex-row w-full" aria-label="내 정보 목록">
-      <ul className="w-full p-s20">
+      <ul className="w-full p-s20 mb-s50">
         {myInfo.map((item) => (
           <li key={item.id}>
             <Link
@@ -98,7 +96,27 @@ export default function MyInfo() {
             </Link>
           </li>
         ))}
+        <li className="flex items-center border-b border-solid py-s20 h-s62 border-strokeBlack">
+          <button className="flex items-center w-full" onClick={handleLogout}>
+            <svg
+              role="icon"
+              aria-label="로그아웃"
+              className="text-white w-s18 h-s18 mr-s10 ml-s10"
+            >
+              <use href="/assets/sprite.svg#log-out" />
+            </svg>
+            <p>로그아웃</p>
+            <svg
+              role="icon"
+              aria-label="로그아웃 버튼"
+              className="text-white w-s18 h-s18 mr-s10"
+            >
+              <use href="/assets/sprite.svg#arrow-forward" />
+            </svg>
+          </button>
+        </li>
       </ul>
     </section>
   );
 }
+export default memo(MyInfo);
