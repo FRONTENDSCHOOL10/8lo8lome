@@ -27,8 +27,18 @@ export const useDeleteIdStore = create((set) => {
       }
     }
   };
+
+  const resetDeleteState = () => {
+    set(
+      produce((draft) => {
+        draft.isDeleteId = false; // 로그아웃 상태를 false로 설정
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleDeleteUser,
+    resetDeleteState,
   };
 });
