@@ -6,13 +6,24 @@ import MyInfo from './MyInfo';
 import AppMeta from '@/components/AppMeta';
 import { useLogoutStore } from '@/stores/logOutStore';
 import { AppStatusPage } from '@/components';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 function MyPage() {
-  const { handleLogout, isLoggedOut } = useLogoutStore((s) => ({
-    handleLogout: s.handleLogout,
-    isLoggedOut: s.isLoggedOut,
-  }));
+  const { handleLogout, isLoggedOut, resetLogoutState } = useLogoutStore(
+    (s) => ({
+      handleLogout: s.handleLogout,
+      isLoggedOut: s.isLoggedOut,
+      resetLogoutState: s.resetLogoutState,
+    })
+  );
+
+  useEffect(() => {
+    resetLogoutState(); 
+    
+    // 로그인 시 상태 초기화
+  }, [resetLogoutState]);
+
+  console.log(isLoggedOut);
 
   if (isLoggedOut) {
     return <AppStatusPage status="logout" />;

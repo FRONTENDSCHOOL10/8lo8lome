@@ -2,10 +2,7 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
 import getPbImageURL from '@/utils/getPbImageURL';
-import { NICKNAME_REG } from '@/constant';
-import { getFirstListItem } from '@/api/CRUD';
 
-// Zustand store 생성
 export const useMyPageStore = create((set) => {
   const INITIAL_STATE = {
     userData: {
@@ -26,40 +23,6 @@ export const useMyPageStore = create((set) => {
         state.userData = { ...state.userData, ...newData };
       })
     );
-  };
-
-  // 닉네임을 설정하는 함수
-  const getNickName = (value) => {
-    const { isLogin } = useMyPageStore.getState();
-    if (!isLogin) {
-      return;
-    }
-    const isValid = NICKNAME_REG.test(value);
-    set(
-      produce((state) => {
-        if (isValid) {
-          state.userData.nickName = value;
-          state.isNicknameDisabled = true;
-        } else {
-          state.isNicknameDisabled = false;
-        }
-      })
-    );
-  };
-
-  const checkNickname = async () => {
-    const { isLogin } = useMyPageStore.getState();
-    const { nickName } = useMyPageStore.getState().userData;
-    if (!isLogin) {
-      return;
-    }
-    const data = await getFirstListItem('users', 'nickName', nickName);
-    set(
-      produce((state) => {
-        state.isNickname = true;
-      })
-    );
-    return data ? false : true;
   };
 
   // 사용자 데이터를 가져오는 함수
@@ -123,9 +86,7 @@ export const useMyPageStore = create((set) => {
   return {
     ...INITIAL_STATE,
     setUserData,
-    getNickName,
     fetchUserData,
     updateProfile,
-    checkNickname,
   };
 });
