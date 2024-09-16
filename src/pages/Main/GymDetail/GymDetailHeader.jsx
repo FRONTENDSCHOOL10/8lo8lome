@@ -26,7 +26,6 @@ function GymDetailHeader() {
 
   return (
     <section className="ml-s31 mt-[100px]">
-      {/* 스와이퍼 컴포넌트화 하기 */}
       <section
         aria-label={`${gymData.name} 헬스장 이미지`}
         className="flex justify-center"

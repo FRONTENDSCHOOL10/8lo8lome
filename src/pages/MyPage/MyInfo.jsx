@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
+import { useLogoutStore } from '@/stores/logOutStore';
 
 const myInfo = [
   {
@@ -61,8 +62,15 @@ const myInfo = [
 ];
 
 function MyInfo() {
+  const { handleLogout } = useLogoutStore((s) => ({
+    handleLogout: s.handleLogout,
+  }));
+
   return (
-    <section className="flex flex-row w-full" aria-label="내 정보 목록">
+    <section
+      className="flex flex-row w-full mb-[60px]"
+      aria-label="내 정보 목록"
+    >
       <ul className="w-full px-s20">
         {myInfo.map((item) => (
           <li key={item.id}>
@@ -84,6 +92,29 @@ function MyInfo() {
             </Link>
           </li>
         ))}
+        <li>
+          <button
+            className="flex items-center border-b border-solid h-s62 border-strokeBlack py-s20"
+            onClick={handleLogout}
+            type="button"
+          >
+            <svg
+              role="icon"
+              aria-label="설정"
+              className="text-white w-s16 h-s20 mx-s10"
+            >
+              <use href="/assets/sprite.svg#log-out" />
+            </svg>
+            <h2 className="font-semibold text-white text-f16">로그아웃</h2>
+            <svg
+              role="icon"
+              aria-label="페이지 이동 버튼"
+              className="text-white w-s18 h-s18 mr-s10"
+            >
+              <use href="/assets/sprite.svg#arrow-forward" />
+            </svg>
+          </button>
+        </li>
       </ul>
     </section>
   );
