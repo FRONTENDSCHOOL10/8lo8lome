@@ -1,47 +1,63 @@
-import { memo } from 'react';
-import { useSignupStore } from '@/stores/signStore';
+import { memo, useState } from 'react';
+import { useMyPageStore } from '@/stores/myPageStore';
 import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
 
 function EditNickname() {
-  const {
-    handleNickNameChange,
-    handleNickNameCheck,
-    isNickNameExists,
-    isNickNameButtonDisabled,
-  } = useSignupStore((s) => ({
-    handleNickNameChange: s.handleMethod.handleNickNameChange,
-    handleNickNameCheck: s.handleMethod.handleNickNameCheck,
-    isNickNameExists: s.authMessages.isNickNameExists,
-    isNickNameButtonDisabled: s.nickNameValidation.isNickNameButtonDisabled,
-  }));
+  const { checkNicknameDuplicate, updateNickname, userData } = useMyPageStore(
+    (state) => ({
+      checkNicknameDuplicate: state.checkNicknameDuplicate,
+      updateNickname: state.updateNickname,
+      userData: state.userData,
+    })
+  );
 
-  const isNickNameExist = {
-    warning: isNickNameExists == '이미 존재하는 닉네임입니다.' ? true : false,
-    message: isNickNameExists,
+  const [nickname, setNickname] = useState(userData.nickName);
+  const [isNicknameValid, setIsNicknameValid] = useState(null);
+
+  const handleChange = (e) => {
+    setNickname(e.target.value);
   };
 
-  const { warning, message } = isNickNameExist;
+  const handleCheck = async () => {
+    const isValid = await checkNicknameDuplicate(nickname);
+    setIsNicknameValid(isValid);
+  };
+
+  const handleUpdate = async () => {
+    if (isNicknameValid) {
+      await updateNickname(nickname); // 닉네임 업데이트 호출
+    }
+  };
 
   return (
     <article className="p-s20">
-      <fieldset className="flex gap-2 ">
+      <fieldset className="flex gap-2">
         <legend className="sr-only">닉네임 입력</legend>
         <AppTextInput
           label="닉네임"
           placeholder="닉네임 입력"
           isHiddenLabel
-          onChange={handleNickNameChange}
+          // value={nickname} // Controlled input: value를 상태로 관리
+          onChange={handleChange}
           required
         />
-        <AppButton
-          isFilled={false}
-          disabled={isNickNameButtonDisabled}
-          onClick={handleNickNameCheck}
-        >
+        <AppButton isFilled={false} onClick={handleCheck}>
           중복확인
         </AppButton>
       </fieldset>
-      <AppAuthMessage warning={warning}>{message}</AppAuthMessage>
+      {isNicknameValid === false && (
+        <AppAuthMessage warning>이미 사용 중인 닉네임입니다.</AppAuthMessage>
+      )}
+      {isNicknameValid === true && (
+        <AppAuthMessage success>사용 가능한 닉네임입니다.</AppAuthMessage>
+      )}
+      {/* <AppButton
+        isFilled={true}
+        onClick={handleUpdate}
+        disabled={!isNicknameValid}
+      >
+        닉네임 변경
+      </AppButton> */}
     </article>
   );
 }

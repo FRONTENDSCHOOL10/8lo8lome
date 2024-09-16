@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
+import { getData } from '@/api/CRUD';
 import getPbImageURL from '@/utils/getPbImageURL';
 
 export const useMyPageStore = create((set) => {
-  const INITIAL_STATE = {
+  const INITIAL_s = {
     userData: {
       id: pb.authStore.model?.id || '',
       nickName: '',
@@ -19,8 +20,8 @@ export const useMyPageStore = create((set) => {
   // 상태를 설정하는 함수
   const setUserData = (newData) => {
     set(
-      produce((state) => {
-        state.userData = { ...state.userData, ...newData };
+      produce((s) => {
+        s.userData = { ...s.userData, ...newData };
       })
     );
   };
@@ -36,8 +37,8 @@ export const useMyPageStore = create((set) => {
         profileImage: getPbImageURL(authData),
       };
       set(
-        produce((state) => {
-          state.userData = { ...state.userData, ...userProfileData };
+        produce((s) => {
+          s.userData = { ...s.userData, ...userProfileData };
         })
       );
     }
@@ -64,9 +65,9 @@ export const useMyPageStore = create((set) => {
           .update(authData.id, formData);
 
         set(
-          produce((state) => {
-            state.userData = {
-              ...state.userData,
+          produce((s) => {
+            s.userData = {
+              ...s.userData,
               nickname: updatedRecord.nickName,
               email: updatedRecord.email,
               profileImage: getPbImageURL(
@@ -83,10 +84,65 @@ export const useMyPageStore = create((set) => {
     }
   };
 
+  const checkNicknameDuplicate = async (nickname) => {
+    try {
+      const response = await getData('users', {
+        filter: `nickName="${nickname}"`,
+      });
+      if (response.items.length > 0) {
+        set(
+          produce((s) => {
+            s.isNickname = false; // 중복된 닉네임
+          })
+        );
+        return false;
+      } else {
+        set(
+          produce((s) => {
+            s.isNickname = true; // 중복되지 않음
+          })
+        );
+        return true;
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 실패:', error);
+      set(
+        produce((s) => {
+          s.isNickname = null; // 에러 처리
+        })
+      );
+      return false;
+    }
+  };
+
+  const updateNickname = async (newNickname) => {
+    const authData = pb.authStore.model;
+    if (authData) {
+      try {
+        const updatedRecord = await pb.collection('users').update(authData.id, {
+          nickName: newNickname,
+        });
+
+        // 상태 업데이트
+        set(
+          produce((s) => {
+            s.userData.nickName = updatedRecord.nickName;
+          })
+        );
+
+        console.log('닉네임이 성공적으로 업데이트되었습니다.');
+      } catch (error) {
+        console.error('닉네임 업데이트 실패:', error);
+      }
+    }
+  };
+
   return {
-    ...INITIAL_STATE,
+    ...INITIAL_s,
     setUserData,
     fetchUserData,
     updateProfile,
+    checkNicknameDuplicate,
+    updateNickname,
   };
 });
