@@ -5,6 +5,7 @@ import AppMeta from '@/components/AppMeta';
 import { oneOf } from 'prop-types';
 import { useLogoutStore } from '@/stores/logOutStore';
 import { useDeleteIdStore } from '@/stores/deleteIdStore';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
 
 const statusValues = [
   'deleteId',
@@ -25,6 +26,9 @@ function AppStatusPage({ status }) {
   }));
   const { resetDeleteState } = useDeleteIdStore((s) => ({
     resetDeleteState: s.resetDeleteState,
+  }));
+  const { resetPasswordState } = useFindPasswordStore((s) => ({
+    resetPasswordState: s.resetPasswordState,
   }));
 
   const refs = useRef([]);
@@ -70,6 +74,7 @@ function AppStatusPage({ status }) {
       subMessage = '비밀번호가 성공적으로 변경되었습니다.';
       linkText = '로그인 하러 가기';
       linkTo = '/login';
+      onClick = resetPasswordState;
       break;
     case 'payment':
       title = '결제 완료 페이지';
