@@ -2,6 +2,7 @@ import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { memo } from 'react';
 const coupon = [
   {
     id: 1,
@@ -40,7 +41,7 @@ const coupon = [
   },
 ];
 
-export default function MyCoupon() {
+function MyCoupon() {
   return (
     <section className="p-s20" aria-label="내 회원권 쿠폰">
       <h2 className="text-white mb-s16 text-f18">내 회원권 정보</h2>
@@ -66,3 +67,4 @@ export default function MyCoupon() {
     </section>
   );
 }
+export default memo(MyCoupon);

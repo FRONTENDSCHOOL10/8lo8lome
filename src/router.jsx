@@ -19,7 +19,7 @@ import PaymentHistory from '@/pages/MyPage/PaymentHistory/PaymentHistory';
 import ReviewSettings from '@/pages/MyPage/ReviewSettings/ReviewSettings';
 import WishList from '@/pages/MyPage/WishList/WishList';
 import Setting from '@/pages/MyPage/Setting/Setting';
-import LogOut from '@/pages/MyPage/LogOut/LogOut';
+// import LogOut from '@/pages/MyPage/LogOut/LogOut';
 // Main페이지 하위 컴포넌트
 import Map from '@/pages/Main/Map/Map';
 import Filter from '@/pages/Main/Filter/Filter';
@@ -82,7 +82,7 @@ export const routes = createRoutesFromElements(
     <Route path="/mypage/reviewSettings" element={<ReviewSettings />} />
     <Route path="/mypage/wishList" element={<WishList />} />
     <Route path="/mypage/setting" element={<Setting />} />
-    <Route path="/mypage/logOut" element={<LogOut />} />
+    {/* <Route path="/mypage/logOut" element={<LogOut />} /> */}
     {/*account*/}
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />

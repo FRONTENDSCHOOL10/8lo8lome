@@ -18,7 +18,7 @@ function HealthPrice() {
       <ul className="flex justify-center gap-s6">
         <li>
           <AppCheckboxInput
-            label={'월 3만원 이하'}
+            label={'월 3만원'}
             name="monthly3"
             isChecked={monthly3}
             onChange={handleCheckboxChange}
@@ -28,7 +28,7 @@ function HealthPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'월 5만원 이하'}
+            label={'월 5만원'}
             name="monthly5"
             isChecked={monthly5}
             onChange={handleCheckboxChange}
@@ -38,7 +38,7 @@ function HealthPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'월 6만원 이하'}
+            label={'월 6만원'}
             name="monthly6"
             isChecked={monthly6}
             onChange={handleCheckboxChange}
