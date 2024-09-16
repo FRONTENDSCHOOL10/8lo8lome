@@ -9,9 +9,9 @@ function AmenitiesList() {
   const amenitiesType = {
     parking: ['주차장', 'warning'],
     wifi: ['WIFI', 'wifi'],
-    shower: ['샤워실', 'shower'],
-    personalLocker: ['개인락커', 'warning'],
-    workoutClothes: ['운동복', 'shirt'],
+    showerRoom: ['샤워실', 'shower'],
+    locker: ['개인락커', 'warning'],
+    clothes: ['운동복', 'shirt'],
     gxRoom: ['GX룸', 'warning'],
   };
 

@@ -12,6 +12,7 @@ export const mainStore = create((set) => {
       isGymsLoaded: false,
       selectedFilters: [],
       gymData: {},
+      trainerData: {},
     },
 
     searchFilter: {
@@ -254,16 +255,6 @@ export const mainStore = create((set) => {
   };
 
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
-  // const fetchGymDetails = async (gymId) => {
-  //   const data = await getData('gyms', gymId);
-
-  //   set(
-  //     produce((draft) => {
-  //       draft.searchInput.gymData = data;
-  //     })
-  //   );
-  // };
-
   const fetchGymDetails = async (gymId) => {
     const { gymData } = mainStore.getState().searchInput;
 
@@ -280,6 +271,13 @@ export const mainStore = create((set) => {
     );
   };
 
+  // GymDetail에서 해당하는 트레이너 정보 가져오는 함수
+  const fetchTrainers = async (trainerId) => {
+    // const { trainerData } = mainStore.getState().searchInput;
+    // const data = await getAllData('trainers', 'filter: trainerId');
+    // console.log(data);
+  };
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -290,6 +288,7 @@ export const mainStore = create((set) => {
       fetchGymDetails,
       updateCheckedFilters,
       getGymsList,
+      fetchTrainers,
     },
   };
 });
