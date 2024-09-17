@@ -30,6 +30,9 @@ function AppStatusPage({ status }) {
   const { resetPasswordState } = useFindPasswordStore((s) => ({
     resetPasswordState: s.resetPasswordState,
   }));
+  const { resetSignupState } = useFindPasswordStore((s) => ({
+    resetSignupState: s.resetSignupState,
+  }));
 
   const refs = useRef([]);
   let title,
@@ -105,6 +108,7 @@ function AppStatusPage({ status }) {
       subMessage = '지금 로그인하고 다양한 서비스를 경험해 보세요.';
       linkText = '로그인 하러 가기';
       linkTo = '/login';
+      onClick = resetSignupState;
       break;
   }
 
