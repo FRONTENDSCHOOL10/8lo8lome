@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useMapStore } from '@/stores/mapStore';
-import AppMeta from '@/components/AppMeta';
+import { AppMeta } from '@/components';
 import SearchBar from '../SearchBar';
 import FilterLink from '../FilterLink';
 import { AppNav } from '@/components';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 
 export default function Map() {
   const { gymsList, fetchGyms } = useMapStore((s) => ({

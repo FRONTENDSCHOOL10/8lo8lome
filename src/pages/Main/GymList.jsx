@@ -1,9 +1,8 @@
-import { AppCheckboxInput } from '@/components';
+import { AppCheckboxInput, AppRating } from '@/components';
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 import { Link } from 'react-router-dom';
-import { AppRating } from '@/components';
 
 function GymList() {
   const { filterGyms } = mainStore((s) => ({

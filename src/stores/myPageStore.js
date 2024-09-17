@@ -3,6 +3,7 @@ import { produce } from 'immer';
 import pb from '@/api/pb';
 import { getData } from '@/api/CRUD';
 import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 
 export const useMyPageStore = create((set) => {
   const INITIAL_s = {
