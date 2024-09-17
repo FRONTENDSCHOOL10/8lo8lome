@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 
 export const useMyPageStore = create((set) => {
   const INITIAL_STATE = {

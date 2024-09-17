@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
 import 'swiper/css';

@@ -7,3 +7,4 @@ export * from './web-storage.js';
 export * from './debounce.js';
 export * from './throttle.js';
 export * from './formatTime.js';
+export * from './downloadImage.js';
