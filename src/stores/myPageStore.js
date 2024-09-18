@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
 import { getData } from '@/api/CRUD';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { updateData } from '@/api/CRUD';
+
 import { getPbImageURL } from '@/utils';
 
 export const useMyPageStore = create((set) => {
@@ -58,82 +59,31 @@ export const useMyPageStore = create((set) => {
           formData.append('photo', profileImageFile);
         }
 
-        formData.append('nickname', newNickname || authData.nickName);
+        // 닉네임과 이메일을 FormData에 추가
+        formData.append('nickName', newNickname || authData.nickName);
         formData.append('email', newEmail || authData.email);
 
-        const updatedRecord = await pb
-          .collection('item')
-          .update(authData.id, formData);
+        // 사용자 정보를 PocketBase에서 업데이트
+        const updatedRecord = await updateData('users', authData.id, formData);
 
-        set(
-          produce((s) => {
-            s.userData = {
-              ...s.userData,
-              nickname: updatedRecord.nickName,
-              email: updatedRecord.email,
-              profileImage: getPbImageURL(
-                updatedRecord.id,
-                updatedRecord.photo
-              ),
-            };
-          })
-        );
-        console.log('프로필이 성공적으로 변경되었습니다.');
+        if (updatedRecord) {
+          set(
+            produce((s) => {
+              s.userData = {
+                ...s.userData,
+                nickName: updatedRecord.nickName,
+                email: updatedRecord.email,
+                profileImage: getPbImageURL(
+                  updatedRecord.id,
+                  updatedRecord.photo
+                ),
+              };
+            })
+          );
+          console.log('프로필이 성공적으로 변경되었습니다.');
+        }
       } catch (error) {
         console.error('프로필 변경에 실패 하였습니다.:', error);
-      }
-    }
-  };
-
-  const checkNicknameDuplicate = async (nickname) => {
-    try {
-      const response = await getData('users', {
-        filter: `nickName="${nickname}"`,
-      });
-      if (response.items.length > 0) {
-        set(
-          produce((s) => {
-            s.isNickname = false; // 중복된 닉네임
-          })
-        );
-        return false;
-      } else {
-        set(
-          produce((s) => {
-            s.isNickname = true; // 중복되지 않음
-          })
-        );
-        return true;
-      }
-    } catch (error) {
-      console.error('닉네임 중복 확인 실패:', error);
-      set(
-        produce((s) => {
-          s.isNickname = null; // 에러 처리
-        })
-      );
-      return false;
-    }
-  };
-
-  const updateNickname = async (newNickname) => {
-    const authData = pb.authStore.model;
-    if (authData) {
-      try {
-        const updatedRecord = await pb.collection('users').update(authData.id, {
-          nickName: newNickname,
-        });
-
-        // 상태 업데이트
-        set(
-          produce((s) => {
-            s.userData.nickName = updatedRecord.nickName;
-          })
-        );
-
-        console.log('닉네임이 성공적으로 업데이트되었습니다.');
-      } catch (error) {
-        console.error('닉네임 업데이트 실패:', error);
       }
     }
   };
@@ -143,7 +93,5 @@ export const useMyPageStore = create((set) => {
     setUserData,
     fetchUserData,
     updateProfile,
-    checkNicknameDuplicate,
-    updateNickname,
   };
 });
