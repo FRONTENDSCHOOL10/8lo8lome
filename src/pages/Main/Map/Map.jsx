@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useMapStore } from '@/stores/mapStore';
 import { AppMeta } from '@/components';
 import SearchBar from '../SearchBar';
-import FilterLink from '../FilterLink';
 import { AppNav } from '@/components';
 import { getPbImageURL } from '@/utils';
+import FilterList from '../FilterList';
 
 export default function Map() {
   const { gymsList, fetchGyms } = useMapStore((s) => ({
@@ -72,12 +72,12 @@ export default function Map() {
   return (
     <>
       <AppMeta title="지도 페이지" description="지도 페이지입니다." />
-      <header className="flex items-center gap-2 p-4">
+      <header className="flex items-center gap-2 p-[1.25rem]">
         <h1 className="sr-only">지도 페이지</h1>
         <SearchBar />
-        <FilterLink />
       </header>
-      <div className="flex justify-center p-4">
+      <FilterList />
+      <div className="flex flex-col px-[1.25rem]">
         <div
           id="map"
           className="w-full max-h-[500px] h-[360px] rounded-lg shadow-lg"
@@ -94,9 +94,12 @@ export default function Map() {
             <div className="flex flex-col justify-around text-f14">
               <strong>{selectedGym.name}</strong>
               <p>{selectedGym.address}</p>
-              <p className="text-gray-400">
-                일일권: {selectedGym.oneDayPrice.toLocaleString()}원
-              </p>
+              <div className="flex justify-between">
+                <p className="text-gray-400">
+                  일일권: {selectedGym.oneDayPrice.toLocaleString()}원
+                </p>
+                <p>⭐ {selectedGym.rating}</p>
+              </div>
             </div>
           </div>
         </div>

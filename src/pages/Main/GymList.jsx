@@ -10,7 +10,7 @@ function GymList() {
   }));
 
   return (
-    <ul className="flex flex-col gap-4 mb-16 px-[1.9375rem]">
+    <ul className="flex flex-col gap-4 mb-16 px-[1.25rem]">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
