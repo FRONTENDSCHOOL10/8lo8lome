@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import axios from 'axios';
-import { getAllData } from '@/api/CRUD';
+import { mainStore } from './mainStore';
 
 // 카카오 Geocoding API 호출 함수
 const geocodeAddress = async (address) => {
@@ -39,11 +39,10 @@ export const useMapStore = create((set) => {
   // 포켓베이스에서 헬스장 정보를 가져오는 함수
   const fetchGyms = async () => {
     try {
-      const gyms = await getAllData('gyms');
+      const { filterGyms } = mainStore.getState().searchInput;
 
-      // 주소를 위도와 경도로 변환하는 작업
       const gymsWithCoords = await Promise.all(
-        gyms.map(async (gym) => {
+        filterGyms.map(async (gym) => {
           try {
             // 주소를 위도와 경도로 변환
             const { latitude, longitude } = await geocodeAddress(gym.address);
@@ -56,6 +55,7 @@ export const useMapStore = create((set) => {
               latitude, // 변환된 위도
               longitude, // 변환된 경도
               collectionId: gym.collectionId,
+              rating: gym.rating,
             };
           } catch (error) {
             console.error('Error geocoding address:', error);
@@ -68,6 +68,7 @@ export const useMapStore = create((set) => {
               latitude: null, // 변환 실패 시 null로 설정
               longitude: null, // 변환 실패 시 null로 설정
               collectionId: gym.collectionId,
+              rating: gym.rating,
             };
           }
         })
