@@ -1,9 +1,7 @@
 import { useChatStore } from '@/stores/chatStore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppHeader } from '@/components';
-import { AppCheckboxInput } from '@/components';
-import { Link } from 'react-router-dom';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import GymDetailHeader from './GymDetailHeader';
 import PriceList from './PriceList';
@@ -30,7 +28,15 @@ function GymDetail() {
     gymData: s.searchInput.gymData,
   }));
 
-  fetchGymDetails(gymId);
+  useEffect(() => {
+    if (gymId) {
+      fetchGymDetails(gymId);
+    }
+  }, [gymId, fetchGymDetails]);
+
+  if (!gymData || gymData.id !== gymId) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

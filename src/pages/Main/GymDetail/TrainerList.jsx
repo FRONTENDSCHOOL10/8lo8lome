@@ -21,10 +21,10 @@ function TrainerList() {
       <h3 className="text-f18 font-bold mb-s10">트레이너 정보</h3>
       <Swiper spaceBetween={16} slidesPerView={1.35}>
         <SwiperSlide key="0">
-          <div className="w-s220 p-5 bg-purple-300 rounded-md flex flex-col items-center">
+          <div className="w-s220 p-5 bg-opacityWhite rounded-md flex flex-col items-center">
             <div className="w-16 h-16 rounded-full bg-black border-2 border-solid border-white"></div>
             <p className="text-f14 font-semibold py-s10">김아름 선생님</p>
-            <p className="text-f12 font-normal pb-4">
+            <p className="text-f12 font-normal pb-4 leading-normal">
               “저 김아름과 함께 인생 몸매를 만들고, 더 행복한 인생을 결정하세요.
             </p>
             <div className="w-full flex justify-between">
