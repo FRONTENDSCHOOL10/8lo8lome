@@ -96,6 +96,7 @@ export const routes = createRoutesFromElements(
       element={<AppStatusPage status="password" />}
     />
     <Route path="/signup" element={<Signup />} />
+    <Route path="*" element={<AppStatusPage status="404" />} />
   </Route>
 );
 

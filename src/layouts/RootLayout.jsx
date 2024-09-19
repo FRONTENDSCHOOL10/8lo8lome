@@ -20,7 +20,6 @@ function RootLayout() {
   return (
     <div className="min-h-screen bg-mainBg flex flex-col text-white font-pretendard">
       <div className="relative box-border overflow-auto custom-scrollbar">
-        {/* 반응형처럼 보이게 하려면 w-full 추가해야할듯.. */}
         <Suspense fallback={<AppSpinner />}>
           <Outlet />
         </Suspense>
