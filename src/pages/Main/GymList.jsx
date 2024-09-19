@@ -29,22 +29,24 @@ function GymList() {
             </div>
             <Link
               to={`/main/${item.id}`}
-              className="text-white flex gap-s10
-            bg-subBg rounded p-s10 items-center"
+              className="flex items-center text-white rounded gap-s10 bg-subBg p-s10"
               aria-label={`${item.name} 헬스장 상세 정보 링크`}
             >
               <img
                 src={imgUrl[0]}
                 alt={`${item.name} 헬스장 이미지`}
-                className="w-[32.94%] h-[22.94%] max-w-[250px] max-h-[250px] object-cover rounded"
+                className="object-cover rounded"
+                width={112}
+                height={78}
+                style={{ width: '112px', height: '78px' }}
               />
               <div className="flex flex-col w-full">
-                <h2 className="text-f16 font-bold">{item.name}</h2>
-                <p className="text-f12 font-medium pt-s6">
+                <h2 className="font-bold text-f16">{item.name}</h2>
+                <p className="font-medium text-f12 pt-s6">
                   일일권 가격 : {item.oneDayPrice.toLocaleString()}원
                 </p>
                 <div className="flex justify-between text-[0.625rem] pt-4 gap-1">
-                  <p className="text-f12 font-normal">{item.address}</p>
+                  <p className="font-normal text-f12">{item.address}</p>
                   <AppRating gymData={item} className="text-f12" />
                 </div>
               </div>
