@@ -270,8 +270,7 @@ export const mainStore = create((set) => {
       const filteredGyms = await filterGymsByDistance(
         gyms,
         latitude,
-        longitude,
-        10
+        longitude
       );
 
       // Zustand 상태 업데이트 (필터링된 헬스장 데이터 저장)
@@ -523,26 +522,29 @@ export const mainStore = create((set) => {
 
   const getChecked = (target) => {
     const { name, checked } = target;
-    const { gymsList } = mainStore.getState().searchInput;
-    console.log(checked);
+    const { gymsList, wishList } = mainStore.getState().searchInput;
+
     set(
       produce((draft) => {
+        // 체크 상태 업데이트
+        draft.searchInput.wishListChecked[name] = checked;
+
         if (checked) {
           // 체크된 경우, gymsList에서 해당 헬스장 찾기
           const gym = gymsList.find((gym) => gym.name === name);
-          draft.searchInput.wishListChecked[name] =
-            !draft.searchInput.wishListChecked[name];
-          if (
-            gym &&
-            !draft.searchInput.wishList.some((item) => item.name === name)
-          ) {
+
+          if (gym && !wishList.some((item) => item.name === name)) {
+            // 새로운 헬스장을 wishList에 추가
             draft.searchInput.wishList.push(gym);
+          } else {
+            console.log('헬스장을 찾을 수 없거나 이미 wishList에 있음.');
           }
         } else {
           // 체크 해제된 경우, wishList에서 해당 헬스장 제거
-          draft.searchInput.wishList = draft.searchInput.wishList.filter(
+          draft.searchInput.wishList = wishList.filter(
             (item) => item.name !== name
           );
+          console.log('wishList에서 제거됨:', name);
         }
       })
     );
