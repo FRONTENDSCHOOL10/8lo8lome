@@ -10,6 +10,7 @@ import LocationMap from './LocationMap';
 import TrainerList from './TrainerList';
 import Refundpolicy from './Refundpolicy';
 import GymDetailFooter from './GymDetailFooter';
+import { AppSpinner } from '@/components';
 
 function GymDetail() {
   const { gymId } = useParams();
@@ -35,7 +36,11 @@ function GymDetail() {
   }, [gymId, fetchGymDetails]);
 
   if (!gymData || gymData.id !== gymId) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-s386 flex justify-center items-center">
+        <AppSpinner />
+      </div>
+    );
   }
 
   return (
