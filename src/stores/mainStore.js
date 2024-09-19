@@ -193,11 +193,11 @@ export const mainStore = create((set) => {
       clothes: '운동복',
       gxRoom: 'GX룸',
     };
-
     set(
       produce((draft) => {
         // 기존에 저장된 updatedFilters를 초기화
         draft.searchInput.updatedFilters = [];
+
         // searchFilter를 순회하며 true인 필터 추출 및 변환
         Object.keys(draft.searchFilter).forEach((key) => {
           const trueFilters = Object.entries(draft.searchFilter[key])
@@ -224,6 +224,7 @@ export const mainStore = create((set) => {
               }
               return filterName; // 변환 불가한 필터는 그대로 반환
             });
+
           // 변환된 필터가 있으면 updatedFilters 배열에 추가
           if (trueFilters.length > 0) {
             draft.searchInput.updatedFilters.push(...trueFilters);

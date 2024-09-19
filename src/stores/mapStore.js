@@ -3,8 +3,6 @@ import { produce } from 'immer';
 import { mainStore } from './mainStore';
 import { geocodeAddress } from '@/utils';
 
-// 카카오 Geocoding API 호출 함수
-
 export const useMapStore = create((set) => {
   const INITIAL_STATE = {
     gymsList: [], // 초기 헬스장 목록
@@ -27,6 +25,9 @@ export const useMapStore = create((set) => {
               photo: gym.photo,
               latitude,
               longitude,
+              photo: gym.photo, // 첫 번째 이미지만 사용
+              latitude, // 변환된 위도
+              longitude, // 변환된 경도
               collectionId: gym.collectionId,
               rating: gym.rating,
             };
@@ -40,13 +41,14 @@ export const useMapStore = create((set) => {
               photo: gym.photo,
               latitude: null,
               longitude: null,
+              latitude: null, // 변환 실패 시 null로 설정
+              longitude: null, // 변환 실패 시 null로 설정
               collectionId: gym.collectionId,
               rating: gym.rating,
             };
           }
         })
       );
-
       set(
         produce((draft) => {
           draft.gymsList = gymsWithCoords;
