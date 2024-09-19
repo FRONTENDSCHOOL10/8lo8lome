@@ -7,7 +7,7 @@ function Refundpolicy() {
     gymData: s.searchInput.gymData,
   }));
 
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
 
   const handleToggleHidden = () => {
     setIsHidden(!isHidden);

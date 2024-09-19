@@ -1,5 +1,4 @@
-import { useChatStore } from '@/stores/chatStore';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AppHeader } from '@/components';
 import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
@@ -14,15 +13,6 @@ import { AppSpinner } from '@/components';
 
 function GymDetail() {
   const { gymId } = useParams();
-  const navigate = useNavigate();
-  const { createChatRoom } = useChatStore((s) => ({
-    createChatRoom: s.createChatRoom,
-  }));
-  const handleCreateRoom = async () => {
-    await createChatRoom(gymId, (roomId) => {
-      navigate(`/chat/${roomId}`);
-    });
-  };
 
   const { fetchGymDetails, gymData } = mainStore((s) => ({
     fetchGymDetails: s.handleMethod.fetchGymDetails,
