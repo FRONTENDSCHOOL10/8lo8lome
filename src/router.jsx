@@ -8,7 +8,7 @@ import RootLayout from '@/layouts/RootLayout';
 import Home from '@/pages/Home';
 // Login 컴포넌트
 import Login from '@/pages/Login/Login';
-// 아이디찾기 / 비밀번호 변경 컴포넌트
+
 import FindPassword from '@/pages/Login/FindPassword/FindPassword';
 import FindId from '@/pages/Login/FindId/FindId';
 // 회원가입 컴포넌트
@@ -27,6 +27,8 @@ import AppStatusPage from '@/components/AppStatusPage';
 import ChatRoom from '@/pages/Chat/ChatRoom';
 import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 import Review from '@/pages/Main/Review/Review';
+import TrainerDetail from '@/pages/Main/TrainerDetail/TrainerDetail';
+import Payment from '@/pages/Main/Payment/Payment';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -61,6 +63,8 @@ export const routes = createRoutesFromElements(
     <Route path="/map" element={<Map />} />
     <Route path="/main/:gymId" element={<GymDetail />} />
     <Route path="/Review" element={<Review />} />
+    <Route path="/TrainerDetail" element={<TrainerDetail />} />
+    <Route path="/Payment" element={<Payment />} />
     <Route path="/filter" element={<Filter />} />
     <Route
       path="/chat"
@@ -82,6 +86,7 @@ export const routes = createRoutesFromElements(
     <Route path="/mypage/reviewSettings" element={<ReviewSettings />} />
     <Route path="/mypage/wishList" element={<WishList />} />
     <Route path="/mypage/setting" element={<Setting />} />
+    {/* <Route path="/mypage/logOut" element={<LogOut />} /> */}
     {/*account*/}
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
