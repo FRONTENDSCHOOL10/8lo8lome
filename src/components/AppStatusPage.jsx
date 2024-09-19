@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { animate } from 'motion'; // motion.js 예시
 import AppMeta from '@/components/AppMeta';
 import { oneOf } from 'prop-types';
+import { useLogoutStore } from '@/stores/logOutStore';
+import { useDeleteIdStore } from '@/stores/deleteIdStore';
+import { useFindPasswordStore } from '@/stores/findPasswordStore';
 
 const statusValues = [
   'deleteId',
@@ -18,8 +21,29 @@ AppStatusPage.propTypes = {
 };
 
 function AppStatusPage({ status }) {
+  const { resetLogoutState } = useLogoutStore((s) => ({
+    resetLogoutState: s.resetLogoutState,
+  }));
+  const { resetDeleteState } = useDeleteIdStore((s) => ({
+    resetDeleteState: s.resetDeleteState,
+  }));
+  const { resetPasswordState } = useFindPasswordStore((s) => ({
+    resetPasswordState: s.resetPasswordState,
+  }));
+  const { resetSignupState } = useFindPasswordStore((s) => ({
+    resetSignupState: s.resetSignupState,
+  }));
+
   const refs = useRef([]);
-  let title, description, position, message, subMessage, linkText, linkTo, alt;
+  let title,
+    description,
+    position,
+    message,
+    subMessage,
+    linkText,
+    linkTo,
+    alt,
+    onClick;
 
   switch (status) {
     case 'deleteId':
@@ -31,6 +55,7 @@ function AppStatusPage({ status }) {
       subMessage = '이용해주셔서 감사합니다.';
       linkText = '홈으로 가기';
       linkTo = '/';
+      onClick = resetDeleteState;
       break;
     case 'logout':
       title = '로그아웃 완료 페이지';
@@ -41,6 +66,7 @@ function AppStatusPage({ status }) {
       subMessage = '이용해주셔서 감사합니다.';
       linkText = '홈으로 가기';
       linkTo = '/';
+      onClick = resetLogoutState;
       break;
     case 'changePassword':
       title = '비밀번호 변경 완료 페이지';
@@ -51,6 +77,7 @@ function AppStatusPage({ status }) {
       subMessage = '비밀번호가 성공적으로 변경되었습니다.';
       linkText = '로그인 하러 가기';
       linkTo = '/login';
+      onClick = resetPasswordState;
       break;
     case 'payment':
       title = '결제 완료 페이지';
@@ -81,6 +108,7 @@ function AppStatusPage({ status }) {
       subMessage = '지금 로그인하고 다양한 서비스를 경험해 보세요.';
       linkText = '로그인 하러 가기';
       linkTo = '/login';
+      onClick = resetSignupState;
       break;
   }
 
@@ -125,6 +153,7 @@ function AppStatusPage({ status }) {
           ref={(el) => (refs.current[3] = el)}
           to={linkTo}
           className="mt-[100px] w-full px-3 text-center block border border-solid border-mainColor py-s14 rounded"
+          onClick={onClick}
         >
           {linkText}
         </Link>

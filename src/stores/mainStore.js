@@ -53,13 +53,22 @@ export const mainStore = create((set) => {
   const handleCheckboxChange = (target) => {
     const { name } = target;
     const filtername = target.getAttribute('data-filtername');
+
     set(
       produce((draft) => {
-        // 특정 동의 항목의 상태를 반전시킵니다.
-        draft.searchFilter[filtername][name] =
-          !draft.searchFilter[filtername][name];
+        const isSelected = draft.searchFilter[filtername][name]; // 현재 선택된 상태 확인
+
+        if (filtername !== 'amenities') {
+          Object.keys(draft.searchFilter[filtername]).forEach((key) => {
+            draft.searchFilter[filtername][key] = false;
+          });
+        }
+
+        // 선택된 항목이 이미 true였다면 체크 해제, 아니면 선택
+        draft.searchFilter[filtername][name] = !isSelected;
       })
     );
+
     updateCheckedFilters();
   };
 
@@ -71,7 +80,7 @@ export const mainStore = create((set) => {
       return rating >= starRating; // 별점이 해당 필터보다 크거나 같은 경우
     });
   };
-
+  // 가격 필터를 처리하는 함수
   const applyPriceFilter = (gym, filterNames) => {
     const gymPrices = gym.healthPrice || {};
 
@@ -87,7 +96,7 @@ export const mainStore = create((set) => {
     });
     return filters;
   };
-
+  // pt가격 필터를 처리하는 함수
   const applyPtPriceFilter = (gym, filterNames) => {
     const ptPrice = gym.PtPrice || {};
 
@@ -151,7 +160,6 @@ export const mainStore = create((set) => {
             // 편의시설 필터 처리
             return applyAmenitiesFilter(gym, filterNames);
           }
-
           // 다른 필터 카테고리 처리
           return filterNames.some(
             (filterName) => gym[filterCategory] === filterName
@@ -192,17 +200,17 @@ export const mainStore = create((set) => {
               // 별점 필터 변환
               if (filterName.startsWith('star')) {
                 const stars = filterName.replace('star', '');
-                return '⭐'.repeat(parseInt(stars, 10));
+                return `별점 ${stars}점`;
               }
               // 헬스 가격 필터 변환
               if (filterName.startsWith('monthly')) {
                 const price = filterName.replace('monthly', '');
-                return `월 ${price}만원 이하`;
+                return `월 ${price}만원`;
               }
               // PT 가격 필터 변환
               if (filterName.startsWith('pt')) {
                 const price = filterName.replace('pt', '');
-                return `PT 10회 ${price}만원 이하`;
+                return `PT 10회 ${price}만원`;
               }
               // 어메니티 필터 변환 (편의시설)
               if (amenitiesMapping[filterName]) {

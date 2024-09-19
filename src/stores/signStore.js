@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getRandomMinMax } from '@/utils';
-import { createData, getFirstListItem } from '@/api/CRUD';
+import { getRandomMinMax, getPbImageURL, downloadImage } from '@/utils';
+import { createData, getData, getFirstListItem } from '@/api/CRUD';
 import {
   NICKNAME_REG,
   EMAIL_REG,
@@ -404,7 +404,7 @@ export const useSignupStore = create((set) => {
   };
 
   // 개별 체크박스 변경 핸들러
-  const handleCheckboxChange = (target) => {
+  const handleCheckboxChange = async (target) => {
     const { name } = target;
     set(
       produce((draft) => {
@@ -423,12 +423,15 @@ export const useSignupStore = create((set) => {
   // 가입 버튼 클릭 핸들러
   const handleSignupButtonClick = async () => {
     const user = useSignupStore.getState().user;
-
-    // 사용자 데이터 객체를 생성합니다.
+    const photo = await getData('default', '6d7ckoa7qtibrcb');
+    const img = getPbImageURL(photo);
+    const imgBlob = await downloadImage(Array.isArray(img) ? img[0] : img);
     const userData = {
       nickName: user.nickName,
       password: user.password,
       passwordConfirm: user.passwordConfirm,
+      emailVisibility: true,
+      photo: imgBlob,
       phoneNumber: user.phoneNumber,
       email: user.email,
       gender: user.gender,
@@ -450,6 +453,14 @@ export const useSignupStore = create((set) => {
     }
   };
 
+  const resetSignupState = () => {
+    set(
+      produce((draft) => {
+        draft.isSignup = false;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -468,5 +479,6 @@ export const useSignupStore = create((set) => {
       handleAgeCheck,
       handleSignupButtonClick,
     },
+    resetSignupState,
   };
 });

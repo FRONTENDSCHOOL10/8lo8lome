@@ -1,40 +1,45 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getData } from '@/api/CRUD';
 import pb from '@/api/pb';
 import { removeStorageData } from '@/utils';
 
 export const useLogoutStore = create((set) => {
   const INITIAL_STATE = {
+    isLoggedIn: pb.authStore.isValid,
     isLoggedOut: false,
   };
+
+  // 상태 변경을 감지하여 상태를 업데이트합니다.
+  pb.authStore.onChange(() => {
+    set(
+      produce((draft) => {
+        draft.isLoggedIn = pb.authStore.isValid;
+      })
+    );
+  });
 
   // 로그아웃 핸들러
   const handleLogout = async () => {
     const result = confirm('정말로 로그아웃 하시겠습니까?');
-
     if (result) {
       try {
-        const userId = pb.authStore?.model?.id || null;
-        await getData('users', userId);
+        pb.authStore.clear();
+        removeStorageData('autoLogin');
         set(
           produce((draft) => {
             draft.isLoggedOut = true;
           })
         );
-        pb.authStore.clear();
-        removeStorageData('autoLogin');
       } catch (error) {
-        console.error('Error removing user:', error.message);
+        console.error('Error during logout:', error.message);
       }
     }
   };
 
-  // 로그인 핸들러 또는 상태 초기화
   const resetLogoutState = () => {
     set(
       produce((draft) => {
-        draft.isLoggedOut = false; // 로그인 시 isLoggedOut을 false로 설정
+        draft.isLoggedOut = false; // 로그아웃 상태를 false로 설정
       })
     );
   };
@@ -42,6 +47,6 @@ export const useLogoutStore = create((set) => {
   return {
     ...INITIAL_STATE,
     handleLogout,
-    resetLogoutState, // 로그인 시 상태 초기화를 위한 함수
+    resetLogoutState,
   };
 });

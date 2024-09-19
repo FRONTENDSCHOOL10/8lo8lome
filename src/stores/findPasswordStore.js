@@ -142,6 +142,14 @@ export const useFindPasswordStore = create((set) => {
     }
   };
 
+  const resetPasswordState = () => {
+    set(
+      produce((draft) => {
+        draft.isChangePassword = false;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleEmailCheck,
@@ -150,5 +158,6 @@ export const useFindPasswordStore = create((set) => {
     handleNewPasswordConfirmChange,
     handleNewPasswordChange,
     handlePasswordChangeButtonClick,
+    resetPasswordState,
   };
 });

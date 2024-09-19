@@ -1,9 +1,8 @@
-import { AppCheckboxInput } from '@/components';
+import { AppCheckboxInput, AppRating } from '@/components';
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
-import getPbImageURL from '@/utils/getPbImageURL';
+import { getPbImageURL } from '@/utils';
 import { Link } from 'react-router-dom';
-import { AppRating } from '@/components';
 
 function GymList() {
   const { filterGyms } = mainStore((s) => ({
@@ -11,7 +10,7 @@ function GymList() {
   }));
 
   return (
-    <ul className="flex flex-col gap-4 mb-16 px-[1.9375rem]">
+    <ul className="flex flex-col gap-4 mb-16 px-[1.25rem]">
       {filterGyms.map((item) => {
         const imgUrl = getPbImageURL(item);
         return (
