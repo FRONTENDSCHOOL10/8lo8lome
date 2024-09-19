@@ -25,11 +25,6 @@ function FilterList() {
     handleSelectedFilters();
   }, [handleSelectedFilters]);
 
-  useEffect(() => {
-    getCurrentLocation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleCurrentLocation = () => {
     getCurrentLocation();
     getGymsList();

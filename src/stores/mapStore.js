@@ -8,12 +8,12 @@ export const useMapStore = create((set) => {
     gymsList: [], // 초기 헬스장 목록
   };
 
-  // 포켓베이스에서 필터링된 헬스장 정보를 가져오는 함수
+  // 포켓베이스에서 헬스장 정보를 가져오는 함수
   const fetchGyms = async () => {
     try {
-      const { filteredGymsByDistance } = mainStore.getState().searchInput;
+      const { filterGyms } = mainStore.getState().searchInput;
       const gymsWithCoords = await Promise.all(
-        filteredGymsByDistance.map(async (gym) => {
+        filterGyms.map(async (gym) => {
           try {
             // 주소를 위도와 경도로 변환
             const { latitude, longitude } = await geocodeAddress(gym.address);
