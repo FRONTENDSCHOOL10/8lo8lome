@@ -16,7 +16,7 @@ function EditNumber() {
           />
 
           <AppButton isFilled={false} disabled>
-            중복확인
+            인증하기
           </AppButton>
         </fieldset>
         <AppAuthMessage warning>전화번호 양식을 입력해 주세요.</AppAuthMessage>
