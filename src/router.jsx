@@ -27,6 +27,8 @@ import AppStatusPage from '@/components/AppStatusPage';
 import ChatRoom from '@/pages/Chat/ChatRoom';
 import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 import Review from '@/pages/Main/Review/Review';
+import TrainerDetail from '@/pages/Main/TrainerDetail/TrainerDetail';
+import Payment from '@/pages/Main/Payment/Payment';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -61,6 +63,8 @@ export const routes = createRoutesFromElements(
     <Route path="/map" element={<Map />} />
     <Route path="/main/:gymId" element={<GymDetail />} />
     <Route path="/Review" element={<Review />} />
+    <Route path="/TrainerDetail" element={<TrainerDetail />} />
+    <Route path="/Payment" element={<Payment />} />
     <Route path="/filter" element={<Filter />} />
     <Route
       path="/chat"
@@ -92,6 +96,7 @@ export const routes = createRoutesFromElements(
       element={<AppStatusPage status="password" />}
     />
     <Route path="/signup" element={<Signup />} />
+    <Route path="*" element={<AppStatusPage status="404" />} />
   </Route>
 );
 

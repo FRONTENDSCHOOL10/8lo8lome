@@ -33,7 +33,7 @@ export default function Map() {
           const currentPos = new window.kakao.maps.LatLng(latitude, longitude);
           map.setCenter(currentPos);
 
-          const currentPositionOverlay = new window.kakao.maps.CustomOverlay({
+          new window.kakao.maps.CustomOverlay({
             content: `<div style="background:#171717; padding:10px; border-radius:4px; color:#16efa4;">현재 위치</div>`,
             position: currentPos,
             map,
@@ -91,7 +91,7 @@ export default function Map() {
               alt={selectedGym.name}
               className="w-24 h-24 object-cover rounded-lg"
             />
-            <div className="flex flex-col justify-around text-f14">
+            <div className="flex flex-col justify-around text-f14 flex-1">
               <strong>{selectedGym.name}</strong>
               <p>{selectedGym.address}</p>
               <div className="flex justify-between">

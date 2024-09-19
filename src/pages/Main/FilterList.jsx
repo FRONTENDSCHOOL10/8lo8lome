@@ -1,65 +1,39 @@
-import { memo, useState, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import FilterLink from './FilterLink';
 
 function FilterList() {
-  const { updatedFilters, handleSelectedFilters } = mainStore((s) => ({
+  const {
+    updatedFilters,
+    selectedLocation,
+    loading,
+    getCurrentLocation,
+    searchLocation,
+    handleSelectedFilters,
+    getGymsList,
+  } = mainStore((s) => ({
     updatedFilters: s.searchInput.updatedFilters,
+    getCurrentLocation: s.handleMethod.getCurrentLocation,
+    selectedLocation: s.selectedLocation,
+    loading: s.loading,
+    searchLocation: s.handleMethod.searchLocation,
     handleSelectedFilters: s.handleMethod.handleSelectedFilters,
+    getGymsList: s.handleMethod.getGymsList,
   }));
 
-  // 선택된 위치 상태를 관리합니다.
-  const [selectedLocation, setSelectedLocation] =
-    useState('위치를 불러오는 중...');
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    handleSelectedFilters();
+  }, [handleSelectedFilters]);
 
-  // 현재 위치를 가져오는 함수
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            // 카카오 Geocoding API를 사용하여 좌표를 주소로 변환
-            const apiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
-            const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`;
-            const response = await fetch(url, {
-              headers: {
-                Authorization: `KakaoAK ${apiKey}`,
-              },
-            });
-
-            const data = await response.json();
-            if (data.documents && data.documents.length > 0) {
-              const address = data.documents[0].address.region_2depth_name;
-              setSelectedLocation(address);
-              handleSelectedFilters({ latitude, longitude });
-            } else {
-              setSelectedLocation('주소를 찾을 수 없습니다.');
-            }
-          } catch (error) {
-            console.error('카카오 API 요청에 실패했습니다.', error);
-            setSelectedLocation('주소를 가져오는 데 실패했습니다.');
-          } finally {
-            setLoading(false); // 로딩 종료
-          }
-        },
-        (error) => {
-          console.error('현재 위치를 가져오는 데 실패했습니다.', error);
-          setSelectedLocation('위치를 가져오는 데 실패했습니다.');
-          setLoading(false); // 로딩 종료
-        }
-      );
-    } else {
-      setSelectedLocation('Geolocation을 지원하지 않는 브라우저입니다.');
-      setLoading(false); // 로딩 종료
-    }
-  };
-
-  // 컴포넌트가 마운트될 때 현재 위치를 자동으로 가져옵니다.
   useEffect(() => {
     getCurrentLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleCurrentLocation = () => {
+    getCurrentLocation();
+    getGymsList();
+  };
 
   return (
     <section className="px-[1.25rem] flex flex-col gap-1 pb-[0.75rem]">
@@ -67,13 +41,20 @@ function FilterList() {
         <h1 className="text-f18 font-semibold">내 주변 헬스장</h1>
         <FilterLink />
       </div>
-      {/* 현재 위치 표시 */}
-      <div className="flex gap-[0.125rem] items-center mb-2">
+      <div className="flex gap-2 items-center mb-2">
+        <button type="button" onClick={searchLocation} title="위치 변경">
+          <svg
+            role="icon"
+            aria-label="위치 변경 아이콘"
+            className="w-5 h-5 ml-[-3px] fill-white"
+          >
+            <use href="/assets/sprite.svg#map" />
+          </svg>
+        </button>
         <button
           type="button"
-          onClick={() => {
-            console.log('체크체크');
-          }}
+          onClick={handleCurrentLocation}
+          title="현재 위치로 보기"
         >
           <svg
             role="icon"
@@ -89,7 +70,6 @@ function FilterList() {
           {loading ? '위치를 가져오는 중...' : selectedLocation}
         </span>
       </div>
-      {/* 필터 목록 */}
       <ul className="flex text-[0.8125rem] font-medium">
         {updatedFilters.map((item, i) => (
           <li key={i}>

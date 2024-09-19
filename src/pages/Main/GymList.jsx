@@ -1,14 +1,27 @@
-import { AppCheckboxInput, AppRating } from '@/components';
+import { AppCheckboxInput, AppLoading, AppRating } from '@/components';
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { getPbImageURL } from '@/utils';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function GymList() {
-  const { filterGyms } = mainStore((s) => ({
-    filterGyms: s.searchInput.filterGyms,
-  }));
+  const { filterGyms, isGymsLoaded, getChecked, wishListChecked } = mainStore(
+    (s) => ({
+      filterGyms: s.searchInput.filterGyms,
+      isGymsLoaded: s.searchInput.isGymsLoaded,
+      getChecked: s.handleMethod.getChecked,
+      wishListChecked: s.searchInput.wishListChecked,
+    })
+  );
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    if (isGymsLoaded) {
+      setIsLoading(false);
+    }
+  }, [isGymsLoaded]);
   return (
     <ul className="flex flex-col gap-4 mb-16 px-[1.25rem]">
       {filterGyms.map((item) => {
@@ -35,10 +48,7 @@ function GymList() {
               <img
                 src={imgUrl[0]}
                 alt={`${item.name} 헬스장 이미지`}
-                className="object-cover rounded"
-                width={112}
-                height={78}
-                style={{ width: '112px', height: '78px' }}
+                className="w-[32.94%] h-[22.94%] max-w-[250px] max-h-[250px] object-cover rounded"
               />
               <div className="flex flex-col w-full">
                 <h2 className="font-bold text-f16">{item.name}</h2>
