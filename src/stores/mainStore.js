@@ -9,7 +9,6 @@ const MapUrl = import.meta.env.VITE_KAKAO_POSTCODE_SCRIPT_URL;
 export const mainStore = create((set) => {
   const INITIAL_STATE = {
     searchInput: {
-      inputValue: '',
       searchWord: '',
       gymsList: [],
       filterGyms: [],
@@ -57,6 +56,7 @@ export const mainStore = create((set) => {
     selectedLocation: '위치를 불러오는 중...',
     loading: true,
     userId: pb.authStore.model?.id || '',
+    locationAddress: {},
   };
 
   // 검색어 입력 처리
@@ -328,6 +328,12 @@ export const mainStore = create((set) => {
         const userLocation = await getUserLocation();
         latitude = userLocation.latitude;
         longitude = userLocation.longitude;
+        set(
+          produce((draft) => {
+            draft.locationAddress['latitude'] = latitude;
+            draft.locationAddress['longitude'] = longitude;
+          })
+        );
       }
 
       // 헬스장 목록 필터링
@@ -451,6 +457,8 @@ export const mainStore = create((set) => {
           produce((draft) => {
             draft.selectedLocation = district;
             draft.loading = false;
+            draft.locationAddress['latitude'] = latitude;
+            draft.locationAddress['longitude'] = longitude;
           })
         );
       } else {
@@ -467,9 +475,16 @@ export const mainStore = create((set) => {
     }
   };
 
+  getCurrentLocation();
+
   // 주소 검색 스크립트 로딩
   const loadPostcodeScript = () => {
     return new Promise((resolve, reject) => {
+      if (window.daum && window.daum.Postcode) {
+        resolve(); // 이미 스크립트가 로드된 경우
+        return;
+      }
+
       const existingScript = document.querySelector(`script[src="${MapUrl}"]`);
       if (existingScript) {
         resolve();
@@ -509,6 +524,12 @@ export const mainStore = create((set) => {
 
               // 주소로부터 좌표를 가져오기 위한 함수 호출
               const { latitude, longitude } = await geocodeAddress(address);
+              set(
+                produce((draft) => {
+                  draft.locationAddress['latitude'] = latitude;
+                  draft.locationAddress['longitude'] = longitude;
+                })
+              );
 
               // 헬스장 목록 가져오기
               await getGymsList(latitude, longitude);
