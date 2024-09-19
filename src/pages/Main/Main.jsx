@@ -2,23 +2,23 @@ import SearchBar from './SearchBar';
 import MapLink from './MapLink';
 import FilterList from './FilterList';
 import GymList from './GymList';
-import { AppNav } from '@/components';
-import AppMeta from '@/components/AppMeta';
-import { memo } from 'react';
+import { AppNav, AppMeta } from '@/components';
 import { mainStore } from '@/stores/mainStore';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 
 function Main() {
-  const { getGymsList, isGymsLoaded } = mainStore((s) => ({
+  const { getGymsList, isGymsLoaded, fetchWishList } = mainStore((s) => ({
     getGymsList: s.handleMethod.getGymsList,
     isGymsLoaded: s.searchInput.isGymsLoaded,
+    fetchWishList: s.handleMethod.fetchWishList,
   }));
 
   useEffect(() => {
     if (!isGymsLoaded) {
       getGymsList();
+      fetchWishList();
     }
-  }, [isGymsLoaded, getGymsList]);
+  }, [isGymsLoaded, getGymsList, fetchWishList]);
 
   return (
     <>
