@@ -91,7 +91,7 @@ export default function Map() {
               alt={selectedGym.name}
               className="w-24 h-24 object-cover rounded-lg"
             />
-            <div className="flex flex-col justify-around text-f14">
+            <div className="flex flex-col justify-around text-f14 flex-1">
               <strong>{selectedGym.name}</strong>
               <p>{selectedGym.address}</p>
               <div className="flex justify-between">
