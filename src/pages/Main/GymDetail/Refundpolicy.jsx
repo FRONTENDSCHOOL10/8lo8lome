@@ -1,17 +1,3 @@
-import { memo } from "react";
-import { mainStore } from "@/stores/mainStore";
-
-function Refundpolicy(){
-  const { gymData } = mainStore((s) => ({
-    gymData: s.searchInput.gymData,
-  }));
-
-  return(
-
-  );
-}
-
-export default memo(Refundpolicy)
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { useState } from 'react';
@@ -21,7 +7,7 @@ function Refundpolicy() {
     gymData: s.searchInput.gymData,
   }));
 
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
 
   const handleToggleHidden = () => {
     setIsHidden(!isHidden);
