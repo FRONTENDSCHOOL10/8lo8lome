@@ -8,7 +8,7 @@ export const useMapStore = create((set) => {
     gymsList: [], // 초기 헬스장 목록
   };
 
-  // 포켓베이스에서 헬스장 정보를 가져오는 함수
+  // 포켓베이스에서 필터링된 헬스장 정보를 가져오는 함수
   const fetchGyms = async () => {
     try {
       const { filteredGymsByDistance } = mainStore.getState().searchInput;
