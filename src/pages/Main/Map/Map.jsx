@@ -1,15 +1,21 @@
+import { AppCheckboxInput, AppMeta, AppRating, AppNav } from '@/components';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMapStore } from '@/stores/mapStore';
-import { AppMeta } from '@/components';
+import { mainStore } from '@/stores/mainStore';
 import SearchBar from '../SearchBar';
-import { AppNav } from '@/components';
-import { getPbImageURL } from '@/utils';
 import FilterList from '../FilterList';
+import { getPbImageURL } from '@/utils';
 
 export default function Map() {
   const { gymsList, fetchGyms } = useMapStore((s) => ({
     gymsList: s.gymsList,
     fetchGyms: s.fetchGyms,
+  }));
+
+  const { wishListChecked, getChecked } = mainStore((s) => ({
+    wishListChecked: s.searchInput.wishListChecked,
+    getChecked: s.handleMethod.getChecked,
   }));
   const [selectedGym, setSelectedGym] = useState(null);
 
@@ -84,22 +90,44 @@ export default function Map() {
         ></div>
       </div>
       {selectedGym && (
-        <div className="fixed bottom-16 left-0 w-full bg-[#171717] p-2 z-50">
-          <div className="flex gap-2">
-            <img
-              src={getPbImageURL(selectedGym)[0]}
-              alt={selectedGym.name}
-              className="w-24 h-24 object-cover rounded-lg"
-            />
-            <div className="flex flex-col justify-around text-f14 flex-1">
-              <strong>{selectedGym.name}</strong>
-              <p>{selectedGym.address}</p>
-              <div className="flex justify-between">
-                <p className="text-gray-400">
-                  일일권: {selectedGym.oneDayPrice.toLocaleString()}원
+        <div className="fixed px-[1.25rem] bottom-16 left-0 w-full">
+          <div
+            key={selectedGym.id}
+            className="px-s10 flex bg-subBg justify-between  py-s16"
+          >
+            <Link
+              to={`/main/${selectedGym.id}`}
+              className="text-white flex gap-s10
+             rounded items-center flex-1"
+              aria-label={`${selectedGym.name} 헬스장 상세 정보 링크`}
+            >
+              <img
+                src={getPbImageURL(selectedGym)[0]}
+                alt={`${selectedGym.name} 헬스장 이미지`}
+                width={100}
+                height={100}
+                className="rounded"
+              />
+              <div className="flex flex-col w-full gap-2">
+                <h2 className="text-f16 font-bold">{selectedGym.name}</h2>
+                <p className="text-f12 font-normal">{selectedGym.address}</p>
+                <p className="text-f12 font-medium text-gray-400">
+                  일일권 가격 : {selectedGym.oneDayPrice.toLocaleString()}원
                 </p>
-                <p>⭐ {selectedGym.rating}</p>
               </div>
+            </Link>
+            <div className="flex flex-col justify-between text-[0.625rem] gap-1 items-end">
+              <AppCheckboxInput
+                label={'헬스장 정보 찜하기 체크박스'}
+                isHiddenLabel
+                name={selectedGym.name}
+                isChecked={wishListChecked[selectedGym.name]}
+                onChange={getChecked}
+                unCheckedSvgId="heart-unclick"
+                checkedSvgId="heart-click"
+                checkedColor="text-red-500"
+              />
+              <AppRating gymData={selectedGym} className="text-f12" />
             </div>
           </div>
         </div>

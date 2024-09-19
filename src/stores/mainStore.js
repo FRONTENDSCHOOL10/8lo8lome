@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { getAllData, getData } from '@/api/CRUD';
+import { getAllData, getData, updateData } from '@/api/CRUD';
 import axios from 'axios';
 import { geocodeAddress } from '@/utils';
+import pb from '@/api/pb';
 const MapUrl = import.meta.env.VITE_KAKAO_POSTCODE_SCRIPT_URL;
 
 export const mainStore = create((set) => {
@@ -54,6 +55,7 @@ export const mainStore = create((set) => {
     },
     selectedLocation: '위치를 불러오는 중...',
     loading: true,
+    userId: pb.authStore.model?.id || '',
   };
 
   // 필터 버튼 체크 핸들러
@@ -520,7 +522,7 @@ export const mainStore = create((set) => {
     // console.log(data);
   };
 
-  const getChecked = (target) => {
+  const getChecked = async (target) => {
     const { name, checked } = target;
     const { gymsList, wishList } = mainStore.getState().searchInput;
 
@@ -544,10 +546,43 @@ export const mainStore = create((set) => {
           draft.searchInput.wishList = wishList.filter(
             (item) => item.name !== name
           );
-          console.log('wishList에서 제거됨:', name);
         }
       })
     );
+    try {
+      const updatedWishList = mainStore.getState().searchInput.wishList;
+      const userId = mainStore.getState().userId;
+      // PocketBase의 'users' 컬렉션에서 wishList 필드를 업데이트
+      await updateData('users', userId, { wishList: updatedWishList });
+    } catch (error) {
+      console.error('PocketBase에 wishList 업데이트 실패:', error);
+    }
+  };
+  const fetchWishList = async () => {
+    const { wishList } = mainStore.getState().searchInput;
+
+    // 이미 wishList가 있다면 추가 요청을 하지 않음
+    if (wishList.length > 0) {
+      console.log('이미 불러온 wishList 사용');
+      return;
+    }
+
+    try {
+      const userId = mainStore.getState().userId;
+      const userData = await getData('users', userId);
+      const wishList = userData.wishList || [];
+
+      set(
+        produce((draft) => {
+          draft.searchInput.wishList = wishList;
+          wishList.forEach((gym) => {
+            draft.searchInput.wishListChecked[gym.name] = true;
+          });
+        })
+      );
+    } catch (error) {
+      console.error('유저 wishList 가져오기 실패:', error);
+    }
   };
 
   return {
@@ -564,6 +599,7 @@ export const mainStore = create((set) => {
       getCurrentLocation,
       searchLocation,
       getChecked,
+      fetchWishList,
     },
   };
 });
