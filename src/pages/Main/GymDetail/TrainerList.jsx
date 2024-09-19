@@ -30,7 +30,7 @@ function TrainerList() {
             return `<span class="swiper-pagination-bullet inline-block  w-[14px] h-[14px] border-solid border border-mainColor rounded-full bg-purple-300"></span>`;
           },
         }}
-        className="relative mb-20"
+        // className="relative mb-20"
         style={{ '--swiper-pagination-bottom': '0' }}
       >
         <SwiperSlide key="0">
