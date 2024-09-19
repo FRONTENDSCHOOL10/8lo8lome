@@ -34,7 +34,7 @@ function TrainerList() {
               </div>
 
               <Link
-                to={'/Review'}
+                to={'/TrainerDetail'}
                 aria-label={`${gymData.name} 리뷰 보기 링크`}
                 className="text-f14 font-semibold inline-flex items-center"
               >

@@ -11,6 +11,7 @@ import AmenitiesList from './AmenitiesList';
 import LocationMap from './LocationMap';
 import TrainerList from './TrainerList';
 import Refundpolicy from './Refundpolicy';
+import GymDetailFooter from './GymDetailFooter';
 
 function GymDetail() {
   const { gymId } = useParams();
@@ -42,32 +43,7 @@ function GymDetail() {
         <LocationMap />
         <TrainerList />
         <Refundpolicy />
-
-        <footer className="flex gap-3 px-[1.9375rem] py-[1.5625rem]">
-          <div className="absolute top-[0.5625rem] right-2 pl-7 pb-7">
-            <AppCheckboxInput
-              label={'헬스장 정보 찜하기 체크박스'}
-              isHiddenLabel
-              // name="over14"
-              // isChecked={over14}
-              // onChange={handleCheckboxChange}
-              unCheckedSvgId="heart-unclick"
-              checkedSvgId="heart-click"
-              checkedColor="text-red-500"
-            />
-          </div>
-          <Link to={'/filter'} aria-label="결제하기 링크">
-            <button className="bg-blue-500 text-white p-2 rounded shadow-md hover:bg-blue-600 transition duration-300">
-              결제하기
-            </button>
-          </Link>
-          <button
-            onClick={handleCreateRoom}
-            className="bg-blue-500 text-white p-2 rounded shadow-md hover:bg-blue-600 transition duration-300"
-          >
-            채팅방 생성
-          </button>
-        </footer>
+        <GymDetailFooter />
       </div>
     </>
   );
