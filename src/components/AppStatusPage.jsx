@@ -14,6 +14,7 @@ const statusValues = [
   'payment',
   'notLogin',
   'signup',
+  '404',
 ];
 
 AppStatusPage.propTypes = {
@@ -110,10 +111,20 @@ function AppStatusPage({ status }) {
       linkTo = '/login';
       onClick = resetSignupState;
       break;
+    case '404':
+      title = '알 수 없는 페이지';
+      description = '알 수 없는 페이지입니다.';
+      position = 'object-[0px_-200px]';
+      alt = '휘파람 부는 이모지';
+      message = '알 수 없는 페이지입니다!';
+      subMessage = '정확한 경로를 입력해 주세요';
+      linkText = '홈으로 가기';
+      linkTo = '/main';
+      break;
   }
 
   useEffect(() => {
-    if (status !== 'notLogin') {
+    if (status !== 'notLogin' || status !== '404') {
       // 각각의 요소에 순차적으로 애니메이션 적용
       refs.current.forEach((el, index) => {
         animate(
