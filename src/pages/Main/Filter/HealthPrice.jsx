@@ -8,7 +8,7 @@ function HealthPrice() {
     healthPrice: s.searchFilter.healthPrice,
   }));
 
-  const { monthly3, monthly5, monthly6 } = healthPrice;
+  const { monthly10, monthly15, monthly20 } = healthPrice;
 
   return (
     <fieldset className="mx-[1.9375rem]">
@@ -18,9 +18,9 @@ function HealthPrice() {
       <ul className="flex justify-center gap-s6">
         <li>
           <AppCheckboxInput
-            label={'월 3만원'}
-            name="monthly3"
-            isChecked={monthly3}
+            label={'월 10만원'}
+            name="monthly10"
+            isChecked={monthly10}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="healthPrice"
@@ -28,9 +28,9 @@ function HealthPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'월 5만원'}
-            name="monthly5"
-            isChecked={monthly5}
+            label={'월 15만원'}
+            name="monthly15"
+            isChecked={monthly15}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="healthPrice"
@@ -38,9 +38,9 @@ function HealthPrice() {
         </li>
         <li>
           <AppCheckboxInput
-            label={'월 6만원'}
-            name="monthly6"
-            isChecked={monthly6}
+            label={'월 20만원'}
+            name="monthly20"
+            isChecked={monthly20}
             onChange={handleCheckboxChange}
             isFilterClass
             filterName="healthPrice"

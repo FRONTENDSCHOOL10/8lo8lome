@@ -39,10 +39,11 @@ function AppList({ items }) {
             >
               <img
                 src={imgUrl[0]}
-                alt={`${item.name} 이미지`}
-                width={100}
-                height={100}
-                className="rounded"
+                alt={''}
+                width={112}
+                height={78}
+                style={{ width: '112px', height: '78px' }}
+                className="object-cover rounded"
               />
               <div className="flex flex-col w-full gap-2">
                 <h2 className="text-f16 font-bold">{item.name}</h2>

@@ -1,6 +1,6 @@
-import { AppCheckboxInput, AppMeta, AppRating, AppNav } from '@/components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppCheckboxInput, AppMeta, AppRating, AppNav } from '@/components';
 import { useMapStore } from '@/stores/mapStore';
 import { mainStore } from '@/stores/mainStore';
 import SearchBar from '../SearchBar';
@@ -13,39 +13,40 @@ export default function Map() {
     fetchGyms: s.fetchGyms,
   }));
 
-  const { wishListChecked, getChecked } = mainStore((s) => ({
+  const { wishListChecked, getChecked, locationAddress } = mainStore((s) => ({
     wishListChecked: s.searchInput.wishListChecked,
     getChecked: s.handleMethod.getChecked,
+    locationAddress: s.locationAddress,
   }));
+  const { latitude, longitude } = locationAddress;
   const [selectedGym, setSelectedGym] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     fetchGyms();
   }, [fetchGyms]);
 
-  const initializeMap = (gymsList) => {
-    window.kakao.maps.load(() => {
+  const initializeMap = useCallback(
+    (gymsList) => {
+      if (!window.kakao || !latitude || !longitude) {
+        return;
+      }
+
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(37.566535, 126.9779692),
+        center: new window.kakao.maps.LatLng(latitude, longitude),
         level: 5,
       };
       const map = new window.kakao.maps.Map(container, options);
 
-      // 현재 위치 가져오기
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          const currentPos = new window.kakao.maps.LatLng(latitude, longitude);
-          map.setCenter(currentPos);
+      // 현재 위치 마커 및 오버레이 추가
+      const currentPos = new window.kakao.maps.LatLng(latitude, longitude);
 
-          new window.kakao.maps.CustomOverlay({
-            content: `<div style="background:#171717; padding:10px; border-radius:4px; color:#16efa4;">현재 위치</div>`,
-            position: currentPos,
-            map,
-          });
-        });
-      }
+      new window.kakao.maps.CustomOverlay({
+        content: `<div style="background:#171717; padding:10px; border-radius:4px; color:#16efa4;">현재 위치</div>`,
+        position: currentPos,
+        map,
+      });
 
       // 헬스장 마커 추가
       gymsList.forEach((gym) => {
@@ -63,8 +64,9 @@ export default function Map() {
           setSelectedGym(gym);
         });
       });
-    });
-  };
+    },
+    [latitude, longitude]
+  );
 
   useEffect(() => {
     const mapScript = document.createElement('script');
@@ -72,8 +74,20 @@ export default function Map() {
     mapScript.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}&autoload=false`;
     document.head.appendChild(mapScript);
 
-    mapScript.onload = () => initializeMap(gymsList);
-  }, [gymsList]);
+    mapScript.onload = () => {
+      setMapLoaded(true);
+    };
+
+    mapScript.onerror = () => {
+      console.error('카카오 맵 스크립트 로드 실패');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mapLoaded && latitude !== undefined && longitude !== undefined) {
+      initializeMap(gymsList);
+    }
+  }, [mapLoaded, latitude, longitude, gymsList, initializeMap]);
 
   return (
     <>
@@ -97,8 +111,7 @@ export default function Map() {
           >
             <Link
               to={`/main/${selectedGym.id}`}
-              className="text-white flex gap-s10
-             rounded items-center flex-1"
+              className="text-white flex gap-s10 rounded items-center flex-1"
               aria-label={`${selectedGym.name} 헬스장 상세 정보 링크`}
             >
               <img
