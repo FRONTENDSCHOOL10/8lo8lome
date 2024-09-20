@@ -54,7 +54,8 @@ export const mainStore = create((set) => {
       },
     },
     selectedLocation: '위치를 불러오는 중...',
-    loading: true,
+    locationLoading: true,
+    gymListLoading: true,
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
   };
@@ -320,18 +321,25 @@ export const mainStore = create((set) => {
   // getGymsList 함수에서 위치를 매개변수로 받도록 수정
   const getGymsList = async (latitude, longitude) => {
     try {
+      // 로딩 중 상태를 설정하여 무한 루프 방지
+      set(
+        produce((draft) => {
+          draft.searchInput.gymListLoading = true; // 로딩 중 상태 추가
+        })
+      );
+
       // 서버에서 헬스장 데이터 가져오기
       const gyms = await getAllData('gyms', '-created');
-
       // 위치가 없으면 현재 위치로 설정
       if (!latitude || !longitude) {
         const userLocation = await getUserLocation();
         latitude = userLocation.latitude;
         longitude = userLocation.longitude;
+
         set(
           produce((draft) => {
-            draft.locationAddress['latitude'] = latitude;
-            draft.locationAddress['longitude'] = longitude;
+            draft.locationAddress.latitude = latitude;
+            draft.locationAddress.longitude = longitude;
           })
         );
       }
@@ -343,12 +351,14 @@ export const mainStore = create((set) => {
         longitude
       );
 
+      // 데이터 로드 완료
       set(
         produce((draft) => {
-          draft.searchInput.gymsList = gyms; // 헬스장 저장
-          draft.searchInput.filteredGymsByDistance = filteredGyms; // 거리 필터링 헬스장 저장
-          draft.searchInput.filterGyms = filteredGyms; // 필터링된 헬스장 저장
-          draft.searchInput.isGymsLoaded = true; // 데이터 로드 완료
+          draft.searchInput.gymsList = gyms;
+          draft.searchInput.filteredGymsByDistance = filteredGyms;
+          draft.searchInput.filterGyms = filteredGyms;
+          draft.searchInput.isGymsLoaded = true; // 로드 완료
+          draft.searchInput.gymListLoading = false; // 로딩 상태 해제
         })
       );
     } catch (error) {
@@ -456,7 +466,7 @@ export const mainStore = create((set) => {
         set(
           produce((draft) => {
             draft.selectedLocation = district;
-            draft.loading = false;
+            draft.locationLoading = false;
             draft.locationAddress['latitude'] = latitude;
             draft.locationAddress['longitude'] = longitude;
           })
@@ -469,7 +479,7 @@ export const mainStore = create((set) => {
       set(
         produce((draft) => {
           draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-          draft.loading = false;
+          draft.locationLoading = false;
         })
       );
     }
@@ -518,7 +528,7 @@ export const mainStore = create((set) => {
               set(
                 produce((draft) => {
                   draft.selectedLocation = district;
-                  draft.loading = false;
+                  draft.locationLoading = false;
                 })
               );
 
@@ -539,7 +549,7 @@ export const mainStore = create((set) => {
               set(
                 produce((draft) => {
                   draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-                  draft.loading = false;
+                  draft.locationLoading = false;
                 })
               );
             },
@@ -549,7 +559,7 @@ export const mainStore = create((set) => {
           set(
             produce((draft) => {
               draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-              draft.loading = false;
+              draft.locationLoading = false;
             })
           );
         }
@@ -562,7 +572,7 @@ export const mainStore = create((set) => {
       set(
         produce((draft) => {
           draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-          draft.loading = false;
+          draft.locationLoading = false;
         })
       );
     }
@@ -575,13 +585,11 @@ export const mainStore = create((set) => {
     // console.log(data);
   };
 
-  const getChecked = async (target) => {
+  const setWishList = async (target) => {
     const { name, checked } = target;
     const { gymsList, wishList } = mainStore.getState().searchInput;
-
     set(
       produce((draft) => {
-        // 체크 상태 업데이트
         draft.searchInput.wishListChecked[name] = checked;
 
         if (checked) {
@@ -589,8 +597,28 @@ export const mainStore = create((set) => {
           const gym = gymsList.find((gym) => gym.name === name);
 
           if (gym && !wishList.some((item) => item.name === name)) {
-            // 새로운 헬스장을 wishList에 추가
-            draft.searchInput.wishList.push(gym);
+            // 필요한 필드만 추출해서 wishList에 추가
+            const {
+              address,
+              photo,
+              id,
+              collectionId,
+              collectionName,
+              oneDayPrice,
+              rating,
+            } = gym;
+
+            const gymData = {
+              address,
+              photo,
+              id,
+              collectionId,
+              collectionName,
+              oneDayPrice,
+              rating,
+              name, // name도 추가 (헬스장 이름)
+            };
+            draft.searchInput.wishList.push(gymData);
           } else {
             console.log('헬스장을 찾을 수 없거나 이미 wishList에 있음.');
           }
@@ -602,6 +630,7 @@ export const mainStore = create((set) => {
         }
       })
     );
+
     try {
       const updatedWishList = mainStore.getState().searchInput.wishList;
       const userId = mainStore.getState().userId;
@@ -610,6 +639,7 @@ export const mainStore = create((set) => {
       console.error('PocketBase에 wishList 업데이트 실패:', error);
     }
   };
+
   const fetchWishList = async () => {
     const { wishList } = mainStore.getState().searchInput;
 
@@ -650,7 +680,7 @@ export const mainStore = create((set) => {
       fetchTrainers,
       getCurrentLocation,
       searchLocation,
-      getChecked,
+      setWishList,
       fetchWishList,
     },
   };

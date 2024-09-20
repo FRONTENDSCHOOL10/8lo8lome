@@ -13,9 +13,9 @@ export default function Map() {
     fetchGyms: s.fetchGyms,
   }));
 
-  const { wishListChecked, getChecked, locationAddress } = mainStore((s) => ({
+  const { wishListChecked, setWishList, locationAddress } = mainStore((s) => ({
     wishListChecked: s.searchInput.wishListChecked,
-    getChecked: s.handleMethod.getChecked,
+    setWishList: s.handleMethod.setWishList,
     locationAddress: s.locationAddress,
   }));
   const { latitude, longitude } = locationAddress;
@@ -135,7 +135,7 @@ export default function Map() {
                 isHiddenLabel
                 name={selectedGym.name}
                 isChecked={wishListChecked[selectedGym.name]}
-                onChange={getChecked}
+                onChange={setWishList}
                 unCheckedSvgId="heart-unclick"
                 checkedSvgId="heart-click"
                 checkedColor="text-red-500"
