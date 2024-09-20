@@ -33,18 +33,15 @@ function AppReviewList({ gym }) {
 
   return (
     <>
-      <div className="m-s31 mt-[100px] flex justify-between">
+      <div className="mx-s31 mt-[100px] flex justify-between">
         <h2 className="text-f18 font-semibold">리뷰 {reviewsList.length}개</h2>
         <AppRating gymData={gym} className="text-f14" />
       </div>
 
-      <ul className="flex flex-col gap-s16 mt-s16">
+      <ul className="flex flex-col gap-s16 mt-s16 mb-s22">
         {reviewsList.map((review) => {
           return (
-            <li
-              key={review.id}
-              className="flex flex-col w-full py-s12 border-b border-solid border-strokeBlack"
-            >
+            <li key={review.id} className="flex flex-col w-full pt-s12">
               <div className="mx-s31 flex justify-between">
                 <div className="flex items-center">
                   <h3 className="text-f16 font-bold">
@@ -106,7 +103,7 @@ function AppReviewList({ gym }) {
 
               <AppImageDisplay item={review} className="mt-s12 ml-s31" />
 
-              <p className="text-f12 font-medium pt-[0.5625rem] mx-s31">
+              <p className="text-f12 font-medium pt-[0.5625rem] mx-s31 pb-s12 border-b border-solid border-strokeBlack">
                 {formatDate(review.created)}
               </p>
             </li>
