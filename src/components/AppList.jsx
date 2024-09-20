@@ -17,9 +17,9 @@ AppList.propTypes = {
 };
 
 function AppList({ items }) {
-  const { wishListChecked, getChecked } = mainStore((s) => ({
+  const { wishListChecked, setWishList } = mainStore((s) => ({
     wishListChecked: s.searchInput.wishListChecked,
-    getChecked: s.handleMethod.getChecked,
+    setWishList: s.handleMethod.setWishList,
   }));
 
   return (
@@ -59,7 +59,7 @@ function AppList({ items }) {
                 isHiddenLabel
                 name={item.name}
                 isChecked={wishListChecked[item.name]}
-                onChange={getChecked}
+                onChange={setWishList}
                 unCheckedSvgId="heart-unclick"
                 checkedSvgId="heart-click"
                 checkedColor="text-red-500"

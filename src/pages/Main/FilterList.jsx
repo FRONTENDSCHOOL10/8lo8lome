@@ -6,7 +6,7 @@ function FilterList() {
   const {
     updatedFilters,
     selectedLocation,
-    loading,
+    locationLoading,
     getCurrentLocation,
     searchLocation,
     handleSelectedFilters,
@@ -15,7 +15,7 @@ function FilterList() {
     updatedFilters: s.searchInput.updatedFilters,
     getCurrentLocation: s.handleMethod.getCurrentLocation,
     selectedLocation: s.selectedLocation,
-    loading: s.loading,
+    locationLoading: s.locationLoading,
     searchLocation: s.handleMethod.searchLocation,
     handleSelectedFilters: s.handleMethod.handleSelectedFilters,
     getGymsList: s.handleMethod.getGymsList,
@@ -60,15 +60,16 @@ function FilterList() {
           </svg>
         </button>
         <span
-          className={`text-f14 font-normal ${loading ? 'text-gray-500' : ''}`}
+          aria-label="현재 설정 위치"
+          className={`text-f14 font-normal ${locationLoading ? 'text-gray-500' : ''}`}
         >
-          {loading ? '위치를 가져오는 중...' : selectedLocation}
+          {locationLoading ? '위치를 가져오는 중...' : selectedLocation}
         </span>
       </div>
       <ul className="flex text-[0.8125rem] font-medium">
         {updatedFilters.map((item, i) => (
           <li key={i}>
-            <span className="whitespace-nowrap">{item}</span>
+            <p className="whitespace-nowrap">{item}</p>
             {i < updatedFilters.length - 1 && <span>&nbsp;|&nbsp;</span>}
           </li>
         ))}
