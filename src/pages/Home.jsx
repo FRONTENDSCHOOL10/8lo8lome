@@ -8,7 +8,7 @@ function Home() {
   return (
     <>
       <AppMeta title="다있짐 홈 페이지" description="다있짐 홈 페이지입니다." />
-      <section className="h-[100vh] bg-[url('../assets/bg.avif')] bg-no-repeat bg-cover bg-right-top flex flex-col justify-evenly gap-20 pt-s98 pb-s50">
+      <section className="h-[100vh] bg-[url('/assets/bg.avif')] bg-no-repeat bg-cover bg-right-top flex flex-col justify-evenly gap-20 pt-s98 pb-s50">
         <div>
           <svg
             className={`w-[200px] h-[200px] mx-auto mb-s12 text-mainColor`}
