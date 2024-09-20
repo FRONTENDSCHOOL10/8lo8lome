@@ -20,6 +20,7 @@ export const mainStore = create((set) => {
       wishList: [],
       wishListChecked: {},
       filteredGymsByDistance: [],
+      reviewsList: [],
     },
     searchFilter: {
       rating: {
@@ -637,6 +638,24 @@ export const mainStore = create((set) => {
     }
   };
 
+  // AppReview에서 헬스장 ID와 일치하는 리뷰 리스트 Data 가져오는 함수
+  const getGymReviewsById = async (gymId) => {
+    const { reviewsList } = mainStore.getState().searchInput;
+
+    const data = await getAllData(
+      'reviews',
+      '-created',
+      `gym = '${gymId}'`,
+      'user, trainer'
+    );
+
+    set(
+      produce((draft) => {
+        draft.searchInput.reviewsList = data;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -652,6 +671,7 @@ export const mainStore = create((set) => {
       searchLocation,
       getChecked,
       fetchWishList,
+      getGymReviewsById,
     },
   };
 });

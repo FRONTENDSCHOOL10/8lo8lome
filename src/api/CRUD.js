@@ -16,13 +16,15 @@ export const getData = async (resource, id) => {
 export const getAllData = async (
   resource,
   sort = '',
+  filter = '',
+  expand = '',
   page = 1,
   perPage = 50
 ) => {
   try {
     const response = await pb
       .collection(resource)
-      .getList(page, perPage, { sort });
+      .getList(page, perPage, { sort, filter, expand });
     return response.items; // 또는 필요한 형태로 데이터 가공
   } catch (error) {
     return false;
