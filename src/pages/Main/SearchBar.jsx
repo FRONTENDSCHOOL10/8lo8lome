@@ -27,7 +27,9 @@ function SearchBar({ map }) {
       <AppTextInput
         label={'검색'}
         isHiddenLabel
-        placeholder="검색어를 입력해 주세요."
+        placeholder={
+          map ? '헬스장 이름을 입력해 주세요.' : '검색어를 입력해 주세요.'
+        }
         className="bg-transparent outline-none text-f14 border-none px-1 py-0 font-normal"
         onChange={map ? handleMapSearchInput : handleSearchInput}
       />
