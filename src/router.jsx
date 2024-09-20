@@ -19,7 +19,6 @@ import PaymentHistory from '@/pages/MyPage/PaymentHistory/PaymentHistory';
 import ReviewSettings from '@/pages/MyPage/ReviewSettings/ReviewSettings';
 import WishList from '@/pages/MyPage/WishList/WishList';
 import Setting from '@/pages/MyPage/Setting/Setting';
-// import LogOut from '@/pages/MyPage/LogOut/LogOut';
 // Main페이지 하위 컴포넌트
 import Map from '@/pages/Main/Map/Map';
 import Filter from '@/pages/Main/Filter/Filter';
@@ -28,7 +27,7 @@ import ChatRoom from '@/pages/Chat/ChatRoom';
 import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 import Review from '@/pages/Main/Review/Review';
 import TrainerDetail from '@/pages/Main/TrainerDetail/TrainerDetail';
-import Payment from '@/pages/Main/Payment/Payment';
+import Price from '@/pages/Main/Price/Price';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -64,8 +63,9 @@ export const routes = createRoutesFromElements(
     <Route path="/main/:gymId" element={<GymDetail />} />
     <Route path="/Review" element={<Review />} />
     <Route path="/TrainerDetail" element={<TrainerDetail />} />
-    <Route path="/Payment" element={<Payment />} />
     <Route path="/filter" element={<Filter />} />
+    <Route path="/price/:gymId" element={<Price />} />
+
     <Route
       path="/chat"
       lazy={async () => {
@@ -86,8 +86,6 @@ export const routes = createRoutesFromElements(
     <Route path="/mypage/reviewSettings" element={<ReviewSettings />} />
     <Route path="/mypage/wishList" element={<WishList />} />
     <Route path="/mypage/setting" element={<Setting />} />
-    {/* <Route path="/mypage/logOut" element={<LogOut />} /> */}
-    {/*account*/}
     <Route path="/login" element={<Login />} />
     <Route path="/findId" element={<FindId />} />
     <Route path="/findPassword" element={<FindPassword />} />
