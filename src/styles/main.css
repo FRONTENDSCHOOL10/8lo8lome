@@ -11,3 +11,4 @@
 /* 사용자 정의: 유틸리티 스타일 모듈 */
 @import './_utilities.css';
 @import './_scroll.css';
+@import './_pagination.css';

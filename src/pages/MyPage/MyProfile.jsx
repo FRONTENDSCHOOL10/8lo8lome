@@ -17,11 +17,10 @@ function MyProfile() {
       <div className="flex items-center h-full text-white ">
         <span className="h-64px w-64px">
           <img
-            className="rounded-full"
+            className="object-cover rounded-full "
             src={userData.profileImage}
             alt="내 프로필 사진"
-            width={64}
-            height={64}
+            style={{ width: '64px', height: '64px' }}
           />
         </span>
         <div className="flex text-white flex-low ml-s20">
