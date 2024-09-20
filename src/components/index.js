@@ -15,3 +15,4 @@ export { default as AppRadioInput } from './AppRadioInput.jsx';
 export { default as AppTextInput } from './AppTextInput.jsx';
 export { default as AppEmailInput } from './AppEmailInput.jsx';
 export { default as AppRating } from './AppRating.jsx';
+export { default as AppList } from './AppList.jsx';

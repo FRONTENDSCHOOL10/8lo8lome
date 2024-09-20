@@ -2,14 +2,13 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { getAllData, getData, updateData } from '@/api/CRUD';
 import axios from 'axios';
-import { geocodeAddress } from '@/utils';
 import pb from '@/api/pb';
+import { geocodeAddress } from '@/utils';
 const MapUrl = import.meta.env.VITE_KAKAO_POSTCODE_SCRIPT_URL;
 
 export const mainStore = create((set) => {
   const INITIAL_STATE = {
     searchInput: {
-      inputValue: '',
       searchWord: '',
       gymsList: [],
       filterGyms: [],
@@ -20,6 +19,7 @@ export const mainStore = create((set) => {
       updatedFilters: [],
       wishList: [],
       wishListChecked: {},
+      filteredGymsByDistance: [],
     },
     searchFilter: {
       rating: {
@@ -30,9 +30,9 @@ export const mainStore = create((set) => {
         star5: false,
       },
       healthPrice: {
-        monthly3: false,
-        monthly5: false,
-        monthly6: false,
+        monthly10: false,
+        monthly15: false,
+        monthly20: false,
       },
       ptPrice: {
         pt50: false,
@@ -56,6 +56,64 @@ export const mainStore = create((set) => {
     selectedLocation: '위치를 불러오는 중...',
     loading: true,
     userId: pb.authStore.model?.id || '',
+    locationAddress: {},
+  };
+
+  // 검색어 입력 처리
+  const handleSearchInput = (value) => {
+    set(
+      produce((draft) => {
+        draft.searchInput.searchWord = value;
+      })
+    );
+    const { filteredGymsByDistance } = mainStore.getState().searchInput;
+
+    if (!value.trim()) {
+      set(
+        produce((draft) => {
+          draft.searchInput.filterGyms = filteredGymsByDistance;
+        })
+      );
+      return;
+    }
+  };
+
+  // 검색 제출 처리
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    const { searchWord, filterGyms } = mainStore.getState().searchInput;
+
+    // 검색어가 없으면 필터 적용된 헬스장 리스트 반환
+    if (!searchWord.trim()) return;
+
+    const searchLower = searchWord.toLowerCase().trim();
+
+    // 검색어에서 '일일권', '원' 등 제거하고 숫자를 추출
+    const searchPrice = parseInt(
+      searchLower.replace(/[^0-9]/g, '') // 숫자 이외의 문자 제거
+    );
+
+    // 헬스장 이름, 주소, 일일권 가격이 검색어와 일치하는 헬스장 필터링
+    const filteredGyms = filterGyms.filter((gym) => {
+      const gymName = gym.name.toLowerCase();
+      const gymAddress = gym.address.toLowerCase();
+      const gymOnedayPrice = gym.oneDayPrice; // 숫자 그대로 비교
+
+      // 이름, 주소 또는 일일권 가격과 검색어 비교
+      return (
+        gymName.includes(searchLower) ||
+        gymAddress.includes(searchLower) ||
+        (searchPrice && gymOnedayPrice === searchPrice)
+      );
+    });
+
+    // 필터링된 헬스장 리스트 업데이트
+    set(
+      produce((draft) => {
+        draft.searchInput.filterGyms = filteredGyms;
+      })
+    );
   };
 
   // 필터 버튼 체크 핸들러
@@ -134,7 +192,8 @@ export const mainStore = create((set) => {
   // 필터링된 헬스장 목록 업데이트 함수
   const updateCheckedFilters = () => {
     const { searchFilter } = mainStore.getState();
-    const { filteredGymsByDistance } = mainStore.getState().searchInput;
+    const { gymsList, filteredGymsByDistance } =
+      mainStore.getState().searchInput;
     const checkedFilters = {};
 
     // 체크된 필터 추출
@@ -150,38 +209,41 @@ export const mainStore = create((set) => {
     });
 
     // 필터링된 헬스장 목록 업데이트
-    const filteredGyms = filteredGymsByDistance.filter((gym) => {
-      return Object.entries(checkedFilters).every(
-        ([filterCategory, filterNames]) => {
-          if (filterCategory === 'rating') {
-            // 별점 필터 처리
-            return applyRatingFilter(gym, filterNames);
-          }
-          if (filterCategory === 'healthPrice') {
-            // 가격 필터 처리
-            return applyPriceFilter(gym, filterNames);
-          }
-          if (filterCategory === 'ptPrice') {
-            // PT 가격 필터 처리
-            return applyPtPriceFilter(gym, filterNames);
-          }
-          if (filterCategory === 'amenities') {
-            // 편의시설 필터 처리
-            return applyAmenitiesFilter(gym, filterNames);
-          }
-          // 다른 필터 카테고리 처리
-          return filterNames.some(
-            (filterName) => gym[filterCategory] === filterName
-          );
-        }
-      );
-    });
+    const filteredGyms =
+      Object.keys(checkedFilters).length === 0
+        ? gymsList // 필터가 없으면 원래 리스트로
+        : filteredGymsByDistance.filter((gym) => {
+            return Object.entries(checkedFilters).every(
+              ([filterCategory, filterNames]) => {
+                if (filterCategory === 'rating') {
+                  // 별점 필터 처리
+                  return applyRatingFilter(gym, filterNames);
+                }
+                if (filterCategory === 'healthPrice') {
+                  // 가격 필터 처리
+                  return applyPriceFilter(gym, filterNames);
+                }
+                if (filterCategory === 'PtPrice') {
+                  // PT 가격 필터 처리
+                  return applyPtPriceFilter(gym, filterNames);
+                }
+                if (filterCategory === 'amenities') {
+                  // 편의시설 필터 처리
+                  return applyAmenitiesFilter(gym, filterNames);
+                }
+                // 다른 필터 카테고리 처리
+                return filterNames.some(
+                  (filterName) => gym[filterCategory] === filterName
+                );
+              }
+            );
+          });
 
     // 상태 업데이트
     set(
       produce((draft) => {
         draft.checkedFilters = checkedFilters;
-        draft.searchInput.filterGyms = filteredGyms; // 필터링된 헬스장 목록 업데이트
+        draft.searchInput.filterGyms = filteredGyms;
       })
     );
   };
@@ -266,6 +328,12 @@ export const mainStore = create((set) => {
         const userLocation = await getUserLocation();
         latitude = userLocation.latitude;
         longitude = userLocation.longitude;
+        set(
+          produce((draft) => {
+            draft.locationAddress['latitude'] = latitude;
+            draft.locationAddress['longitude'] = longitude;
+          })
+        );
       }
 
       // 헬스장 목록 필터링
@@ -275,46 +343,17 @@ export const mainStore = create((set) => {
         longitude
       );
 
-      // Zustand 상태 업데이트 (필터링된 헬스장 데이터 저장)
       set(
         produce((draft) => {
-          draft.searchInput.gymsList = gyms; // 필터링된 헬스장 저장
+          draft.searchInput.gymsList = gyms; // 헬스장 저장
+          draft.searchInput.filteredGymsByDistance = filteredGyms; // 거리 필터링 헬스장 저장
           draft.searchInput.filterGyms = filteredGyms; // 필터링된 헬스장 저장
-          draft.searchInput.filteredGymsByDistance = filteredGyms; // 필터링된 헬스장 저장
           draft.searchInput.isGymsLoaded = true; // 데이터 로드 완료
         })
       );
     } catch (error) {
       console.error('헬스장 목록 업데이트 중 오류가 발생했습니다.', error);
     }
-  };
-
-  // 검색어 입력 처리
-  const handleSearchInput = (value) => {
-    set(
-      produce((draft) => {
-        draft.searchInput.inputValue = value;
-        draft.searchInput.searchWord = value;
-      })
-    );
-  };
-
-  // 검색 제출 처리
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const { searchWord, gymsList } = mainStore().getState();
-    set(
-      produce((draft) => {
-        if (searchWord.trim() === '') {
-          draft.searchInput.filterGyms = gymsList;
-        } else {
-          const filtered = gymsList.filter((gym) =>
-            gym.name.toLowerCase().includes(searchWord.toLowerCase())
-          );
-          draft.searchInput.filterGyms = filtered;
-        }
-      })
-    );
   };
 
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
@@ -372,7 +411,6 @@ export const mainStore = create((set) => {
 
   // 헬스장 리스트 필터링 및 정렬 함수
   const filterGymsByDistance = async (gyms, userLat, userLon) => {
-    // 헬스장들의 좌표를 가져오고 거리 계산 후 필터링
     const gymsWithDistance = await Promise.all(
       gyms.map(async (gym) => {
         const { latitude, longitude } = await geocodeAddress(gym.address);
@@ -419,6 +457,8 @@ export const mainStore = create((set) => {
           produce((draft) => {
             draft.selectedLocation = district;
             draft.loading = false;
+            draft.locationAddress['latitude'] = latitude;
+            draft.locationAddress['longitude'] = longitude;
           })
         );
       } else {
@@ -435,9 +475,16 @@ export const mainStore = create((set) => {
     }
   };
 
+  getCurrentLocation();
+
   // 주소 검색 스크립트 로딩
   const loadPostcodeScript = () => {
     return new Promise((resolve, reject) => {
+      if (window.daum && window.daum.Postcode) {
+        resolve(); // 이미 스크립트가 로드된 경우
+        return;
+      }
+
       const existingScript = document.querySelector(`script[src="${MapUrl}"]`);
       if (existingScript) {
         resolve();
@@ -477,6 +524,12 @@ export const mainStore = create((set) => {
 
               // 주소로부터 좌표를 가져오기 위한 함수 호출
               const { latitude, longitude } = await geocodeAddress(address);
+              set(
+                produce((draft) => {
+                  draft.locationAddress['latitude'] = latitude;
+                  draft.locationAddress['longitude'] = longitude;
+                })
+              );
 
               // 헬스장 목록 가져오기
               await getGymsList(latitude, longitude);
@@ -552,7 +605,6 @@ export const mainStore = create((set) => {
     try {
       const updatedWishList = mainStore.getState().searchInput.wishList;
       const userId = mainStore.getState().userId;
-      // PocketBase의 'users' 컬렉션에서 wishList 필드를 업데이트
       await updateData('users', userId, { wishList: updatedWishList });
     } catch (error) {
       console.error('PocketBase에 wishList 업데이트 실패:', error);
