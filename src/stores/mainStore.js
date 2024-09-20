@@ -347,7 +347,7 @@ export const mainStore = create((set) => {
   };
 
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
-  const fetchGymDetails = async (gymId) => {
+  const fetchGymDetails = (gymId) => {
     // 현재 상태에서 gymsList 가져오기
     const { gymsList } = mainStore.getState().searchInput;
 
