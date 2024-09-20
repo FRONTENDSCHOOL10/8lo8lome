@@ -3,32 +3,32 @@ import { mainStore } from '@/stores/mainStore';
 import { AppRating } from '@/components';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Keyboard, A11y } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/pagination';
 
 function TrainerList() {
   const { gymData } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
   }));
 
-  console.log(gymData);
-
   return (
     <section className="ml-s31">
       <h3 className="text-f18 font-bold mb-s10">트레이너 정보</h3>
       <Swiper
-        modules={[Pagination]}
+        modules={[Pagination, Keyboard, A11y]}
         spaceBetween={16}
         slidesPerView={1.35}
         pagination={{
           clickable: true,
-          renderBullet: () => {
-            return `<span class="swiper-pagination-bullet inline-block  w-[14px] h-[14px] border-solid border border-mainColor rounded-full bg-purple-300"></span>`;
-          },
+          el: '.pager',
+          enabled: true,
         }}
-        // className="relative mb-20"
-        style={{ '--swiper-pagination-bottom': '0' }}
+        keyboard={{ enavled: true, pageUpDown: true }}
+        a11y={{
+          paginationBulletMessage: '슬라이드 {{index}}',
+        }}
+        aria-live="polite"
+        aria-label="트레이너 리스트 슬라이더"
       >
         <SwiperSlide key="0">
           <div className="w-s220 p-5 bg-opacityWhite rounded-md flex flex-col items-center">
@@ -91,13 +91,8 @@ function TrainerList() {
             </div>
           </div>
         </SwiperSlide>
+        <div className="pager" aria-label="페이지 네비게이션"></div>
       </Swiper>
-
-      {/* <div className="flex w-full justify-center gap-2 pt-5">
-        <div className="w-s10 h-s10 border-solid border border-mainColor rounded-full"></div>
-        <div className="w-s10 h-s10 border-solid border border-mainColor rounded-full"></div>
-        <div className="w-s10 h-s10 border-solid border border-mainColor rounded-full"></div>
-      </div> */}
     </section>
   );
 }
