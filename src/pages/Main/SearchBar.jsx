@@ -1,16 +1,27 @@
 import { AppTextInput } from '@/components';
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
+import { bool } from 'prop-types';
+import { useMapStore } from '@/stores/mapStore';
 
-function SearchBar() {
+SearchBar.propTypes = {
+  map: bool,
+};
+
+function SearchBar({ map }) {
   const { handleSearchSubmit, handleSearchInput } = mainStore((s) => ({
     handleSearchSubmit: s.handleMethod.handleSearchSubmit,
     handleSearchInput: s.handleMethod.handleSearchInput,
   }));
 
+  const { handleMapSearchInput, handleMapSubmit } = useMapStore((s) => ({
+    handleMapSearchInput: s.handleMapSearchInput,
+    handleMapSubmit: s.handleMapSubmit,
+  }));
+
   return (
     <form
-      onSubmit={handleSearchSubmit}
+      onSubmit={map ? handleMapSubmit : handleSearchSubmit}
       className="flex items-center grow gap-2 py-3 border-b border-solid border-white focus-within:border-borderPrimary"
     >
       <AppTextInput
@@ -18,7 +29,7 @@ function SearchBar() {
         isHiddenLabel
         placeholder="검색어를 입력해 주세요."
         className="bg-transparent outline-none text-f14 border-none px-1 py-0 font-normal"
-        onChange={handleSearchInput}
+        onChange={map ? handleMapSearchInput : handleSearchInput}
       />
       <button type="submit" aria-label="검색">
         <svg
