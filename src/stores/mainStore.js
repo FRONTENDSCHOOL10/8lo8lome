@@ -558,13 +558,6 @@ export const mainStore = create((set) => {
     }
   };
 
-  // GymDetail에서 해당하는 트레이너 정보 가져오는 함수
-  const fetchTrainers = async (trainerId) => {
-    // const { trainerData } = mainStore.getState().searchInput;
-    // const data = await getAllData('trainers', 'filter: trainerId');
-    // console.log(data);
-  };
-
   const setWishList = async (target) => {
     const { name, checked } = target;
     const { gymsList, wishList } = mainStore.getState().searchInput;
@@ -657,7 +650,6 @@ export const mainStore = create((set) => {
       fetchGymDetails,
       updateCheckedFilters,
       getGymsList,
-      fetchTrainers,
       getCurrentLocation,
       searchLocation,
       setWishList,

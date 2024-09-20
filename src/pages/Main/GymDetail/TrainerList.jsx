@@ -8,14 +8,11 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 function TrainerList() {
-  const { gymData, fetchTrainers } = mainStore((s) => ({
+  const { gymData } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
-    fetchTrainers: s.handleMethod.fetchTrainers,
   }));
 
-  fetchTrainers(gymData.trainer);
-
-  // const data = await getData('gyms', gymId); //객체타입으로
+  console.log(gymData);
 
   return (
     <section className="ml-s31">
