@@ -1,4 +1,4 @@
-import { AppHeader, AppButton } from '@/components';
+import { AppHeader } from '@/components';
 import AppMeta from '@/components/AppMeta';
 import EditImage from './EditImage';
 import EditNickname from './EditNickname';
@@ -15,9 +15,6 @@ function EditProfile() {
       <EditNickname />
       <EditEmail />
       <EditNumber />
-      <form className="mt-10 px-s20">
-        <AppButton className="min-h-[46px]">수정하기</AppButton>
-      </form>
     </>
   );
 }
