@@ -30,7 +30,7 @@ function GymDetailFooter() {
         checkedColor="text-red-500"
       />
       <Link
-        to={`/Payment/${gymId}`}
+        to={`/price/${gymId}`}
         aria-label="결제하기 링크"
         className="rounded p-s12 text-f18 font-normal text-black bg-mainColor w-full text-center"
       >
