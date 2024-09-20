@@ -50,7 +50,7 @@ function AppReviewList({ gym }) {
 
                   {review.trainer ? (
                     <Link
-                      to={'/GymDetail'}
+                      to={`/TrainerDetail/${review.expand.trainer.id}`}
                       aria-label={`${review.expand.trainer.name} 트레이너 상세 정보 링크`}
                       className="text-f16 font-bold inline-flex items-center"
                     >
