@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import { getData, updateData } from '@/api/CRUD';
+import { updateData } from '@/api/CRUD';
 import { getPbImageURL } from '@/utils';
 
 export const useMyPageStore = create((set) => {
@@ -24,38 +24,6 @@ export const useMyPageStore = create((set) => {
         s.userData = { ...s.userData, ...newData };
       })
     );
-  };
-
-  // 닉네임 중복 확인
-  const checkNicknameDuplicate = async (nickname) => {
-    try {
-      const response = await getData('users', {
-        filter: `nickName="${nickname}"`,
-      });
-      if (response.length > 0) {
-        set(
-          produce((s) => {
-            s.isNickname = false; // 중복된 닉네임
-          })
-        );
-        return false;
-      } else {
-        set(
-          produce((s) => {
-            s.isNickname = true; // 중복되지 않음
-          })
-        );
-        return true;
-      }
-    } catch (error) {
-      console.error('닉네임 중복 확인 실패:', error);
-      set(
-        produce((s) => {
-          s.isNickname = null; // 에러 처리
-        })
-      );
-      return false;
-    }
   };
 
   // 사용자 데이터를 가져오는 함수
@@ -90,7 +58,7 @@ export const useMyPageStore = create((set) => {
         }
 
         // 닉네임과 이메일을 FormData에 추가
-        formData.append('nickname', newNickname || authData.nickName);
+        formData.append('nickName', newNickname || authData.nickName);
         formData.append('email', newEmail || authData.email);
 
         // 사용자 정보를 PocketBase에서 업데이트
@@ -123,6 +91,5 @@ export const useMyPageStore = create((set) => {
     setUserData,
     fetchUserData,
     updateProfile,
-    checkNicknameDuplicate,
   };
 });
