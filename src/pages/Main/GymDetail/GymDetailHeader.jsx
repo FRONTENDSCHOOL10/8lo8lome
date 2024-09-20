@@ -1,18 +1,14 @@
 import { memo } from 'react';
 import { mainStore } from '@/stores/mainStore';
-import { getPbImageURL } from '@/utils';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { AppRating } from '@/components';
+import { AppRating, AppImageDisplay } from '@/components';
 
 function GymDetailHeader() {
   const { gymData } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
   }));
-
-  const imgUrl = getPbImageURL(gymData);
 
   const days = {
     월: 'mondayHours',
@@ -26,22 +22,10 @@ function GymDetailHeader() {
 
   return (
     <section className="ml-s31 mt-[100px]">
-      <section
-        aria-label={`${gymData.name} 헬스장 이미지`}
-        className="flex justify-center"
-      >
-        <Swiper spaceBetween={16} slidesPerView={1.1} className="max-w-[320px]">
-          {imgUrl.map((url) => (
-            <SwiperSlide key={imgUrl.indexOf(url)}>
-              <img
-                src={url}
-                alt=""
-                className="w-s278 h-s156 bg-subBg rounded"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
+      <AppImageDisplay
+        item={gymData}
+        ariaLabel={`${gymData.name} 헬스장 이미지`}
+      />
 
       <div className="mr-s31 mt-s20">
         <div className="flex justify-between">

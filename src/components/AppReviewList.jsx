@@ -91,7 +91,7 @@ function AppReviewList({ gym }) {
                 {review.reviewContent}
               </p>
 
-              <AppImageDisplay item={review} />
+              <AppImageDisplay item={review} className="mt-s12 ml-s31" />
 
               <p className="text-f12 font-medium pt-[0.5625rem] mx-s31">
                 {formatDate(review.created)}

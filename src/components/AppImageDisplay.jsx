@@ -1,14 +1,16 @@
 import { memo } from 'react';
 import { getPbImageURL } from '@/utils';
+import { object, string } from 'prop-types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { object } from 'prop-types';
 
 AppImageDisplay.propTypes = {
   item: object,
+  ariaLabel: string,
+  className: string,
 };
 
-function AppImageDisplay({ item }) {
+function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
   if (!item || item.photo.length === 0) {
     return '';
   }
@@ -26,7 +28,10 @@ function AppImageDisplay({ item }) {
   }
 
   return (
-    <section className="flex justify-center mt-s12 ml-s31">
+    <section
+      aria-label={ariaLabel}
+      className={`flex justify-center ${className}`}
+    >
       <Swiper spaceBetween={16} slidesPerView={1.1} className="max-w-[320px]">
         {imgUrl.map((url, index) => (
           <SwiperSlide key={index}>
