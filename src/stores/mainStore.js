@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { getAllData, getData, updateData } from '@/api/CRUD';
+import { geocodeAddress, getUserLocation } from '@/utils';
 import axios from 'axios';
 import pb from '@/api/pb';
-import { geocodeAddress } from '@/utils';
 const MapUrl = import.meta.env.VITE_KAKAO_POSTCODE_SCRIPT_URL;
 
 export const mainStore = create((set) => {
@@ -297,26 +297,6 @@ export const mainStore = create((set) => {
         });
       })
     );
-  };
-
-  // 사용자 위치 가져오기 함수
-  const getUserLocation = () => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            resolve({ latitude, longitude });
-          },
-          (error) => {
-            console.error('Error getting location:', error);
-            reject(error);
-          }
-        );
-      } else {
-        reject(new Error('Geolocation is not supported by this browser.'));
-      }
-    });
   };
   // getGymsList 함수에서 위치를 매개변수로 받도록 수정
   const getGymsList = async (latitude, longitude) => {
