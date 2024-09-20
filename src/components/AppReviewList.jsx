@@ -1,22 +1,35 @@
 import { Link } from 'react-router-dom';
 import { AppRating, AppImageDisplay } from '.';
-import { memo, useEffect } from 'react';
-import { mainStore } from '@/stores/mainStore';
+import { memo, useState, useEffect } from 'react';
 import { formatDate } from '@/utils';
+import { object } from 'prop-types';
+import { getAllData } from '@/api/CRUD';
+
+AppReviewList.propTypes = {
+  gym: object,
+};
 
 function AppReviewList({ gym }) {
-  const { getGymReviewsById, reviewsList } = mainStore((s) => ({
-    getGymReviewsById: s.handleMethod.getGymReviewsById,
-    reviewsList: s.searchInput.reviewsList,
-  }));
-
   const gymId = gym.id;
+  const [reviewsList, setReviewsList] = useState([]);
 
   useEffect(() => {
     if (gymId) {
-      getGymReviewsById(gymId);
+      // 헬스장 ID와 일치하는 리뷰 리스트 Data 가져오는 함수
+      const fetchReviews = async () => {
+        const data = await getAllData(
+          'reviews',
+          '-created',
+          `gym = '${gymId}'`,
+          'user, trainer'
+        );
+
+        setReviewsList(data);
+      };
+
+      fetchReviews();
     }
-  }, [gymId, getGymReviewsById]);
+  }, [gymId]);
 
   return (
     <>
