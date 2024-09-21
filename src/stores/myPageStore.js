@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import pb from '@/api/pb';
-import { updateData } from '@/api/CRUD';
+import { getFirstListItem, updateData } from '@/api/CRUD';
 import { getPbImageURL } from '@/utils';
+import { NICKNAME_REG, EMAIL_REG } from '@/constant';
 
 export const useMyPageStore = create((set) => {
   const INITIAL_s = {
@@ -26,6 +27,40 @@ export const useMyPageStore = create((set) => {
     );
   };
 
+  const checkNicknameDuplicate = async (nickName) => {
+    // 유효한 닉네임인지 정규 표현식으로 검사
+    if (!NICKNAME_REG.test(nickName)) {
+      set(
+        produce((s) => {
+          s.isNickname = null; // 유효하지 않은 닉네임
+        })
+      );
+      return false;
+    }
+
+    try {
+      // 닉네임에 해당하는 첫 번째 사용자 항목을 가져옵니다.
+      const result = await getFirstListItem('users', 'nickName', nickName);
+
+      // 중복 여부에 따라 상태를 업데이트합니다.
+      set(
+        produce((s) => {
+          s.isNickname = !result; // result가 존재하면 중복된 것이므로 false
+        })
+      );
+
+      return !result; // 중복 여부에 따라 true/false 반환
+    } catch (error) {
+      console.error('닉네임 중복 확인 실패:', error);
+      set(
+        produce((s) => {
+          s.isNickname = null; // 에러 처리
+        })
+      );
+      return false;
+    }
+  };
+
   // 사용자 데이터를 가져오는 함수
   const fetchUserData = async () => {
     const authData = pb.authStore.model;
@@ -41,6 +76,43 @@ export const useMyPageStore = create((set) => {
           s.userData = { ...s.userData, ...userProfileData };
         })
       );
+    }
+  };
+
+  const checkEmailDuplicate = async (email) => {
+    // 이메일 유효성 검사
+    if (!EMAIL_REG.test(email)) {
+      set(
+        produce((draft) => {
+          draft.isEmailValid = null; // 유효하지 않은 이메일
+        })
+      );
+      return false;
+    }
+
+    try {
+      // 이메일 중복 확인
+      const emailResult = await getFirstListItem('users', 'email', email);
+
+      // 상태 업데이트
+      set(
+        produce((draft) => {
+          draft.isEmailValid = !emailResult;
+          console.log('getFirstListItem result:', emailResult); // 이메일이 존재하면 중복(true), 존재하지 않으면 사용 가능(false)
+        })
+      );
+
+      return !emailResult; // 중복 여부에 따라 true/false 반환
+    } catch (error) {
+      console.error('이메일 중복 확인 실패:', error);
+
+      set(
+        produce((draft) => {
+          draft.isEmailValid = null; // 에러 처리
+        })
+      );
+
+      return false;
     }
   };
 
@@ -91,5 +163,7 @@ export const useMyPageStore = create((set) => {
     setUserData,
     fetchUserData,
     updateProfile,
+    checkNicknameDuplicate,
+    checkEmailDuplicate,
   };
 });
