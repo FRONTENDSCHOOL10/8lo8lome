@@ -58,6 +58,7 @@ export const mainStore = create((set) => {
     gymListLoading: true,
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
+    gymDetailLocation: {},
   };
 
   // 검색어 입력 처리
@@ -640,6 +641,36 @@ export const mainStore = create((set) => {
     }
   };
 
+  //헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
+  const getGymLocation = async (address) => {
+    try {
+      const apiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
+      const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `KakaoAK ${apiKey}`,
+        },
+      });
+
+      const data = response.data;
+      if (data.documents && data.documents.length > 0) {
+        // 주소 추출 및 상태 업데이트
+        const { x: longitude, y: latitude } = data.documents[0];
+
+        set(
+          produce((draft) => {
+            draft.gymDetailLocation = { latitude, longitude };
+          })
+        );
+      } else {
+        throw new Error('No address found');
+      }
+    } catch (error) {
+      console.error('Error fetching gym location or address:', error);
+    }
+  };
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -654,6 +685,7 @@ export const mainStore = create((set) => {
       searchLocation,
       setWishList,
       fetchWishList,
+      getGymLocation,
     },
   };
 });
