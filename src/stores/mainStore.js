@@ -347,18 +347,18 @@ export const mainStore = create((set) => {
   };
 
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
-  const fetchGymDetails = async (gymId) => {
-    const { gymData } = mainStore.getState().searchInput;
+  const fetchGymDetails = (gymId) => {
+    // 현재 상태에서 gymsList 가져오기
+    const { gymsList } = mainStore.getState().searchInput;
 
-    if (gymData && gymData.id === gymId) {
-      return;
-    }
+    // gymsList에서 gymId와 일치하는 헬스장 찾기
+    const gymData = gymsList.find((gym) => gym.id === gymId);
 
-    const data = await getData('gyms', gymId);
+    if (!gymData) return;
 
-    set(
+    mainStore.setState(
       produce((draft) => {
-        draft.searchInput.gymData = data;
+        draft.searchInput.gymData = gymData;
       })
     );
   };

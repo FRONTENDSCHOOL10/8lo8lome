@@ -1,7 +1,8 @@
 // 닉네임 정규식
 export const NICKNAME_REG = /^[가-힣a-zA-Z0-9]{1,8}$/;
 // 이메일 정규식
-export const EMAIL_REG = /^[^\s@]+@[^\s@]+\.(com|net)$/;
+export const EMAIL_REG =
+  /^(?=.*[0-9a-zA-Z].{2,})[0-9a-zA-Z]{3,}@[a-zA-Z]+\.[a-zA-Z]{2,3}$/;
 // 핸드폰번호 정규식
 export const PHONENUMBER_REG = /^0\d{10}$/;
 // 비밀번호 정규식
