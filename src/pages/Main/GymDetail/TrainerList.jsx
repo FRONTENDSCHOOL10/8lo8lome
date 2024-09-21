@@ -9,9 +9,9 @@ import 'swiper/css';
 
 function TrainerList() {
   const [isLoading, setIsLoading] = useState(true);
-  const { gymData, trainerData, getTrainersFromGymData } = mainStore((s) => ({
+  const { gymData, trainerList, getTrainersFromGymData } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
-    trainerData: s.searchInput.trainerData,
+    trainerList: s.searchInput.trainerList,
     getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
   }));
 
@@ -55,7 +55,7 @@ function TrainerList() {
           aria-live="polite"
           aria-label="트레이너 리스트 슬라이더"
         >
-          {trainerData.map((trainer, index) => {
+          {trainerList.map((trainer, index) => {
             const imgUrl = getPbImageURL(trainer);
             const imgUrlArray = Array.isArray(imgUrl) ? imgUrl : [imgUrl];
 

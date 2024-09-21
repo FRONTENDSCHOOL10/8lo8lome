@@ -15,6 +15,7 @@ export const mainStore = create((set) => {
       isGymsLoaded: false,
       selectedFilters: [],
       gymData: {},
+      trainerList: {},
       trainerData: {},
       updatedFilters: [],
       wishList: [],
@@ -59,6 +60,7 @@ export const mainStore = create((set) => {
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
     gymDetailLocation: {},
+    isValidUserPath: false,
   };
 
   // 검색어 입력 처리
@@ -685,19 +687,50 @@ export const mainStore = create((set) => {
 
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = data;
+          draft.searchInput.trainerList = data;
         })
       );
     } else {
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = [];
+          draft.searchInput.trainerList = [];
         })
       );
     }
   };
 
-  const fetchTrainerDetails = async () => {};
+  // TrainerDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
+  const fetchTrainerDetails = (trainerId) => {
+    const { trainerList } = mainStore.getState().searchInput;
+
+    const trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+
+    if (!trainerData) return;
+
+    set(
+      produce((draft) => {
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
+
+  // ReviewSettings페이지에서 isValidUserPath을 false로 초기화하는 함수
+  const setUserPathValidity = () => {
+    set(
+      produce((draft) => {
+        draft.isValidUserPath = false;
+      })
+    );
+  };
+
+  // ReviewSettings페이지에서 링크 클릭시 이벤트 함수
+  const handleUserPathValidity = () => {
+    set(
+      produce((draft) => {
+        draft.isValidUserPath = true;
+      })
+    );
+  };
 
   return {
     ...INITIAL_STATE,
@@ -716,6 +749,8 @@ export const mainStore = create((set) => {
       getGymLocation,
       getTrainersFromGymData,
       fetchTrainerDetails,
+      setUserPathValidity,
+      handleUserPathValidity,
     },
   };
 });
