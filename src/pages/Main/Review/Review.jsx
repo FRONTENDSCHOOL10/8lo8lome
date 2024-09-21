@@ -15,7 +15,11 @@ function Review() {
         title="헬스장 리뷰 페이지"
         description="헬스장 리뷰 페이지입니다."
       />
-      <AppReviewList gym={gymData} />
+      <AppReviewList
+        item={gymData}
+        filter={`gym = '${gymData.id}'`}
+        expand={'user, trainer'}
+      />
     </>
   );
 }
