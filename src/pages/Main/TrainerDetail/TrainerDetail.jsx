@@ -8,13 +8,10 @@ import TrainerProfile from './TrainerProfile';
 function TrainerDetail() {
   const { trainerId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const { fetchTrainerDetails, trainerData, isValidUserPath } = mainStore(
-    (s) => ({
-      fetchTrainerDetails: s.handleMethod.fetchTrainerDetails,
-      trainerData: s.searchInput.trainerData,
-      isValidUserPath: s.isValidUserPath,
-    })
-  );
+  const { fetchTrainerDetails, trainerData } = mainStore((s) => ({
+    fetchTrainerDetails: s.handleMethod.fetchTrainerDetails,
+    trainerData: s.searchInput.trainerData,
+  }));
 
   useEffect(() => {
     const loadTrainerDetails = async () => {
@@ -32,8 +29,6 @@ function TrainerDetail() {
 
     loadTrainerDetails();
   }, [trainerId, fetchTrainerDetails]);
-
-  console.log(isValidUserPath);
 
   return (
     <>

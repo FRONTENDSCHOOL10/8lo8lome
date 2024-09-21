@@ -699,13 +699,22 @@ export const mainStore = create((set) => {
     }
   };
 
-  // TrainerDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
-  const fetchTrainerDetails = (trainerId) => {
-    const { trainerList } = mainStore.getState().searchInput;
+  // TrainerDetail페이지에서 데이터 패치하는 함수(헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
+  const fetchTrainerDetails = async (trainerId) => {
+    let { isValidUserPath } = mainStore.getState();
+    let trainerData;
 
-    const trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+    isValidUserPath = localStorage.getItem('isValidUserPath') === 'true';
 
-    if (!trainerData) return;
+    if (isValidUserPath) {
+      trainerData = await getData('trainers', trainerId);
+      console.log(trainerData);
+    } else {
+      const { trainerList } = mainStore.getState().searchInput;
+      trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+
+      if (!trainerData) return;
+    }
 
     set(
       produce((draft) => {
@@ -721,6 +730,7 @@ export const mainStore = create((set) => {
         draft.isValidUserPath = false;
       })
     );
+    localStorage.setItem('isValidUserPath', 'false');
   };
 
   // ReviewSettings페이지에서 링크 클릭시 이벤트 함수
@@ -730,6 +740,7 @@ export const mainStore = create((set) => {
         draft.isValidUserPath = true;
       })
     );
+    localStorage.setItem('isValidUserPath', 'true');
   };
 
   return {

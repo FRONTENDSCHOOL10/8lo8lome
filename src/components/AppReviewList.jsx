@@ -4,6 +4,7 @@ import { memo, useState, useEffect } from 'react';
 import { formatDate } from '@/utils';
 import { object, string, func } from 'prop-types';
 import { getAllData } from '@/api/CRUD';
+import { useNavigate } from 'react-router-dom';
 
 AppReviewList.propTypes = {
   item: object,
@@ -17,11 +18,11 @@ function AppReviewList({ item, filter = '', expand = '', onClick }) {
   const [reviewsList, setReviewsList] = useState([]);
   const itemId = item.id;
   const itemCollectionName = item.collectionName;
+  const navigate = useNavigate();
 
   const handleClick = async (event, LinkTo) => {
     event.preventDefault();
 
-    console.log(itemCollectionName);
     if (itemCollectionName !== 'users') {
       throw new Error('Collection ID is not "users".');
     }
@@ -30,7 +31,7 @@ function AppReviewList({ item, filter = '', expand = '', onClick }) {
       await onClick();
     }
 
-    window.location.href = LinkTo;
+    navigate(LinkTo);
   };
 
   useEffect(() => {
