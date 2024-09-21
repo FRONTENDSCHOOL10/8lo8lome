@@ -41,8 +41,16 @@ function LocationMap() {
       const options = {
         center: new window.kakao.maps.LatLng(latitude, longitude),
         level: 3,
+        draggable: true,
       };
-      new window.kakao.maps.Map(container, options);
+      const map = new window.kakao.maps.Map(container, options);
+
+      // 헬스장 마커 추가
+      const position = new window.kakao.maps.LatLng(latitude, longitude);
+      new window.kakao.maps.Marker({
+        position,
+        map,
+      });
     }
   }, [mapLoaded, gymDetailLocation]);
 
