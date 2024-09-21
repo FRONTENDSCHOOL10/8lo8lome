@@ -28,6 +28,7 @@ export default {
         grayBorder: '#8E98A8',
         warning: '#fd0000',
         borderPrimary: '#16efa4',
+        ratingGray: '#595959',
       },
       spacing: {
         s6: '0.375rem',

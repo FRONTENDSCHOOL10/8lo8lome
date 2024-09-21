@@ -8,4 +8,5 @@ export * from './throttle.js';
 export * from './formatTime.js';
 export * from './downloadImage.js';
 export * from './geocodeAddress.js';
+export * from './formatDate.js';
 export * from './getUserLocation.js';

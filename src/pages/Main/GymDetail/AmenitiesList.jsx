@@ -7,12 +7,12 @@ function AmenitiesList() {
   }));
 
   const amenitiesType = {
-    parking: ['주차장', 'warning'],
+    parking: ['주차장', 'park'],
     wifi: ['WIFI', 'wifi'],
     showerRoom: ['샤워실', 'shower'],
-    locker: ['개인락커', 'warning'],
+    locker: ['개인락커', 'locker'],
     clothes: ['운동복', 'shirt'],
-    gxRoom: ['GX룸', 'warning'],
+    gxRoom: ['GX룸', 'group'],
   };
 
   return (
@@ -24,6 +24,9 @@ function AmenitiesList() {
           const getAmenityColor = gymData.amenities[key]
             ? 'mainColor'
             : 'white';
+          const getSvgColor = gymData.amenities[key] ? '#16efa4' : '#ffffff';
+
+          const getAmenityLabel = gymData.amenities[key] ? '보유' : '미보유';
 
           return (
             <li
@@ -31,9 +34,12 @@ function AmenitiesList() {
               className={`flex flex-col border border-solid border-${getAmenityColor} rounded-md p-s6 gap-s6 w-s58 h-s58 items-center justify-center`}
             >
               <svg
-                role="icon"
-                aria-label={`와이파이 보유`}
-                className={`w-6 h-6 fill-${getAmenityColor}`}
+                aria-label={`${amenitiesType[key][0]} ${getAmenityLabel}`}
+                className={`w-6 h-6`}
+                style={{
+                  fill: getSvgColor,
+                  color: getSvgColor,
+                }}
               >
                 <use href={`/assets/sprite.svg#${amenitiesType[key][1]}`} />
               </svg>
