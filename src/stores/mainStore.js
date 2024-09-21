@@ -641,7 +641,7 @@ export const mainStore = create((set) => {
     }
   };
 
-  //헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
+  // 헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
   const getGymLocation = async (address) => {
     try {
       const apiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
@@ -671,6 +671,34 @@ export const mainStore = create((set) => {
     }
   };
 
+  // 헬스장 디테일 페이지에서 gymData를 통해 trainerds 정보를 가져오는 함수
+  const getTrainersFromGymData = async (trainerIds) => {
+    if (Array.isArray(trainerIds) && trainerIds.length > 0) {
+      const formattedTrainerIds = trainerIds
+        .map((id) => `id = '${id}'`)
+        .join('||');
+      const data = await getAllData(
+        'trainers',
+        '-created',
+        `${formattedTrainerIds}`
+      );
+
+      set(
+        produce((draft) => {
+          draft.searchInput.trainerData = data;
+        })
+      );
+    } else {
+      set(
+        produce((draft) => {
+          draft.searchInput.trainerData = [];
+        })
+      );
+    }
+  };
+
+  const fetchTrainerDetails = async () => {};
+
   return {
     ...INITIAL_STATE,
     handleMethod: {
@@ -686,6 +714,8 @@ export const mainStore = create((set) => {
       setWishList,
       fetchWishList,
       getGymLocation,
+      getTrainersFromGymData,
+      fetchTrainerDetails,
     },
   };
 });

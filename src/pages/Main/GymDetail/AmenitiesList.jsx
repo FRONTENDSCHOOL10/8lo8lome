@@ -24,6 +24,7 @@ function AmenitiesList() {
           const getAmenityColor = gymData.amenities[key]
             ? 'mainColor'
             : 'white';
+          const getSvgColor = gymData.amenities[key] ? '#16efa4' : '#ffffff';
 
           const getAmenityLabel = gymData.amenities[key] ? '보유' : '미보유';
 
@@ -34,7 +35,11 @@ function AmenitiesList() {
             >
               <svg
                 aria-label={`${amenitiesType[key][0]} ${getAmenityLabel}`}
-                className={`w-6 h-6 text-${getAmenityColor} fill-${getAmenityColor}`}
+                className={`w-6 h-6`}
+                style={{
+                  fill: getSvgColor,
+                  color: getSvgColor,
+                }}
               >
                 <use href={`/assets/sprite.svg#${amenitiesType[key][1]}`} />
               </svg>
