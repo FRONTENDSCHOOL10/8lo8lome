@@ -16,6 +16,8 @@ export const useMyPageStore = create((set) => {
     isLogin: pb.authStore.isValid,
     isNicknameDisabled: true,
     isNickname: null,
+    isEmailValid: null, // 이메일 유효성 상태
+    emailValidationMessage: '',
   };
 
   // 상태를 설정하는 함수
@@ -79,12 +81,14 @@ export const useMyPageStore = create((set) => {
     }
   };
 
-  const checkEmailDuplicate = async (email) => {
+  const checkEmailDuplicate = async () => {
+    const userEmail = useMyPageStore.getState().userData.email; // 사용자 이메일 가져오기
+
     // 이메일 유효성 검사
-    if (!EMAIL_REG.test(email)) {
+    if (!EMAIL_REG.test(userEmail)) {
       set(
         produce((draft) => {
-          draft.isEmailValid = null; // 유효하지 않은 이메일
+          draft.isEmailValid = '유효하지 않은 이메일 형식입니다.'; // 유효하지 않은 이메일 메시지
         })
       );
       return false;
@@ -92,23 +96,24 @@ export const useMyPageStore = create((set) => {
 
     try {
       // 이메일 중복 확인
-      const emailResult = await getFirstListItem('users', 'email', email);
+      const emailResult = await getFirstListItem('users', 'email', userEmail);
 
       // 상태 업데이트
       set(
         produce((draft) => {
-          draft.isEmailValid = !emailResult;
-          console.log('getFirstListItem result:', emailResult); // 이메일이 존재하면 중복(true), 존재하지 않으면 사용 가능(false)
+          draft.isEmailValid = emailResult
+        
+          console.log('getFirstListItem result:', emailResult); // 반환된 이메일 결과 확인
         })
       );
 
-      return !emailResult; // 중복 여부에 따라 true/false 반환
+      return !!emailResult; // 이메일이 존재하면 true, 존재하지 않으면 false 반환
     } catch (error) {
       console.error('이메일 중복 확인 실패:', error);
 
       set(
         produce((draft) => {
-          draft.isEmailValid = null; // 에러 처리
+          draft.isEmailValid = '이메일 중복 확인 중 오류가 발생했습니다.'; // 에러 처리 메시지
         })
       );
 
