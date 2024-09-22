@@ -89,7 +89,7 @@ function Price() {
                   name={`${additionalItem.label}`}
                   unCheckedSvgId="checkbox-unclick"
                   onChange={handleToggle}
-                  className="justify-between text-f14"
+                  className="justify-between text-f16"
                   isChecked={!!selectedItems[`${additionalItem.label}`]}
                   reverse
                 />
