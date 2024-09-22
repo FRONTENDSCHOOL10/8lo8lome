@@ -2,37 +2,20 @@ import { Link } from 'react-router-dom';
 import { AppRating, AppImageDisplay, AppLoading } from '.';
 import { memo, useState, useEffect } from 'react';
 import { formatDate } from '@/utils';
-import { object, string, func } from 'prop-types';
+import { object, string } from 'prop-types';
 import { getAllData } from '@/api/CRUD';
-import { useNavigate } from 'react-router-dom';
 
 AppReviewList.propTypes = {
   item: object,
   filter: string,
   expand: string,
-  onClick: func,
 };
 
-function AppReviewList({ item, filter = '', expand = '', onClick }) {
+function AppReviewList({ item, filter = '', expand = '' }) {
   const [isLoading, setIsLoading] = useState(true);
   const [reviewsList, setReviewsList] = useState([]);
   const itemId = item.id;
   const itemCollectionName = item.collectionName;
-  const navigate = useNavigate();
-
-  const handleClick = async (event, LinkTo) => {
-    event.preventDefault();
-
-    if (itemCollectionName !== 'users') {
-      throw new Error('Collection ID is not "users".');
-    }
-
-    if (onClick) {
-      await onClick();
-    }
-
-    navigate(LinkTo);
-  };
 
   useEffect(() => {
     const loadReviewList = async () => {
@@ -113,11 +96,6 @@ function AppReviewList({ item, filter = '', expand = '', onClick }) {
                           to={LinkTo}
                           aria-label={`${LinkLabel} 상세 정보 링크`}
                           className="text-f16 font-bold inline-flex items-center"
-                          onClick={
-                            onClick
-                              ? (event) => handleClick(event, LinkTo)
-                              : undefined
-                          }
                         >
                           {review.trainer ? (
                             <p>&nbsp;/ {review.expand.trainer.name}</p>

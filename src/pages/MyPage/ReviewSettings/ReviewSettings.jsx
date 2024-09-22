@@ -10,14 +10,13 @@ function ReviewSettings() {
     userData: s.userData,
   }));
 
-  const { setUserPathValidity, handleUserPathValidity } = mainStore((s) => ({
+  const { setUserPathValidity } = mainStore((s) => ({
     setUserPathValidity: s.handleMethod.setUserPathValidity,
-    handleUserPathValidity: s.handleMethod.handleUserPathValidity,
   }));
 
   useEffect(() => {
     if (userData) {
-      setUserPathValidity();
+      setUserPathValidity('users');
     }
   }, [userData, setUserPathValidity]);
 
@@ -30,7 +29,6 @@ function ReviewSettings() {
         item={userData}
         filter={`user = '${userData.id}'`}
         expand={'gym, trainer'}
-        onClick={handleUserPathValidity}
       />
     </>
   );

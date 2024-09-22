@@ -9,17 +9,20 @@ import 'swiper/css';
 
 function TrainerList() {
   const [isLoading, setIsLoading] = useState(true);
-  const { gymData, trainerList, getTrainersFromGymData } = mainStore((s) => ({
-    gymData: s.searchInput.gymData,
-    trainerList: s.searchInput.trainerList,
-    getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
-  }));
+  const { gymData, trainerList, getTrainersFromGymData, setUserPathValidity } =
+    mainStore((s) => ({
+      gymData: s.searchInput.gymData,
+      trainerList: s.searchInput.trainerList,
+      getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
+      setUserPathValidity: s.handleMethod.setUserPathValidity,
+    }));
 
   useEffect(() => {
     const loadTrainerList = async () => {
       if (gymData) {
         try {
           await getTrainersFromGymData(gymData.trainer);
+          setUserPathValidity('trainers');
         } catch (error) {
           console.error('Error fetching trainer list:', error);
           setIsLoading(false);
@@ -30,7 +33,7 @@ function TrainerList() {
     };
 
     loadTrainerList();
-  }, [gymData, getTrainersFromGymData]);
+  }, [gymData, getTrainersFromGymData, setUserPathValidity]);
 
   return (
     <section className="ml-s31">

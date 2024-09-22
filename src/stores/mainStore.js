@@ -699,18 +699,15 @@ export const mainStore = create((set) => {
     }
   };
 
-  // TrainerDetail페이지에서 데이터 패치하는 함수(헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
+  // TrainerDetail페이지에서 데이터 패치하는 함수(접근 가능한 루트: 헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
   const fetchTrainerDetails = async (trainerId) => {
-    let { isValidUserPath } = mainStore.getState();
+    const { isValidUserPath } = mainStore.getState();
+    const { trainerList } = mainStore.getState().searchInput;
     let trainerData;
-
-    isValidUserPath = localStorage.getItem('isValidUserPath') === 'true';
 
     if (isValidUserPath) {
       trainerData = await getData('trainers', trainerId);
-      console.log(trainerData);
     } else {
-      const { trainerList } = mainStore.getState().searchInput;
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
 
       if (!trainerData) return;
@@ -723,24 +720,15 @@ export const mainStore = create((set) => {
     );
   };
 
-  // ReviewSettings페이지에서 isValidUserPath을 false로 초기화하는 함수
-  const setUserPathValidity = () => {
-    set(
-      produce((draft) => {
-        draft.isValidUserPath = false;
-      })
-    );
-    localStorage.setItem('isValidUserPath', 'false');
-  };
+  // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 isValidUserPath 값을 세팅하는 함수
+  const setUserPathValidity = (collectionName) => {
+    const data = collectionName === 'users' ? true : false;
 
-  // ReviewSettings페이지에서 링크 클릭시 이벤트 함수
-  const handleUserPathValidity = () => {
     set(
       produce((draft) => {
-        draft.isValidUserPath = true;
+        draft.isValidUserPath = data;
       })
     );
-    localStorage.setItem('isValidUserPath', 'true');
   };
 
   return {
@@ -761,7 +749,6 @@ export const mainStore = create((set) => {
       getTrainersFromGymData,
       fetchTrainerDetails,
       setUserPathValidity,
-      handleUserPathValidity,
     },
   };
 });

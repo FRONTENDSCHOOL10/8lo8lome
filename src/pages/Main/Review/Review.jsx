@@ -1,12 +1,19 @@
 import AppMeta from '@/components/AppMeta';
 import { AppHeader, AppReviewList } from '@/components';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 
 function Review() {
-  const { gymData } = mainStore((s) => ({
+  const { gymData, setUserPathValidity } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
+    setUserPathValidity: s.handleMethod.setUserPathValidity,
   }));
+
+  useEffect(() => {
+    if (gymData) {
+      setUserPathValidity('gyms');
+    }
+  }, [gymData, setUserPathValidity]);
 
   return (
     <>
