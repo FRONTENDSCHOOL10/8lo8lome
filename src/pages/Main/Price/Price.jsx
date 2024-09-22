@@ -3,20 +3,31 @@ import {
   AppCheckboxInput,
   AppAccordion,
   AppMeta,
+  AppStatusPage,
 } from '@/components';
 import { memo, useState } from 'react';
 import PriceList from './PriceList';
-import { Link } from 'react-router-dom';
 import usePriceData from '@/hooks/usePriceData';
 import { usePriceListStore } from '@/stores/priceListStore';
+import { useParams } from 'react-router-dom';
 function Price() {
-  const { handleToggle, selectedItems, totalPrices, isClothesAndLocker } =
-    usePriceListStore((s) => ({
-      handleToggle: s.handleToggle,
-      selectedItems: s.selectedItems,
-      totalPrices: s.totalPrices,
-      isClothesAndLocker: s.isClothesAndLocker,
-    }));
+  const {
+    handleToggle,
+    selectedItems,
+    totalPrices,
+    isClothesAndLocker,
+    submitPayment,
+    isPayment,
+  } = usePriceListStore((s) => ({
+    handleToggle: s.handleToggle,
+    selectedItems: s.selectedItems,
+    totalPrices: s.totalPrices,
+    isClothesAndLocker: s.isClothesAndLocker,
+    submitPayment: s.submitPayment,
+    isPayment: s.isPayment,
+  }));
+
+  const { gymId } = useParams();
 
   const [openHealthAccordion, setOpenHealthAccordion] = useState(true);
   const [openPtAccordion, setopenPtAccordion] = useState(false);
@@ -32,11 +43,19 @@ function Price() {
     ? Object.values(totalPrices).reduce((acc, curr) => acc + curr, 0)
     : 0;
 
+  const submitPaymentButton = () => {
+    submitPayment(gymId);
+  };
+
+  if (isPayment) {
+    return <AppStatusPage status="payment" />;
+  }
+
   return (
     <>
       <AppMeta title={`결제 페이지`} description={`결제 페이지입니다.`} />
       <AppHeader>가격 정보</AppHeader>
-      <main className="mt-[100px] px-[1.25rem] h-screen">
+      <main className="mt-[100px] px-[1.25rem]">
         <div>
           <AppAccordion
             title="가격 정보"
@@ -46,6 +65,7 @@ function Price() {
             {openHealthAccordion && <PriceList data={pricingItems} health />}
           </AppAccordion>
         </div>
+
         <div>
           <AppAccordion
             title="PT 가격 정보"
@@ -77,15 +97,14 @@ function Price() {
             })}
           </div>
         )}
-        <Link
-          to="/payment"
+        <button
+          disabled={totalSum === 0}
+          type="button"
           className={`flex items-center justify-center py-s14 text-f12 rounded w-[calc(100%-2.5rem)] font-bold bg-mainColor text-black fixed z-10 bottom-[20px] left-1/2 -translate-x-1/2 ${totalSum === 0 && 'border-mainColor bg-mainBg cursor-not-allowed '}`}
-          onClick={() => {
-            console.log('클릭');
-          }}
+          onClick={submitPaymentButton}
         >
           {totalSum.toLocaleString()}원 결제하기
-        </Link>
+        </button>
       </main>
     </>
   );

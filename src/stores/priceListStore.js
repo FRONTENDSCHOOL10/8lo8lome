@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import { mainStore } from './mainStore';
+import { getData, updateData } from '@/api/CRUD';
 
 export const usePriceListStore = create((set) => {
   const INITIAL_STATE = {
@@ -10,6 +11,8 @@ export const usePriceListStore = create((set) => {
     membershipKey: '',
     membershipDuration: null,
     isClothesAndLocker: false,
+    paymentHistory: [],
+    isPayment: false,
   };
 
   const updatePricesWithNewDuration = (draft) => {
@@ -63,7 +66,6 @@ export const usePriceListStore = create((set) => {
           draft.totalPrices[name] = 0; // 가격 0으로 설정
         } else {
           draft.selectedItems[name] = true; // 선택 시 가격 반영
-
           // 가격 설정
           const itemPrice =
             healthPrice[checkName] === '무료' ? 0 : healthPrice[checkName]; // 해당 항목의 기본 가격을 설정
@@ -90,7 +92,13 @@ export const usePriceListStore = create((set) => {
         if (previousKey === key) {
           // 체크 해제
           delete draft.selectedPricing[name];
-          draft.isClothesAndLocker = false;
+          draft.totalPrices[name] = 0; // 가격 0으로 설정
+
+          // 선택된 항목이 더 이상 없으면 isClothesAndLocker를 false로 설정
+          const remainingKeys = Object.keys(draft.selectedPricing);
+          if (remainingKeys.length === 0) {
+            draft.isClothesAndLocker = false;
+          }
         } else {
           // 선택된 가격 업데이트
           if (previousKey) {
@@ -102,7 +110,7 @@ export const usePriceListStore = create((set) => {
 
           draft.selectedPricing[name] = key; // 새로운 선택 업데이트
           draft.totalPrices[name] = price; // 현재 선택된 가격 설정
-          draft.isClothesAndLocker = true;
+          draft.isClothesAndLocker = true; // 항목이 선택되면 true로 설정
         }
 
         if (membershipKey?.includes('day')) {
@@ -117,9 +125,105 @@ export const usePriceListStore = create((set) => {
     );
   };
 
+  const submitPayment = async (gymId) => {
+    const { totalPrices, membershipDuration, selectedPricing } =
+      usePriceListStore.getState();
+    const { userId } = mainStore.getState();
+    // 전체 결제 금액 계산
+    const totalAmount = Object.values(totalPrices).reduce(
+      (sum, price) => sum + price,
+      0
+    );
+
+    if (totalAmount === 0) return;
+
+    // 결제 날짜 및 종료 날짜 계산
+    const paymentDate = new Date(); // 현재 날짜
+    const endDate = new Date(paymentDate); // 종료 날짜를 현재 날짜로 초기화
+    endDate.setMonth(endDate.getMonth() + membershipDuration); // 선택한 개월 수만큼 더함
+
+    // 결제 상품 이름 및 가격 생성
+    const selectedProducts = Object.keys(selectedPricing).map((name) => {
+      const key = selectedPricing[name];
+      let productName = '';
+
+      // 상품 이름 정의
+      if (key === '1day') {
+        productName = '일일권';
+      } else if (key === '1Month') {
+        productName = '1개월권';
+      } else if (key === '3Months') {
+        productName = '3개월권';
+      } else if (key === '6Months') {
+        productName = '6개월권';
+      } else if (key === '12Months') {
+        productName = '12개월권';
+      } else if (key === 'personalLocker') {
+        productName = '개인락커';
+      } else if (key === 'workoutClothes') {
+        productName = '운동복';
+      } else if (key === '10Sessions') {
+        productName = '10회 체험권';
+      } else if (key === '20Sessions') {
+        productName = '20회 체험권';
+      } else if (key === '30Sessions') {
+        productName = '30회 체험권';
+      } else if (key === 'singleSession') {
+        productName = '개별 수업';
+      }
+
+      return {
+        name: productName, // 상품 이름
+        key: key, // 상품 키
+        price: totalPrices[name], // 결제 금액
+      };
+    });
+
+    // paymentData 배열에 객체 형태로 담기
+    const paymentData = {
+      gymId: gymId,
+      totalAmount: totalAmount,
+      paymentDate: paymentDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0],
+      products: selectedProducts,
+    };
+
+    try {
+      // 먼저 사용자 데이터를 가져옵니다.
+      const user = await getData('users', userId);
+      // 기존 결제 내역을 가져옵니다. 없으면 빈 배열로 초기화합니다.
+      const existingPaymentHistory = user.paymentHistory || [];
+      // 새로운 결제 데이터를 추가합니다.
+      const updatedPaymentHistory = [...existingPaymentHistory, paymentData];
+      // 업데이트 요청을 보냅니다.
+      await updateData('users', userId, {
+        paymentHistory: updatedPaymentHistory,
+      });
+    } catch (error) {
+      console.log('결제 데이터:', error);
+    }
+
+    set(
+      produce((draft) => {
+        draft.paymentHistory.push(paymentData);
+        draft.isPayment = true;
+      })
+    );
+  };
+
+  const resetPaymentState = () => {
+    set(
+      produce((draft) => {
+        draft.isPayment = false;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleToggle,
     handleCheckPricing,
+    submitPayment,
+    resetPaymentState,
   };
 });
