@@ -1,33 +1,16 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom/dist';
+import { Link } from 'react-router-dom';
 import { getPbImageURL } from '@/utils';
+import { arrayOf, number, shape, string } from 'prop-types';
 
-const payList = [
-  {
-    id: 1,
-    date: '0월 0일 결제완료',
-    title: '신대방점',
-    usedDate: '이용기간:0000.00.00 ~ 0000.00.00',
-    goods: '헬스장 3개월권',
-    price: '50,000원',
-  },
-  {
-    id: 2,
-    date: '0월 0일 결제완료',
-    title: '신대방점',
-    usedDate: '이용기간:0000.00.00 ~ 0000.00.00',
-    goods: '헬스장 3개월권',
-    price: '50,000원',
-  },
-  {
-    id: 3,
-    date: '0월 0일 결제완료',
-    title: '신대방점',
-    usedDate: '이용기간:0000.00.00 ~ 0000.00.00',
-    goods: '헬스장 3개월권',
-    price: '50,000원',
-  },
-];
+PaymentList.propTypes = {
+  items.arrayOf(
+    shape({
+      
+    })
+  )
+}
+
 //  삭제 기능
 function PaymentList() {
   return (
@@ -39,11 +22,7 @@ function PaymentList() {
             return (
               <li key={item.id} className="flex flex-col mb-s16">
                 <span className="text-f12 mb-s6">{item.date}</span>
-                <Link
-                  to={`/main`}
-                  className="flex flex-row items-center text-white gap-s10 mb-s10"
-                  aria-label="상세정보 링크"
-                >
+                <div className="flex flex-row items-center text-white gap-s10 mb-s10">
                   <img
                     src={imgUrl[0]}
                     alt={''}
@@ -53,8 +32,13 @@ function PaymentList() {
                     className="object-cover rounded"
                   />
                   <div className="flex flex-col w-full font-normal gab-2 text-f12">
-                    <div className="flex flex-row mb-s6">
+                    <Link
+                      to={`/main/$`}
+                      aria-label="상세정보 링크"
+                      className="flex flex-row mb-s6"
+                    >
                       <h2 className="font-bold text-f16">{item.title}</h2>
+
                       <svg
                         className="text-white w-s18 h-s18 mr-s10"
                         role="icon"
@@ -62,14 +46,14 @@ function PaymentList() {
                       >
                         <use href="/assets/sprite.svg#arrow-forward" />
                       </svg>
-                    </div>
+                    </Link>
                     <p className="mb-s6">{item.usedDate}</p>
                     <p className="mb-s6"> {item.goods}</p>
                     <p className="font-bold">{item.price}</p>
                   </div>
-                </Link>
+                </div>
                 <Link
-                  to
+                  to={'/mypage/reviewSettings/WriteReview.jsx'}
                   aria-label="라뷰작성 페이지 이동"
                   className="flex items-center justify-center w-full border border-solid rounded border-mainColor align-center text-f18 py-s12"
                 >
