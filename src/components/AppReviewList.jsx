@@ -2,28 +2,31 @@ import { Link } from 'react-router-dom';
 import { AppRating, AppImageDisplay, AppLoading } from '.';
 import { memo, useState, useEffect } from 'react';
 import { formatDate } from '@/utils';
-import { object } from 'prop-types';
+import { object, string } from 'prop-types';
 import { getAllData } from '@/api/CRUD';
 
 AppReviewList.propTypes = {
-  gym: object,
+  item: object,
+  filter: string,
+  expand: string,
 };
 
-function AppReviewList({ gym }) {
+function AppReviewList({ item, filter = '', expand = '' }) {
   const [isLoading, setIsLoading] = useState(true);
-  const gymId = gym.id;
   const [reviewsList, setReviewsList] = useState([]);
+  const itemId = item.id;
+  const itemCollectionName = item.collectionName;
 
   useEffect(() => {
     const loadReviewList = async () => {
-      if (gymId) {
+      if (itemId) {
         try {
           const fetchReviews = async () => {
             const data = await getAllData(
               'reviews',
               '-created',
-              `gym = '${gymId}'`,
-              'user, trainer'
+              filter,
+              expand
             );
 
             setReviewsList(data);
@@ -40,7 +43,7 @@ function AppReviewList({ gym }) {
     };
 
     loadReviewList();
-  }, [gymId]);
+  }, [itemId]);
 
   return (
     <>
@@ -52,26 +55,53 @@ function AppReviewList({ gym }) {
             <h2 className="text-f18 font-semibold">
               리뷰 {reviewsList.length}개
             </h2>
-            <AppRating gymData={gym} className="text-f14" />
+
+            {itemCollectionName !== 'users' ? (
+              <AppRating gymData={item} className="text-f14" />
+            ) : (
+              ''
+            )}
           </div>
 
           <ul className="flex flex-col gap-s16 mt-s16 mb-s22">
-            {reviewsList.map((review) => {
+            {reviewsList.map((review, index) => {
+              const isLinkVisible =
+                itemCollectionName === 'users' ||
+                (review.trainer && itemCollectionName !== 'trainers');
+              let LinkTo = '';
+              let LinkLabel = '';
+
+              if (isLinkVisible) {
+                LinkTo = review.trainer
+                  ? `/TrainerDetail/${review.expand.trainer.id}`
+                  : `/main/${review.expand.gym.id}`;
+
+                LinkLabel = review.trainer
+                  ? review.expand.trainer.name
+                  : review.expand.gym.name;
+              }
+
               return (
-                <li key={review.id} className="flex flex-col w-full pt-s12">
+                <li key={index} className="flex flex-col w-full pt-s12">
                   <div className="mx-s31 flex justify-between">
                     <div className="flex items-center">
                       <h3 className="text-f16 font-bold">
-                        {review.expand.user.nickName}
+                        {itemCollectionName === 'users'
+                          ? review.expand.gym.name
+                          : review.expand.user.nickName}
                       </h3>
 
-                      {review.trainer ? (
+                      {isLinkVisible ? (
                         <Link
-                          to={`/TrainerDetail/${review.expand.trainer.id}`}
-                          aria-label={`${review.expand.trainer.name} 트레이너 상세 정보 링크`}
+                          to={LinkTo}
+                          aria-label={`${LinkLabel} 상세 정보 링크`}
                           className="text-f16 font-bold inline-flex items-center"
                         >
-                          <p>&nbsp;/ {review.expand.trainer.name}</p>
+                          {review.trainer ? (
+                            <p>&nbsp;/ {review.expand.trainer.name}</p>
+                          ) : (
+                            ''
+                          )}
                           <svg
                             role="icon"
                             aria-label="상세 정보 링크 아이콘"
@@ -99,14 +129,17 @@ function AppReviewList({ gym }) {
                   <div className="flex gap-[0.125rem] mx-s31">
                     {[...Array(5)].map((_, index) => {
                       const getRatingColor =
-                        index < review.rating ? 'yellow-300' : 'ratingGray';
+                        index < review.rating ? '#FFCE31' : '#595959';
 
                       return (
                         <svg
                           key={index}
                           role="icon"
                           aria-label="별점"
-                          className={`w-s14 h-s14 fill-${getRatingColor}`}
+                          className={'w-s14 h-s14'}
+                          style={{
+                            fill: getRatingColor,
+                          }}
                         >
                           <use href="/assets/sprite.svg#star" />
                         </svg>

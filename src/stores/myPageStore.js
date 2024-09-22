@@ -11,6 +11,7 @@ export const useMyPageStore = create((set) => {
       nickName: pb.authStore.model?.nickName || '',
       email: pb.authStore.model?.email || '',
       profileImage: '',
+      collectionName: 'users',
     },
     isLogin: pb.authStore.isValid,
     isNicknameDisabled: true,
