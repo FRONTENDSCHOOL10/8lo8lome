@@ -24,7 +24,7 @@ function PriceList({ data, health }) {
   const selectedItem = selectedPricing[name];
 
   return (
-    <article>
+    <article className={health ? '' : 'mb-[80px]'}>
       {data.map((item) => (
         <label
           key={item.key}
