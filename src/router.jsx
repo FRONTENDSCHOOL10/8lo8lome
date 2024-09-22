@@ -62,7 +62,7 @@ export const routes = createRoutesFromElements(
     <Route path="/map" element={<Map />} />
     <Route path="/main/:gymId" element={<GymDetail />} />
     <Route path="/Review" element={<Review />} />
-    <Route path="/TrainerDetail" element={<TrainerDetail />} />
+    <Route path="/TrainerDetail/:trainerId" element={<TrainerDetail />} />
     <Route path="/filter" element={<Filter />} />
     <Route path="/price/:gymId" element={<Price />} />
 

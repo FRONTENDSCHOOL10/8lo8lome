@@ -14,6 +14,7 @@ AppCheckboxInput.propTypes = {
   unCheckedColor: string,
   isFilterClass: bool,
   filterName: string,
+  svgSize: string,
 };
 
 function AppCheckboxInput({
@@ -29,6 +30,7 @@ function AppCheckboxInput({
   unCheckedColor = 'text-white',
   isFilterClass = false,
   filterName = '',
+  svgSize = 'w-5 h-5',
   ...restProps
 }) {
   const id = useId();
@@ -74,7 +76,7 @@ function AppCheckboxInput({
       >
         {svgIdToUse && (
           <svg
-            className={`w-5 h-5 ${svgColor}`}
+            className={`${svgSize} ${svgColor}`}
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
           >
