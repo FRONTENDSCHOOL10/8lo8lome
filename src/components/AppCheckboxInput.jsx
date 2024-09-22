@@ -15,6 +15,7 @@ AppCheckboxInput.propTypes = {
   isFilterClass: bool,
   filterName: string,
   svgSize: string,
+  reverse: bool,
 };
 
 function AppCheckboxInput({
@@ -29,8 +30,9 @@ function AppCheckboxInput({
   checkedColor = 'text-mainColor',
   unCheckedColor = 'text-white',
   isFilterClass = false,
-  filterName = '',
   svgSize = 'w-5 h-5',
+  filterName = '',
+  reverse = false,
   ...restProps
 }) {
   const id = useId();
@@ -74,16 +76,33 @@ function AppCheckboxInput({
         tabIndex="0"
         onKeyPress={handleKeyPress}
       >
-        {svgIdToUse && (
-          <svg
-            className={`${svgSize} ${svgColor}`}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-          >
-            <use href={`../assets/sprite.svg#${svgIdToUse}`} />
-          </svg>
+        {reverse ? (
+          <>
+            <span className={isHiddenLabel ? 'sr-only' : ''}>{label}</span>
+            {svgIdToUse && (
+              <svg
+                className={`${svgSize} ${svgColor}`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <use href={`../assets/sprite.svg#${svgIdToUse}`} />
+              </svg>
+            )}
+          </>
+        ) : (
+          <>
+            {svgIdToUse && (
+              <svg
+                className={`${svgSize} ${svgColor}`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <use href={`../assets/sprite.svg#${svgIdToUse}`} />
+              </svg>
+            )}
+            <span className={isHiddenLabel ? 'sr-only' : ''}>{label}</span>
+          </>
         )}
-        <span className={isHiddenLabel ? 'sr-only' : ''}>{label}</span>
       </label>
     </div>
   );
