@@ -8,10 +8,12 @@ PriceList.propTypes = {
 };
 
 function PriceList({ data, health }) {
-  const { selectedPricing, handleCheckPricing } = usePriceListStore((s) => ({
-    selectedPricing: s.selectedPricing,
-    handleCheckPricing: s.handleCheckPricing,
-  }));
+  const { selectedPricing, handleCheckPricing, isClothesAndLocker } =
+    usePriceListStore((s) => ({
+      selectedPricing: s.selectedPricing,
+      handleCheckPricing: s.handleCheckPricing,
+      isClothesAndLocker: s.isClothesAndLocker,
+    }));
   const name = health ? 'health' : 'pt';
 
   const handleRadioChange = (key) => {
@@ -24,7 +26,9 @@ function PriceList({ data, health }) {
   const selectedItem = selectedPricing[name];
 
   return (
-    <article>
+    <article
+      className={health ? '' : isClothesAndLocker ? 'mb-[30px]' : 'mb-[80px]'}
+    >
       {data.map((item) => (
         <label
           key={item.key}
