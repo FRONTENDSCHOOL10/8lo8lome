@@ -194,6 +194,7 @@ export const usePriceListStore = create((set) => {
     // paymentData 배열에 객체 형태로 담기
     const paymentData = {
       gymId: gymId,
+      name: data.name,
       totalAmount: totalAmount,
       paymentDate: paymentDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
@@ -235,7 +236,7 @@ export const usePriceListStore = create((set) => {
     const user = await getData('users', userId);
     set(
       produce((draft) => {
-        draft.paymentHistory = user.paymentHistory;
+        draft.paymentHistory = user.paymentHistory || [];
       })
     );
   };
