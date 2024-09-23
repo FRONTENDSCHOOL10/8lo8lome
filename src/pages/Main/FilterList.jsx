@@ -69,7 +69,7 @@ function FilterList() {
       </div>
       <ul className="flex text-[0.8125rem] font-medium">
         {updatedFilters.map((item, i) => (
-          <li key={i}>
+          <li key={i} className="flex items-center">
             <p className="whitespace-nowrap">{item}</p>
             {i < updatedFilters.length - 1 && <span>&nbsp;|&nbsp;</span>}
           </li>
