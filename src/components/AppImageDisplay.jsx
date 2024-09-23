@@ -12,13 +12,7 @@ AppImageDisplay.propTypes = {
   imgHeight: string,
 };
 
-function AppImageDisplay({
-  item,
-  ariaLabel = '',
-  className = '',
-  imgWidth = 'w-s278',
-  imgHeight = 'h-s156',
-}) {
+function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
   if (!item || item.photo.length === 0) {
     return '';
   }
@@ -30,7 +24,7 @@ function AppImageDisplay({
       <img
         src={imgUrl}
         alt=""
-        className={`${imgWidth} ${imgHeight} bg-subBg rounded mt-s12 mx-s31`}
+        className={` max-h-[300px] object-cover bg-subBg rounded mt-s12 mx-s31`}
       />
     );
   }
@@ -40,13 +34,13 @@ function AppImageDisplay({
       aria-label={ariaLabel}
       className={`flex justify-center ${className}`}
     >
-      <Swiper spaceBetween={16} slidesPerView={1.1} className="max-w-[320px]">
+      <Swiper spaceBetween={16} slidesPerView={1} className="w-full ">
         {imgUrl.map((url, index) => (
           <SwiperSlide key={index}>
             <img
               src={url}
               alt=""
-              className={`${imgWidth} ${imgHeight} bg-subBg rounded`}
+              className={`max-h-[300px] object-cover bg-subBg rounded`}
             />
           </SwiperSlide>
         ))}

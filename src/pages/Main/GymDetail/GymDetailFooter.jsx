@@ -25,7 +25,7 @@ function GymDetailFooter() {
   };
 
   return (
-    <footer className="flex gap-s12 px-s31 pb-[1.5625rem] pt-12 justify-center items-center">
+    <footer className="flex gap-s12 px-s31 pb-[1.5625rem] justify-center items-center">
       <AppCheckboxInput
         label={`${gymData.name} 찜하기 체크박스`}
         isHiddenLabel
@@ -40,13 +40,13 @@ function GymDetailFooter() {
       <Link
         to={`/price/${gymId}`}
         aria-label="결제하기 링크"
-        className="rounded p-s12 text-f18 font-normal text-black bg-mainColor w-full text-center"
+        className="rounded p-s12 text-f14 font-normal text-black bg-mainColor w-full text-center"
       >
         결제하기
       </Link>
       <button
         onClick={handleCreateRoom}
-        className="rounded p-s12 text-f18 font-normal text-white bg-subBg border border-solid border-grayBorder w-full"
+        className="rounded p-s12 text-f14 font-normal text-white bg-subBg border border-solid border-grayBorder w-full"
       >
         헬스장 문의
       </button>

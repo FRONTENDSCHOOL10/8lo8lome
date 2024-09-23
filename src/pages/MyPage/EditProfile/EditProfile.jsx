@@ -14,7 +14,7 @@ function EditProfile() {
       <EditImage />
       <EditNickname />
       <EditEmail />
-      <EditNumber />
+      {/* <EditNumber /> */}
     </>
   );
 }

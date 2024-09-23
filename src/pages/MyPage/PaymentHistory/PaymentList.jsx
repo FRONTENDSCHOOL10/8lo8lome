@@ -78,13 +78,13 @@ function PaymentList() {
                       ))}
                     </div>
                   </div>
-                  <Link
+                  {/* <Link
                     to={'/mypage/reviewSettings/WriteReview.jsx'}
                     aria-label="리뷰 작성 페이지 이동"
                     className="flex items-center justify-center w-full border border-solid rounded border-mainColor align-center text-f18 py-s12"
                   >
                     리뷰작성
-                  </Link>
+                  </Link> */}
                 </li>
               );
             })}

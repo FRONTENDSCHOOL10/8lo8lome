@@ -21,7 +21,7 @@ function GymDetailHeader() {
   };
 
   return (
-    <section className="ml-s31 mt-[100px]">
+    <section className="mx-s31 mt-[100px]">
       <AppImageDisplay
         item={gymData}
         ariaLabel={`${gymData.name} 헬스장 이미지`}

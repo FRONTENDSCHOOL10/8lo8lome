@@ -135,10 +135,9 @@ export const usePriceListStore = create((set) => {
   };
 
   const submitPayment = async (gymId) => {
-    const { totalPrices, membershipDuration, selectedPricing } =
+    const { totalPrices, membershipDuration, selectedPricing, selectedItems } =
       usePriceListStore.getState();
     const { userId } = mainStore.getState();
-
     // 전체 결제 금액 계산
     const totalAmount = Object.values(totalPrices).reduce(
       (sum, price) => sum + price,
@@ -173,10 +172,6 @@ export const usePriceListStore = create((set) => {
         productName = '6개월권';
       } else if (key === '12Months') {
         productName = '12개월권';
-      } else if (key === 'personalLocker') {
-        productName = '개인락커';
-      } else if (key === 'workoutClothes') {
-        productName = '운동복';
       } else if (key === '10Sessions') {
         productName = '10회 체험권';
       } else if (key === '20Sessions') {
@@ -186,13 +181,30 @@ export const usePriceListStore = create((set) => {
       } else if (key === 'singleSession') {
         productName = '개별 수업';
       }
-      console.log(totalPrices);
+
       return {
         name: productName, // 상품 이름
         key: key, // 상품 키
-        price: totalPrices[key] || 0, // 결제 금액
+        price: totalPrices[name] || 0, // 결제 금액
       };
     });
+
+    // 운동복과 락커 가격 추가
+    if (selectedItems?.['개인락커']) {
+      selectedProducts.push({
+        name: '개인락커',
+        key: 'personalLocker',
+        price: totalPrices['개인락커'] || 0,
+      });
+    }
+
+    if (selectedItems?.['운동복']) {
+      selectedProducts.push({
+        name: '운동복',
+        key: 'workoutClothes',
+        price: totalPrices['운동복'] || 0,
+      });
+    }
     const data = await getData('gyms', gymId);
     const photo = getPbImageURL(data)[0];
 

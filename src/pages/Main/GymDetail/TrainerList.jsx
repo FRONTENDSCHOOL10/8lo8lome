@@ -53,7 +53,7 @@ function TrainerList() {
   };
 
   return (
-    <section className="ml-s31">
+    <section className="mx-s31">
       <h3 className="text-f18 font-bold mb-s10">트레이너 정보</h3>
 
       {isLoading ? (
@@ -62,7 +62,7 @@ function TrainerList() {
         <Swiper
           modules={[Pagination, Keyboard, A11y]}
           spaceBetween={16}
-          slidesPerView={1.35}
+          slidesPerView={1}
           pagination={{
             clickable: true,
             el: '.pager',
@@ -78,10 +78,9 @@ function TrainerList() {
           {trainerList.map((trainer, index) => {
             const imgUrl = getPbImageURL(trainer);
             const imgUrlArray = Array.isArray(imgUrl) ? imgUrl : [imgUrl];
-
             return (
               <SwiperSlide key={index}>
-                <div className="w-s220 p-5 bg-opacityWhite rounded-md flex flex-col items-center">
+                <div className="p-5 bg-opacityWhite rounded-md flex flex-col items-center min-h-[220px] justify-around">
                   <span className="w-64px h-64px">
                     <img
                       className="object-cover rounded-full bg-black border-2 border-solid border-white"
