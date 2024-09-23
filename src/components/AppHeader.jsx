@@ -8,9 +8,10 @@ AppHeader.propTypes = {
   logo: bool,
   chat: bool,
   login: bool,
+  navigation: bool,
 };
 
-function AppHeader({ className, children, logo, chat, login }) {
+function AppHeader({ className, children, logo, chat, login, navigation }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -18,6 +19,9 @@ function AppHeader({ className, children, logo, chat, login }) {
       ? navigate('/chat', { replace: true })
       : navigate(-1, { replace: true });
     login ? navigate('/', { replace: true }) : navigate(-1, { replace: true });
+    navigation
+      ? navigate('/main', { replace: true })
+      : navigate(-1, { replace: true });
   };
 
   const isLogo = logo ? (

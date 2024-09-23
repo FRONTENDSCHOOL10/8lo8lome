@@ -8,7 +8,7 @@ function AuthLinks() {
     <ul className="flex justify-center gap-2">
       <li>
         <Link to={'/findId'} className={defaultClass}>
-          아이디 찾기
+          이메일 찾기
         </Link>
       </li>
       <li aria-hidden="true" className="pt-[1px]">

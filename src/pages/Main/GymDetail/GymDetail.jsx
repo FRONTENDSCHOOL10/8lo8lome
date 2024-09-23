@@ -37,7 +37,7 @@ function GymDetail() {
 
   return (
     <>
-      <AppHeader>{gymData?.name}</AppHeader>
+      <AppHeader navigation>{gymData?.name}</AppHeader>
       <div className="flex flex-col gap-s20">
         {isLoading ? (
           <AppLoading isLoading={isLoading} />
