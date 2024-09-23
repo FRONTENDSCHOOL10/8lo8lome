@@ -74,7 +74,7 @@ function PaymentList() {
                         <p className="mb-s6">
                           결제 상품: {item.products[0].name}
                         </p>
-                        <p>결제금액: {item.totalAmount}원</p>
+                        <p>결제금액: {item.totalAmount.toLocaleString()}원</p>
                       </div>
                     </div>
                   </div>
