@@ -23,10 +23,7 @@ import Setting from '@/pages/MyPage/Setting/Setting';
 import Filter from '@/pages/Main/Filter/Filter';
 import AppStatusPage from '@/components/AppStatusPage';
 import ChatRoom from '@/pages/Chat/ChatRoom';
-// import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 import Review from '@/pages/Main/Review/Review';
-// import TrainerDetail from '@/pages/Main/TrainerDetail/TrainerDetail';
-// import Price from '@/pages/Main/Price/Price';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
