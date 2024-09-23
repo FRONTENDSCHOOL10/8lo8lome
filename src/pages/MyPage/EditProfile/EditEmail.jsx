@@ -1,6 +1,7 @@
 import { useState, memo } from 'react';
 import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
 import { useMyPageStore } from '@/stores/myPageStore';
+import { EMAIL_REG } from '@/constant';
 
 function EditEmail() {
   const { checkEmailDuplicate, updateProfile, userData } = useMyPageStore(
@@ -16,16 +17,26 @@ function EditEmail() {
   const [isChecking, setIsChecking] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [canChange, setCanChange] = useState(false);
-
+  const [isEmailFormatValid, setIsEmailFormatValid] = useState(true);
   const handleChange = (e) => {
-    setEmail(e);
-    setIsEmailValid(null);
-    setCanChange(false);
+    const value = e;
+    setEmail(value);
+    if (!EMAIL_REG.test(value)) {
+      setIsEmailFormatValid(false);
+      setIsEmailValid(null);
+      setCanChange(false);
+    } else {
+      setIsEmailFormatValid(true);
+      setIsEmailValid(null);
+      setCanChange(false);
+    }
   };
 
   const handleCheckAndUpdate = async () => {
     if (!canChange) {
-      // 이메일 형식 검사
+      if (!isEmailFormatValid) {
+        return;
+      }
       setIsChecking(true);
       setIsUpdating(false);
 
@@ -38,7 +49,7 @@ function EditEmail() {
       setIsChecking(false);
     } else {
       setIsUpdating(true);
-      await updateProfile(null, null, email);
+      await updateProfile(null, null, email, null);
       setIsUpdating(false);
       setCanChange(false);
       setIsEmailValid(null);
@@ -62,7 +73,7 @@ function EditEmail() {
         <AppButton
           isFilled={false}
           onClick={handleCheckAndUpdate}
-          disabled={isChecking || isUpdating}
+          disabled={isChecking || isUpdating || !isEmailFormatValid}
         >
           {isChecking
             ? '확인 중...'
@@ -73,7 +84,11 @@ function EditEmail() {
                 : '중복확인'}
         </AppButton>
       </fieldset>
-
+      {!isEmailFormatValid && (
+        <AppAuthMessage warning>
+          이메일은 2~10자의 영어, 숫자 와 @가 포함돼야 합니다.
+        </AppAuthMessage>
+      )}
       {isEmailValid === false && (
         <AppAuthMessage warning>이미 사용 중인 이메일입니다.</AppAuthMessage>
       )}
