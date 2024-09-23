@@ -32,10 +32,10 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
       aria-label={ariaLabel}
       className={`flex justify-center ${className}`}
     >
-      <Swiper spaceBetween={16} slidesPerView={1.1} className="max-w-[320px]">
+      <Swiper spaceBetween={16} slidesPerView={1} className="w-full ">
         {imgUrl.map((url, index) => (
           <SwiperSlide key={index}>
-            <img src={url} alt="" className="w-s278 h-s156 bg-subBg rounded" />
+            <img src={url} alt="" className=" bg-subBg rounded" />
           </SwiperSlide>
         ))}
       </Swiper>
