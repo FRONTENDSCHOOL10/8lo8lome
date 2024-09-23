@@ -181,7 +181,7 @@ function AppReviewList({ item, filter = '', expand = '' }) {
                     {review.reviewContent}
                   </p>
 
-                  <AppImageDisplay item={review} className="mt-s12 ml-s31" />
+                  <AppImageDisplay item={review} className="mt-s12 mx-s31" />
 
                   <p className="text-f12 font-medium pt-[0.5625rem] mx-s31 pb-s12 border-b border-solid border-strokeBlack">
                     {formatDate(review.created)}
