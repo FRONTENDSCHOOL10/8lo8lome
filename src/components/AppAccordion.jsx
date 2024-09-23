@@ -27,7 +27,7 @@ function AppAccordion({ title, isOpen, toggleAccordion, children }) {
           />
         </svg>
       </div>
-      {isOpen && <div>{children}</div>}
+      {isOpen && <>{children}</>}
     </>
   );
 }
