@@ -63,13 +63,18 @@ function AppReviewList({ item, filter = '', expand = '' }) {
     navigate('/TrainerDetail');
   };
 
+  const firstElementMarginTop =
+    itemCollectionName === 'trainers' ? 'mt-[20px]' : 'mt-[100px]';
+
   return (
     <>
       {isLoading ? (
         <AppLoading isLoading={isLoading} />
       ) : (
         <>
-          <div className="mx-s31 mt-[100px] flex justify-between">
+          <div
+            className={`mx-s31 flex justify-between ${firstElementMarginTop}`}
+          >
             <h2 className="text-f18 font-semibold">
               리뷰 {reviewsList.length}개
             </h2>

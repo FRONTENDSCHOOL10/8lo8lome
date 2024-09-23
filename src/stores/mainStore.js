@@ -62,7 +62,7 @@ export const mainStore = create((set) => {
     gymDetailLocation: {},
     trainerDetailPath: '',
     selectedTrainerId: '',
-    trainerIdList: [],
+    currentSwiperTrainerId: '',
   };
 
   // 검색어 입력 처리
@@ -709,9 +709,7 @@ export const mainStore = create((set) => {
 
     if (trainerDetailPath === 'users') {
       trainerData = await getData('trainers', trainerId);
-    } else if (trainerDetailPath === 'trainers' && trainerList.length > 1) {
-      setTrainerIdList();
-    } else {
+    } else if (trainerDetailPath !== 'trainers' && trainerList.length < 1) {
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
     }
 
@@ -724,19 +722,6 @@ export const mainStore = create((set) => {
         })
       );
     }
-  };
-
-  const setTrainerIdList = () => {
-    const { trainerList } = mainStore.getState().searchInput;
-    let trainersId;
-
-    trainersId = trainerList.map((trainer) => trainer.id);
-
-    set(
-      produce((draft) => {
-        draft.trainerIdList = trainersId;
-      })
-    );
   };
 
   // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 trainerDetailPath 값을 세팅하는 함수
@@ -753,6 +738,23 @@ export const mainStore = create((set) => {
     set(
       produce((draft) => {
         draft.selectedTrainerId = trainerId;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지에서 스와이퍼 슬라이드 시 해당 키 값 저장
+  const handleTrainerSwiperChange = (swiper) => {
+    const { trainerList } = mainStore.getState().searchInput;
+    const currentIndex = swiper.activeIndex;
+    const selectedTrainerId = trainerList[currentIndex]?.id;
+    const trainerData = trainerList.find(
+      (trainer) => trainer.id === selectedTrainerId
+    );
+
+    set(
+      produce((draft) => {
+        draft.currentSwiperTrainerId = selectedTrainerId;
+        draft.searchInput.trainerData = trainerData;
       })
     );
   };
@@ -776,6 +778,7 @@ export const mainStore = create((set) => {
       fetchTrainerDetails,
       setTrainerDetailPath,
       setSelectedTrainerId,
+      handleTrainerSwiperChange,
     },
   };
 });

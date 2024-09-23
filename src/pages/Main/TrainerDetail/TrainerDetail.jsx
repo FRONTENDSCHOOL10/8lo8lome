@@ -1,5 +1,10 @@
 import AppMeta from '@/components/AppMeta';
-import { AppHeader, AppLoading, AppTrainerProfile } from '@/components';
+import {
+  AppHeader,
+  AppLoading,
+  AppTrainerProfile,
+  AppReviewList,
+} from '@/components';
 import { memo, useEffect, useState } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,15 +17,17 @@ function TrainerDetail() {
     trainerList,
     trainerData,
     selectedTrainerId,
-    trainerIdList,
     trainerDetailPath,
+    handleTrainerSwiperChange,
+    currentSwiperTrainerId,
   } = mainStore((s) => ({
     fetchTrainerDetails: s.handleMethod.fetchTrainerDetails,
     trainerList: s.searchInput.trainerList,
     trainerData: s.searchInput.trainerData,
     selectedTrainerId: s.selectedTrainerId,
-    trainerIdList: s.trainerIdList,
     trainerDetailPath: s.trainerDetailPath,
+    handleTrainerSwiperChange: s.handleMethod.handleTrainerSwiperChange,
+    currentSwiperTrainerId: s.currentSwiperTrainerId,
   }));
 
   useEffect(() => {
@@ -57,6 +64,7 @@ function TrainerDetail() {
               initialSlide={trainerList.findIndex(
                 (trainerData) => trainerData.id === selectedTrainerId
               )}
+              onSlideChange={handleTrainerSwiperChange}
             >
               {trainerList.map((trainerData) => (
                 <SwiperSlide key={trainerData.id}>
@@ -67,14 +75,14 @@ function TrainerDetail() {
           ) : (
             <AppTrainerProfile trainerData={trainerData} />
           )}
+
+          <AppReviewList
+            item={trainerData}
+            filter={`trainer = '${currentSwiperTrainerId}'`}
+            expand={'user, trainer'}
+          />
         </>
       )}
-
-      {/* <AppReviewList
-        item={gymData}
-        filter={`gym = '${gymData.id}'`}
-        expand={'user, trainer'}
-      /> */}
     </>
   );
 }
