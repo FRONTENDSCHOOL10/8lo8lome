@@ -24,7 +24,7 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
       <img
         src={imgUrl}
         alt=""
-        className={` max-h-[300px] object-cover bg-subBg rounded mt-s12 mx-s31`}
+        className={`max-h-[300px] object-cover bg-subBg rounded mt-s12 mx-s31`}
       />
     );
   }

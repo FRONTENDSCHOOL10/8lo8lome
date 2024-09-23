@@ -29,7 +29,6 @@ function AgreementTerms() {
           label={'모두 동의합니다'}
           isChecked={allChecked}
           onChange={handleAllCheck}
-          required
           unCheckedSvgId="checkmark-circle-unclick"
           checkedSvgId="checkmark-circle-click"
         />
@@ -84,7 +83,6 @@ function AgreementTerms() {
                   name="thirdPartyOptional"
                   isChecked={thirdPartyOptional}
                   onChange={handleCheckboxChange}
-                  required
                   unCheckedSvgId="checkmark-circle-unclick"
                   checkedSvgId="checkmark-circle-click"
                 />
@@ -95,7 +93,6 @@ function AgreementTerms() {
                   name="marketingOptional"
                   isChecked={marketingOptional}
                   onChange={handleCheckboxChange}
-                  required
                   unCheckedSvgId="checkmark-circle-unclick"
                   checkedSvgId="checkmark-circle-click"
                 />
@@ -106,7 +103,6 @@ function AgreementTerms() {
                   name="smsOptional"
                   isChecked={smsOptional}
                   onChange={handleCheckboxChange}
-                  required
                   unCheckedSvgId="checkmark-circle-unclick"
                   checkedSvgId="checkmark-circle-click"
                 />
