@@ -60,7 +60,7 @@ export const mainStore = create((set) => {
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
     gymDetailLocation: {},
-    isValidUserPath: false,
+    trainerDetailPath: '',
     selectedTrainerId: '',
     trainerIdList: [],
   };
@@ -703,17 +703,16 @@ export const mainStore = create((set) => {
 
   // TrainerDetail페이지에서 데이터 패치하는 함수(접근 가능한 루트: 헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
   const fetchTrainerDetails = async (trainerId) => {
-    const { isValidUserPath } = mainStore.getState();
+    const { trainerDetailPath } = mainStore.getState();
     const { trainerList } = mainStore.getState().searchInput;
     let trainerData;
 
-    if (isValidUserPath) {
+    if (trainerDetailPath === 'users') {
       trainerData = await getData('trainers', trainerId);
     } else {
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
 
-      if (trainerList.length > 1) {
-        //루트가 헬스장인지도 &&로 조건 추가해야함.
+      if (trainerDetailPath === 'trainers' && trainerList.length > 1) {
         setTrainerIdList();
       }
 
@@ -742,13 +741,11 @@ export const mainStore = create((set) => {
     );
   };
 
-  // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 isValidUserPath 값을 세팅하는 함수
-  const setUserPathValidity = (collectionName) => {
-    const data = collectionName === 'users' ? true : false;
-
+  // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 trainerDetailPath 값을 세팅하는 함수
+  const setTrainerDetailPath = (collectionName) => {
     set(
       produce((draft) => {
-        draft.isValidUserPath = data;
+        draft.trainerDetailPath = collectionName;
       })
     );
   };
@@ -779,7 +776,7 @@ export const mainStore = create((set) => {
       getGymLocation,
       getTrainersFromGymData,
       fetchTrainerDetails,
-      setUserPathValidity,
+      setTrainerDetailPath,
       setSelectedTrainerId,
     },
   };

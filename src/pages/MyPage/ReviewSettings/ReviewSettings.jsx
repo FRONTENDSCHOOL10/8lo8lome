@@ -10,15 +10,15 @@ function ReviewSettings() {
     userData: s.userData,
   }));
 
-  const { setUserPathValidity } = mainStore((s) => ({
-    setUserPathValidity: s.handleMethod.setUserPathValidity,
+  const { setTrainerDetailPath } = mainStore((s) => ({
+    setTrainerDetailPath: s.handleMethod.setTrainerDetailPath,
   }));
 
   useEffect(() => {
     if (userData) {
-      setUserPathValidity('users');
+      setTrainerDetailPath('users');
     }
-  }, [userData, setUserPathValidity]);
+  }, [userData, setTrainerDetailPath]);
 
   return (
     <>

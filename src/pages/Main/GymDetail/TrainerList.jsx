@@ -13,13 +13,13 @@ function TrainerList() {
     gymData,
     trainerList,
     getTrainersFromGymData,
-    setUserPathValidity,
+    setTrainerDetailPath,
     setSelectedTrainerId,
   } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
     trainerList: s.searchInput.trainerList,
     getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
-    setUserPathValidity: s.handleMethod.setUserPathValidity,
+    setTrainerDetailPath: s.handleMethod.setTrainerDetailPath,
     setSelectedTrainerId: s.handleMethod.setSelectedTrainerId,
   }));
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function TrainerList() {
       if (gymData) {
         try {
           await getTrainersFromGymData(gymData.trainer);
-          setUserPathValidity('trainers');
+          setTrainerDetailPath('trainers');
         } catch (error) {
           console.error('Error fetching trainer list:', error);
           setIsLoading(false);
@@ -40,7 +40,7 @@ function TrainerList() {
     };
 
     loadTrainerList();
-  }, [gymData, getTrainersFromGymData, setUserPathValidity]);
+  }, [gymData, getTrainersFromGymData, setTrainerDetailPath]);
 
   const handleClick = (trainerId) => {
     if (trainerId) {

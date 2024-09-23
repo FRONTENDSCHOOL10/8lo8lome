@@ -4,16 +4,16 @@ import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 
 function Review() {
-  const { gymData, setUserPathValidity } = mainStore((s) => ({
+  const { gymData, setTrainerDetailPath } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
-    setUserPathValidity: s.handleMethod.setUserPathValidity,
+    setTrainerDetailPath: s.handleMethod.setTrainerDetailPath,
   }));
 
   useEffect(() => {
     if (gymData) {
-      setUserPathValidity('gyms');
+      setTrainerDetailPath('gyms');
     }
-  }, [gymData, setUserPathValidity]);
+  }, [gymData, setTrainerDetailPath]);
 
   return (
     <>
