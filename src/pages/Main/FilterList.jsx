@@ -23,8 +23,9 @@ function FilterList() {
   }));
 
   useEffect(() => {
+    getCurrentLocation();
     handleSelectedFilters();
-  }, [handleSelectedFilters]);
+  }, [getCurrentLocation, handleSelectedFilters]);
 
   const handleCurrentLocation = () => {
     getCurrentLocation();
