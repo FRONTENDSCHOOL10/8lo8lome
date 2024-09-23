@@ -1,4 +1,3 @@
-// hooks/usePricingData.js
 import { useEffect, useState } from 'react';
 import { mainStore } from '@/stores/mainStore';
 
