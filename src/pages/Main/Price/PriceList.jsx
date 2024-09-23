@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { array, bool } from 'prop-types';
 import { usePriceListStore } from '@/stores/priceListStore';
+import { useEffect } from 'react';
 
 PriceList.propTypes = {
   data: array.isRequired,
@@ -8,12 +9,21 @@ PriceList.propTypes = {
 };
 
 function PriceList({ data, health }) {
-  const { selectedPricing, handleCheckPricing, isClothesAndLocker } =
-    usePriceListStore((s) => ({
-      selectedPricing: s.selectedPricing,
-      handleCheckPricing: s.handleCheckPricing,
-      isClothesAndLocker: s.isClothesAndLocker,
-    }));
+  const {
+    selectedPricing,
+    handleCheckPricing,
+    isClothesAndLocker,
+    getPaymentHistory,
+  } = usePriceListStore((s) => ({
+    selectedPricing: s.selectedPricing,
+    handleCheckPricing: s.handleCheckPricing,
+    isClothesAndLocker: s.isClothesAndLocker,
+    getPaymentHistory: s.getPaymentHistory,
+  }));
+
+  useEffect(() => {
+    getPaymentHistory();
+  }, [getPaymentHistory]);
 
   const name = health ? 'health' : 'pt';
 
