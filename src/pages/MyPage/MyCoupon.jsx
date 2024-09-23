@@ -59,14 +59,12 @@ function MyCoupon() {
               <ul className="flex flex-row rounded-md p-s20 bg-gradient-to-br from-mainColor to-green-900 h-s156">
                 <li className="flex flex-col text-base text-black">
                   <p className="font-semibold text-f14 mb-s6">내 회원권</p>
-                  {item.products.map((product, productIndex) => (
-                    <div key={productIndex} className="mb-s6">
-                      <p className="font-extrabold text-f20">{product.name}</p>{' '}
-                    </div>
-                  ))}
-
+                  <div className="mb-s6">
+                    <p className="font-extrabold text-f20">
+                      {item.products[0].name}
+                    </p>
+                  </div>
                   <p className="text-f14">{item.name}</p>
-
                   <p className="font-bold text-f16 pt-s20">
                     {item.dayData}일 남음
                   </p>

@@ -70,12 +70,12 @@ function PaymentList() {
                       <p className="mb-s6">
                         이용기간: {item.paymentDate} ~ {item.endDate}
                       </p>
-                      {item.products.map((product, productIndex) => (
-                        <div key={productIndex} className="mb-s6">
-                          <p className="mb-s6">결제 상품: {product.name}</p>
-                          <p>결제금액: {item.totalAmount}원</p>
-                        </div>
-                      ))}
+                      <div className="mb-s6">
+                        <p className="mb-s6">
+                          결제 상품: {item.products[0].name}
+                        </p>
+                        <p>결제금액: {item.totalAmount}원</p>
+                      </div>
                     </div>
                   </div>
                   {/* <Link
