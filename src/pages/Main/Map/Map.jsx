@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppCheckboxInput, AppMeta, AppRating, AppNav } from '@/components';
 import { useMapStore } from '@/stores/mapStore';
@@ -6,13 +6,11 @@ import { mainStore } from '@/stores/mainStore';
 import SearchBar from '../SearchBar';
 import FilterList from '../FilterList';
 import { getPbImageURL } from '@/utils';
-import { produce } from 'immer';
 
 export default function Map() {
-  const { gymsList, fetchGyms, selectedGym } = useMapStore((s) => ({
-    gymsList: s.gymsList,
-    fetchGyms: s.fetchGyms,
+  const { selectedGym, initializeMap } = useMapStore((s) => ({
     selectedGym: s.selectedGym,
+    initializeMap: s.initializeMap,
   }));
 
   const { wishListChecked, setWishList, locationAddress } = mainStore((s) => ({
@@ -20,76 +18,11 @@ export default function Map() {
     setWishList: s.handleMethod.setWishList,
     locationAddress: s.locationAddress,
   }));
-
-  const { latitude, longitude } = locationAddress;
   const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
-    fetchGyms();
-  }, [fetchGyms]);
-
-  const initializeMap = useCallback(
-    (gymsList) => {
-      if (!window.kakao || !latitude || !longitude) {
-        return;
-      }
-
-      const container = document.getElementById('map');
-      const options = {
-        center: new window.kakao.maps.LatLng(latitude, longitude),
-        level: 5,
-      };
-      const map = new window.kakao.maps.Map(container, options);
-
-      // 현재 위치 마커 및 오버레이 추가
-      const currentPos = new window.kakao.maps.LatLng(latitude, longitude);
-      new window.kakao.maps.CustomOverlay({
-        content: `<div style="background:#171717; padding:10px; border-radius:4px; color:#16efa4;">현재 위치</div>`,
-        position: currentPos,
-        map,
-      });
-
-      // 헬스장 마커 추가
-      gymsList.forEach((gym) => {
-        const position = new window.kakao.maps.LatLng(
-          gym.latitude,
-          gym.longitude
-        );
-        const gymMarker = new window.kakao.maps.Marker({
-          position,
-          map,
-          title: gym.name,
-        });
-
-        // 마커 클릭 이벤트 핸들러
-        window.kakao.maps.event.addListener(gymMarker, 'click', () => {
-          // selectedGym 업데이트
-          useMapStore.setState((state) =>
-            produce(state, (draft) => {
-              draft.selectedGym = gym; // 클릭한 헬스장으로 업데이트
-            })
-          );
-
-          // 클릭한 헬스장으로 맵 중심 이동
-          const newCenter = new window.kakao.maps.LatLng(
-            gym.latitude,
-            gym.longitude
-          );
-          map.setCenter(newCenter);
-        });
-      });
-
-      // 검색어에 해당하는 헬스장 중심으로 이동
-      if (selectedGym) {
-        const newCenter = new window.kakao.maps.LatLng(
-          selectedGym.latitude,
-          selectedGym.longitude
-        );
-        map.setCenter(newCenter);
-      }
-    },
-    [latitude, longitude, selectedGym]
-  );
+    initializeMap(locationAddress);
+  }, [locationAddress, initializeMap]);
 
   useEffect(() => {
     const mapScript = document.createElement('script');
@@ -107,21 +40,11 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    if (mapLoaded && latitude !== undefined && longitude !== undefined) {
-      initializeMap(gymsList);
+    if (mapLoaded && locationAddress) {
+      initializeMap(locationAddress);
     }
-  }, [mapLoaded, latitude, longitude, gymsList, initializeMap]);
+  }, [mapLoaded, locationAddress, initializeMap]);
 
-  useEffect(() => {
-    const unsubscribe = useMapStore.subscribe(
-      (s) => s.selectedGym,
-      (newSearchWord) => {
-        initializeMap(gymsList, newSearchWord); // 새로운 검색어로 맵 업데이트
-      }
-    );
-
-    return () => unsubscribe();
-  }, [gymsList, initializeMap]);
   return (
     <>
       <AppMeta title="지도 페이지" description="지도 페이지입니다." />
@@ -132,8 +55,9 @@ export default function Map() {
       <FilterList />
       <div className="flex flex-col px-[1.25rem]">
         <div
-          id="map"
+          id="gymListMap"
           className="w-full max-h-[500px] h-[360px] rounded-lg shadow-lg"
+          aria-label="지도"
         ></div>
       </div>
       {selectedGym && selectedGym.name && (

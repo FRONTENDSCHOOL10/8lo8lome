@@ -8,6 +8,8 @@ AppImageDisplay.propTypes = {
   item: object,
   ariaLabel: string,
   className: string,
+  imgWidth: string,
+  imgHeight: string,
 };
 
 function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
@@ -22,7 +24,7 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
       <img
         src={imgUrl}
         alt=""
-        className="w-s278 h-s156 bg-subBg rounded mt-s12 mx-s31"
+        className={` max-h-[300px] object-cover bg-subBg rounded mt-s12 mx-s31`}
       />
     );
   }
@@ -32,10 +34,14 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
       aria-label={ariaLabel}
       className={`flex justify-center ${className}`}
     >
-      <Swiper spaceBetween={16} slidesPerView={1.1} className="max-w-[320px]">
+      <Swiper spaceBetween={16} slidesPerView={1} className="w-full ">
         {imgUrl.map((url, index) => (
           <SwiperSlide key={index}>
-            <img src={url} alt="" className="w-s278 h-s156 bg-subBg rounded" />
+            <img
+              src={url}
+              alt=""
+              className={`max-h-[300px] object-cover bg-subBg rounded`}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -19,6 +19,7 @@ function FilterList() {
     searchLocation: s.handleMethod.searchLocation,
     handleSelectedFilters: s.handleMethod.handleSelectedFilters,
     getGymsList: s.handleMethod.getGymsList,
+    locationAddress: s.locationAddress,
   }));
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { getAllData, getData, updateData } from '@/api/CRUD';
 import { geocodeAddress, getUserLocation } from '@/utils';
 import axios from 'axios';
 import pb from '@/api/pb';
+import { useMapStore } from './mapStore';
 const MapUrl = import.meta.env.VITE_KAKAO_POSTCODE_SCRIPT_URL;
 
 export const mainStore = create((set) => {
@@ -15,6 +16,7 @@ export const mainStore = create((set) => {
       isGymsLoaded: false,
       selectedFilters: [],
       gymData: {},
+      trainerList: {},
       trainerData: {},
       updatedFilters: [],
       wishList: [],
@@ -59,6 +61,10 @@ export const mainStore = create((set) => {
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
     gymDetailLocation: {},
+    currentLocation: {},
+    trainerDetailPath: '',
+    selectedTrainerId: '',
+    currentSwiperTrainerId: '',
   };
 
   // 검색어 입력 처리
@@ -425,9 +431,9 @@ export const mainStore = create((set) => {
 
   const getCurrentLocation = async () => {
     try {
-      // 사용자 위치 가져오기
-      const { latitude, longitude } = await getUserLocation();
-
+      const { initializeMap } = useMapStore.getState();
+      const currentLocation = await getUserLocation();
+      const { latitude, longitude } = currentLocation;
       // 카카오 Geocoding API로 좌표를 주소로 변환
       const apiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
       const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}`;
@@ -448,10 +454,13 @@ export const mainStore = create((set) => {
           produce((draft) => {
             draft.selectedLocation = district;
             draft.locationLoading = false;
-            draft.locationAddress['latitude'] = latitude;
-            draft.locationAddress['longitude'] = longitude;
+            draft.currentLocation = {
+              currentLatitude: latitude,
+              currentLongitude: longitude,
+            };
           })
         );
+        initializeMap(currentLocation);
       } else {
         throw new Error('No address found');
       }
@@ -499,7 +508,8 @@ export const mainStore = create((set) => {
       // 카카오 주소 검색 API 초기화 및 오픈
       window.daum.postcode.load(async () => {
         try {
-          const postcode = new window.daum.Postcode({
+          const { initializeMap } = useMapStore.getState();
+          new window.daum.Postcode({
             oncomplete: async (data) => {
               // 주소 선택 시 처리
               const address = data.address;
@@ -514,7 +524,9 @@ export const mainStore = create((set) => {
               );
 
               // 주소로부터 좌표를 가져오기 위한 함수 호출
-              const { latitude, longitude } = await geocodeAddress(address);
+              const selectedLocation = await geocodeAddress(address);
+              const { latitude, longitude } = selectedLocation;
+
               set(
                 produce((draft) => {
                   draft.locationAddress['latitude'] = latitude;
@@ -524,6 +536,7 @@ export const mainStore = create((set) => {
 
               // 헬스장 목록 가져오기
               await getGymsList(latitude, longitude);
+              initializeMap(selectedLocation, '설정위치');
             },
             onerror: (error) => {
               console.error('주소 검색 중 오류가 발생했습니다.', error);
@@ -644,28 +657,12 @@ export const mainStore = create((set) => {
   // 헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
   const getGymLocation = async (address) => {
     try {
-      const apiKey = import.meta.env.VITE_KAKAO_REST_API_KEY;
-      const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
-
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `KakaoAK ${apiKey}`,
-        },
-      });
-
-      const data = response.data;
-      if (data.documents && data.documents.length > 0) {
-        // 주소 추출 및 상태 업데이트
-        const { x: longitude, y: latitude } = data.documents[0];
-
-        set(
-          produce((draft) => {
-            draft.gymDetailLocation = { latitude, longitude };
-          })
-        );
-      } else {
-        throw new Error('No address found');
-      }
+      const { latitude, longitude } = await geocodeAddress(address);
+      set(
+        produce((draft) => {
+          draft.gymDetailLocation = { latitude, longitude };
+        })
+      );
     } catch (error) {
       console.error('Error fetching gym location or address:', error);
     }
@@ -685,19 +682,76 @@ export const mainStore = create((set) => {
 
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = data;
+          draft.searchInput.trainerList = data;
         })
       );
     } else {
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = [];
+          draft.searchInput.trainerList = [];
         })
       );
     }
   };
 
-  const fetchTrainerDetails = async () => {};
+  // TrainerDetail페이지에서 데이터 패치하는 함수(접근 가능한 루트: 헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
+  const fetchTrainerDetails = async (trainerId) => {
+    const { trainerDetailPath } = mainStore.getState();
+    const { trainerList } = mainStore.getState().searchInput;
+    let trainerData;
+
+    if (trainerDetailPath === 'users') {
+      trainerData = await getData('trainers', trainerId);
+    } else {
+      trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+
+      if (!trainerData) {
+        return;
+      }
+    }
+
+    set(
+      produce((draft) => {
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
+
+  // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 trainerDetailPath 값을 세팅하는 함수
+  const setTrainerDetailPath = (collectionName) => {
+    set(
+      produce((draft) => {
+        draft.trainerDetailPath = collectionName;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지로 이동시 선택한 trainer의 Id 값 저장하는 함수
+  const setSelectedTrainerId = (trainerId) => {
+    set(
+      produce((draft) => {
+        draft.selectedTrainerId = trainerId;
+        draft.currentSwiperTrainerId = trainerId;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지에서 스와이퍼 슬라이드 시 해당 키 값 저장
+  const handleTrainerSwiperChange = (swiper) => {
+    const { trainerList } = mainStore.getState().searchInput;
+    const currentIndex = swiper.activeIndex;
+    const selectedTrainerId = trainerList[currentIndex]?.id;
+    const trainerData = trainerList.find(
+      (trainer) => trainer.id === selectedTrainerId
+    );
+
+    set(
+      produce((draft) => {
+        draft.currentSwiperTrainerId = selectedTrainerId;
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
 
   return {
     ...INITIAL_STATE,
@@ -716,6 +770,9 @@ export const mainStore = create((set) => {
       getGymLocation,
       getTrainersFromGymData,
       fetchTrainerDetails,
+      setTrainerDetailPath,
+      setSelectedTrainerId,
+      handleTrainerSwiperChange,
     },
   };
 });
