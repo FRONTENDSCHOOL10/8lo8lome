@@ -709,19 +709,19 @@ export const mainStore = create((set) => {
 
     if (trainerDetailPath === 'users') {
       trainerData = await getData('trainers', trainerId);
-    } else if (trainerDetailPath !== 'trainers' && trainerList.length < 1) {
+    } else {
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+
+      if (!trainerData) {
+        return;
+      }
     }
 
-    if (!trainerData) {
-      return;
-    } else {
-      set(
-        produce((draft) => {
-          draft.searchInput.trainerData = trainerData;
-        })
-      );
-    }
+    set(
+      produce((draft) => {
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
   };
 
   // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 trainerDetailPath 값을 세팅하는 함수
@@ -738,6 +738,7 @@ export const mainStore = create((set) => {
     set(
       produce((draft) => {
         draft.selectedTrainerId = trainerId;
+        draft.currentSwiperTrainerId = trainerId;
       })
     );
   };
