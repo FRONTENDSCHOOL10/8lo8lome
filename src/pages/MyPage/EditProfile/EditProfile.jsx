@@ -3,7 +3,7 @@ import AppMeta from '@/components/AppMeta';
 import EditImage from './EditImage';
 import EditNickname from './EditNickname';
 import EditEmail from './EditEmail';
-import EditNumber from './EditNumber';
+// import EditNumber from './EditNumber';
 import { memo } from 'react';
 
 function EditProfile() {
