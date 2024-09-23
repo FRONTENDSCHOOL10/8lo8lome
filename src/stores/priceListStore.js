@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { produce } from 'immer';
 import { mainStore } from './mainStore';
 import { getData, updateData } from '@/api/CRUD';
+import { getPbImageURL } from '@/utils';
 
 export const usePriceListStore = create((set) => {
   const INITIAL_STATE = {
@@ -37,9 +38,12 @@ export const usePriceListStore = create((set) => {
         checkName = 'personalLocker';
       }
 
-      const itemPrice =
-        healthPrice[checkName] === '무료' ? 0 : healthPrice[checkName];
-      draft.totalPrices[name] = itemPrice * draft.membershipDuration;
+      const itemPrice = healthPrice[checkName]; // 가격 가져오기
+      // itemPrice가 유효한 경우에만 가격 계산
+      draft.totalPrices[name] =
+        itemPrice && itemPrice !== '무료'
+          ? itemPrice * draft.membershipDuration
+          : 0; // 가격 계산
     });
   };
 
@@ -60,16 +64,20 @@ export const usePriceListStore = create((set) => {
     set(
       produce((draft) => {
         draft.membershipKey = membershipKey;
+
         // 선택된 항목이 이미 존재하면 제거하고, 없으면 추가
         if (draft.selectedItems[name]) {
           delete draft.selectedItems[name]; // 선택 해제
           draft.totalPrices[name] = 0; // 가격 0으로 설정
         } else {
           draft.selectedItems[name] = true; // 선택 시 가격 반영
+
           // 가격 설정
-          const itemPrice =
-            healthPrice[checkName] === '무료' ? 0 : healthPrice[checkName]; // 해당 항목의 기본 가격을 설정
-          draft.totalPrices[name] = itemPrice * membershipDuration; // 현재 기간에 맞춰 가격 계산
+          const itemPrice = healthPrice[checkName]; // 가격 가져오기
+          // 무료 체크 제거, 기본 가격을 0으로 초기화
+          draft.totalPrices[name] = itemPrice
+            ? itemPrice * membershipDuration
+            : 0; // 가격 계산
         }
 
         // 가격 업데이트
@@ -77,6 +85,7 @@ export const usePriceListStore = create((set) => {
       })
     );
   };
+
   const handleCheckPricing = (name, key, price) => {
     const { totalPrices, membershipDuration, selectedPricing } =
       usePriceListStore.getState();
@@ -129,6 +138,7 @@ export const usePriceListStore = create((set) => {
     const { totalPrices, membershipDuration, selectedPricing } =
       usePriceListStore.getState();
     const { userId } = mainStore.getState();
+
     // 전체 결제 금액 계산
     const totalAmount = Object.values(totalPrices).reduce(
       (sum, price) => sum + price,
@@ -171,13 +181,15 @@ export const usePriceListStore = create((set) => {
       } else if (key === 'singleSession') {
         productName = '개별 수업';
       }
-
+      console.log(totalPrices);
       return {
         name: productName, // 상품 이름
         key: key, // 상품 키
-        price: totalPrices[name], // 결제 금액
+        price: totalPrices[key] || 0, // 결제 금액
       };
     });
+    const data = await getData('gyms', gymId);
+    const photo = getPbImageURL(data)[0];
 
     // paymentData 배열에 객체 형태로 담기
     const paymentData = {
@@ -186,6 +198,7 @@ export const usePriceListStore = create((set) => {
       paymentDate: paymentDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
       products: selectedProducts,
+      photo: photo,
     };
 
     try {
@@ -199,16 +212,14 @@ export const usePriceListStore = create((set) => {
       await updateData('users', userId, {
         paymentHistory: updatedPaymentHistory,
       });
+      set(
+        produce((draft) => {
+          draft.isPayment = true;
+        })
+      );
     } catch (error) {
       console.log('결제 데이터:', error);
     }
-
-    set(
-      produce((draft) => {
-        draft.paymentHistory.push(paymentData);
-        draft.isPayment = true;
-      })
-    );
   };
 
   const resetPaymentState = () => {
@@ -219,11 +230,22 @@ export const usePriceListStore = create((set) => {
     );
   };
 
+  const getPaymentHistory = async () => {
+    const { userId } = mainStore.getState();
+    const user = await getData('users', userId);
+    set(
+      produce((draft) => {
+        draft.paymentHistory = user.paymentHistory;
+      })
+    );
+  };
+
   return {
     ...INITIAL_STATE,
     handleToggle,
     handleCheckPricing,
     submitPayment,
     resetPaymentState,
+    getPaymentHistory,
   };
 });
