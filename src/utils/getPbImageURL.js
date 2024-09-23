@@ -5,10 +5,10 @@ export const getPbImageURL = (item) => {
   if (Array.isArray(photo) && photo.length >= 2) {
     return photo.map(
       (photoItem) =>
-        `${import.meta.env.VITE_PB}/api/files/${collectionId}/${id}/${photoItem}`
+        `${import.meta.env.VITE_PB}api/files/${collectionId}/${id}/${photoItem}`
     );
   }
 
   // 기본 URL 반환
-  return `${import.meta.env.VITE_PB}/api/files/${collectionId}/${id}/${photo}`;
+  return `${import.meta.env.VITE_PB}api/files/${collectionId}/${id}/${photo}`;
 };

@@ -131,7 +131,6 @@ function AppStatusPage({ status }) {
 
   useEffect(() => {
     if (status !== 'notLogin' || status !== '404') {
-      // 각각의 요소에 순차적으로 애니메이션 적용
       refs.current.forEach((el, index) => {
         animate(
           el,
