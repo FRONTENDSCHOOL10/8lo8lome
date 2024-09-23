@@ -1,21 +1,28 @@
 import { memo, useEffect, useState } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { AppRating, AppLoading } from '@/components';
-import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Keyboard, A11y } from 'swiper/modules';
 import { getPbImageURL } from '@/utils';
+import { useNavigate } from 'react-router-dom';
 import 'swiper/css';
 
 function TrainerList() {
   const [isLoading, setIsLoading] = useState(true);
-  const { gymData, trainerList, getTrainersFromGymData, setUserPathValidity } =
-    mainStore((s) => ({
-      gymData: s.searchInput.gymData,
-      trainerList: s.searchInput.trainerList,
-      getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
-      setUserPathValidity: s.handleMethod.setUserPathValidity,
-    }));
+  const {
+    gymData,
+    trainerList,
+    getTrainersFromGymData,
+    setUserPathValidity,
+    setSelectedTrainerId,
+  } = mainStore((s) => ({
+    gymData: s.searchInput.gymData,
+    trainerList: s.searchInput.trainerList,
+    getTrainersFromGymData: s.handleMethod.getTrainersFromGymData,
+    setUserPathValidity: s.handleMethod.setUserPathValidity,
+    setSelectedTrainerId: s.handleMethod.setSelectedTrainerId,
+  }));
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTrainerList = async () => {
@@ -34,6 +41,16 @@ function TrainerList() {
 
     loadTrainerList();
   }, [gymData, getTrainersFromGymData, setUserPathValidity]);
+
+  const handleClick = (trainerId) => {
+    if (trainerId) {
+      setSelectedTrainerId(trainerId);
+    } else {
+      throw new Error('trianer ID is not exist.');
+    }
+
+    navigate('/TrainerDetail');
+  };
 
   return (
     <section className="ml-s31">
@@ -88,10 +105,10 @@ function TrainerList() {
                       </span>
                     </div>
 
-                    <Link
-                      to={`/TrainerDetail/${trainer.id}`}
-                      aria-label={`${trainer.name} 상세 정보 링크`}
+                    <button
+                      aria-label={`${trainer.name} 상세 정보 링크 버튼`}
                       className="text-f14 font-semibold inline-flex items-center"
+                      onClick={() => handleClick(trainer.id)}
                     >
                       <span>click</span>
                       <svg
@@ -101,7 +118,7 @@ function TrainerList() {
                       >
                         <use href="/assets/sprite.svg#arrow-forward" />
                       </svg>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </SwiperSlide>

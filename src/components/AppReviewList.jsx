@@ -4,6 +4,8 @@ import { memo, useState, useEffect } from 'react';
 import { formatDate } from '@/utils';
 import { object, string } from 'prop-types';
 import { getAllData } from '@/api/CRUD';
+import { useNavigate } from 'react-router-dom';
+import { mainStore } from '@/stores/mainStore';
 
 AppReviewList.propTypes = {
   item: object,
@@ -16,6 +18,10 @@ function AppReviewList({ item, filter = '', expand = '' }) {
   const [reviewsList, setReviewsList] = useState([]);
   const itemId = item.id;
   const itemCollectionName = item.collectionName;
+  const navigate = useNavigate();
+  const { setSelectedTrainerId } = mainStore((s) => ({
+    setSelectedTrainerId: s.handleMethod.setSelectedTrainerId,
+  }));
 
   useEffect(() => {
     const loadReviewList = async () => {
@@ -45,6 +51,18 @@ function AppReviewList({ item, filter = '', expand = '' }) {
     loadReviewList();
   }, [itemId]);
 
+  const handleClick = (e, trainerId) => {
+    e.preventDefault();
+
+    if (trainerId) {
+      setSelectedTrainerId(trainerId);
+    } else {
+      throw new Error('trianer ID is not exist.');
+    }
+
+    navigate('/TrainerDetail');
+  };
+
   return (
     <>
       {isLoading ? (
@@ -70,15 +88,17 @@ function AppReviewList({ item, filter = '', expand = '' }) {
                 (review.trainer && itemCollectionName !== 'trainers');
               let LinkLabel = '';
               let LinkTo = '';
+              let trainerId = '';
 
               if (isLinkVisible) {
-                LinkTo = review.trainer
-                  ? `/TrainerDetail/${review.expand.trainer.id}`
-                  : `/main/${review.expand.gym.id}`;
-
-                LinkLabel = review.trainer
-                  ? review.expand.trainer.name
-                  : review.expand.gym.name;
+                if (review.trainer) {
+                  LinkTo = '/TrainerDetail';
+                  LinkLabel = review.expand.trainer.name;
+                  trainerId = review.expand.trainer.id;
+                } else {
+                  LinkTo = `/main/${review.expand.gym.id}`;
+                  LinkLabel = review.expand.gym.name;
+                }
               }
 
               return (
@@ -96,6 +116,11 @@ function AppReviewList({ item, filter = '', expand = '' }) {
                           to={LinkTo}
                           aria-label={`${LinkLabel} 상세 정보 링크`}
                           className="text-f16 font-bold inline-flex items-center"
+                          onClick={
+                            review.trainer
+                              ? (e) => handleClick(e, trainerId)
+                              : undefined
+                          }
                         >
                           {review.trainer ? (
                             <p>&nbsp;/ {review.expand.trainer.name}</p>

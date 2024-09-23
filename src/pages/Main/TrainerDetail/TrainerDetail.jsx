@@ -1,23 +1,24 @@
 import AppMeta from '@/components/AppMeta';
-import { AppHeader, AppLoading, AppReviewList } from '@/components';
+import { AppHeader, AppLoading } from '@/components';
 import { memo, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { mainStore } from '@/stores/mainStore';
 import TrainerProfile from './TrainerProfile';
 
 function TrainerDetail() {
-  const { trainerId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const { fetchTrainerDetails, trainerData } = mainStore((s) => ({
-    fetchTrainerDetails: s.handleMethod.fetchTrainerDetails,
-    trainerData: s.searchInput.trainerData,
-  }));
+  const { fetchTrainerDetails, trainerData, selectedTrainerId } = mainStore(
+    (s) => ({
+      fetchTrainerDetails: s.handleMethod.fetchTrainerDetails,
+      trainerData: s.searchInput.trainerData,
+      selectedTrainerId: s.selectedTrainerId,
+    })
+  );
 
   useEffect(() => {
     const loadTrainerDetails = async () => {
-      if (trainerId) {
+      if (selectedTrainerId) {
         try {
-          await fetchTrainerDetails(trainerId);
+          await fetchTrainerDetails(selectedTrainerId);
         } catch (error) {
           console.error('Error fetching trainer details:', error);
           setIsLoading(false);
@@ -28,7 +29,7 @@ function TrainerDetail() {
     };
 
     loadTrainerDetails();
-  }, [trainerId, fetchTrainerDetails]);
+  }, [selectedTrainerId, fetchTrainerDetails]);
 
   return (
     <>

@@ -61,6 +61,8 @@ export const mainStore = create((set) => {
     locationAddress: {},
     gymDetailLocation: {},
     isValidUserPath: false,
+    selectedTrainerId: '',
+    trainerIdList: [],
   };
 
   // 검색어 입력 처리
@@ -710,12 +712,32 @@ export const mainStore = create((set) => {
     } else {
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
 
+      if (trainerList.length > 1) {
+        //루트가 헬스장인지도 &&로 조건 추가해야함.
+        setTrainerIdList();
+      }
+
       if (!trainerData) return;
     }
 
     set(
       produce((draft) => {
         draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
+
+  const setTrainerIdList = () => {
+    const { trainerList } = mainStore.getState().searchInput;
+    let trainerIdData;
+
+    trainerIdData = trainerList.map((trainer) => trainer.id);
+
+    console.log(trainerIdData);
+
+    set(
+      produce((draft) => {
+        draft.trainerIdList = trainerIdData;
       })
     );
   };
@@ -727,6 +749,15 @@ export const mainStore = create((set) => {
     set(
       produce((draft) => {
         draft.isValidUserPath = data;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지로 이동시 선택한 trainer의 Id 값 저장하는 함수
+  const setSelectedTrainerId = (trainerId) => {
+    set(
+      produce((draft) => {
+        draft.selectedTrainerId = trainerId;
       })
     );
   };
@@ -749,6 +780,7 @@ export const mainStore = create((set) => {
       getTrainersFromGymData,
       fetchTrainerDetails,
       setUserPathValidity,
+      setSelectedTrainerId,
     },
   };
 });
