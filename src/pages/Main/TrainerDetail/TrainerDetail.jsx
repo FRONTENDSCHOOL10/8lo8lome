@@ -52,9 +52,14 @@ function TrainerDetail() {
       ) : (
         <>
           {trainerDetailPath === 'trainers' && trainerList.length > 1 ? (
-            <Swiper className="max-w-[340px]">
-              {trainerList.map((trainerData, index) => (
-                <SwiperSlide key={index}>
+            <Swiper
+              className="max-w-[340px]"
+              initialSlide={trainerList.findIndex(
+                (trainerData) => trainerData.id === selectedTrainerId
+              )}
+            >
+              {trainerList.map((trainerData) => (
+                <SwiperSlide key={trainerData.id}>
                   <AppTrainerProfile trainerData={trainerData} />
                 </SwiperSlide>
               ))}
