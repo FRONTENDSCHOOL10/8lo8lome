@@ -7,6 +7,7 @@ import { useLogoutStore } from '@/stores/logOutStore';
 import { useDeleteIdStore } from '@/stores/deleteIdStore';
 import { useFindPasswordStore } from '@/stores/findPasswordStore';
 import { usePriceListStore } from '@/stores/priceListStore';
+import { useSignupStore } from '@/stores/signStore';
 
 const statusValues = [
   'deleteId',
@@ -32,10 +33,9 @@ function AppStatusPage({ status }) {
   const { resetPasswordState } = useFindPasswordStore((s) => ({
     resetPasswordState: s.resetPasswordState,
   }));
-  const { resetSignupState } = useFindPasswordStore((s) => ({
+  const { resetSignupState } = useSignupStore((s) => ({
     resetSignupState: s.resetSignupState,
   }));
-
   const { resetPaymentState } = usePriceListStore((s) => ({
     resetPaymentState: s.resetPaymentState,
   }));

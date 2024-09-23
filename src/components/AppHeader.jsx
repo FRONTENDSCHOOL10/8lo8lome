@@ -7,15 +7,17 @@ AppHeader.propTypes = {
   children: node,
   logo: bool,
   chat: bool,
+  login: bool,
 };
 
-function AppHeader({ className, children, logo, chat }) {
+function AppHeader({ className, children, logo, chat, login }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
     chat
       ? navigate('/chat', { replace: true })
       : navigate(-1, { replace: true });
+    login ? navigate('/', { replace: true }) : navigate(-1, { replace: true });
   };
 
   const isLogo = logo ? (
