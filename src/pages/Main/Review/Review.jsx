@@ -1,12 +1,19 @@
 import AppMeta from '@/components/AppMeta';
 import { AppHeader, AppReviewList } from '@/components';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 
 function Review() {
-  const { gymData } = mainStore((s) => ({
+  const { gymData, setTrainerDetailPath } = mainStore((s) => ({
     gymData: s.searchInput.gymData,
+    setTrainerDetailPath: s.handleMethod.setTrainerDetailPath,
   }));
+
+  useEffect(() => {
+    if (gymData) {
+      setTrainerDetailPath('gyms');
+    }
+  }, [gymData, setTrainerDetailPath]);
 
   return (
     <>
