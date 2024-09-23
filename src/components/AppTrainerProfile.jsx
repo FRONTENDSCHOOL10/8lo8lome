@@ -1,12 +1,12 @@
 import { AppImageDisplay } from '@/components';
 import { memo } from 'react';
-import { mainStore } from '@/stores/mainStore';
+import { object } from 'prop-types';
 
-function TrainerProfile() {
-  const { trainerData } = mainStore((s) => ({
-    trainerData: s.searchInput.trainerData,
-  }));
+AppTrainerProfile.propTypes = {
+  trainerData: object,
+};
 
+function AppTrainerProfile({ trainerData }) {
   return (
     <section className="mt-[100px]">
       <AppImageDisplay
@@ -68,4 +68,4 @@ function TrainerProfile() {
   );
 }
 
-export default memo(TrainerProfile);
+export default memo(AppTrainerProfile);

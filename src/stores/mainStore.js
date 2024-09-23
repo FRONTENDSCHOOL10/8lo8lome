@@ -709,34 +709,32 @@ export const mainStore = create((set) => {
 
     if (trainerDetailPath === 'users') {
       trainerData = await getData('trainers', trainerId);
+    } else if (trainerDetailPath === 'trainers' && trainerList.length > 1) {
+      setTrainerIdList();
     } else {
       trainerData = trainerList.find((trainer) => trainer.id === trainerId);
-
-      if (trainerDetailPath === 'trainers' && trainerList.length > 1) {
-        setTrainerIdList();
-      }
-
-      if (!trainerData) return;
     }
 
-    set(
-      produce((draft) => {
-        draft.searchInput.trainerData = trainerData;
-      })
-    );
+    if (!trainerData) {
+      return;
+    } else {
+      set(
+        produce((draft) => {
+          draft.searchInput.trainerData = trainerData;
+        })
+      );
+    }
   };
 
   const setTrainerIdList = () => {
     const { trainerList } = mainStore.getState().searchInput;
-    let trainerIdData;
+    let trainersId;
 
-    trainerIdData = trainerList.map((trainer) => trainer.id);
-
-    console.log(trainerIdData);
+    trainersId = trainerList.map((trainer) => trainer.id);
 
     set(
       produce((draft) => {
-        draft.trainerIdList = trainerIdData;
+        draft.trainerIdList = trainersId;
       })
     );
   };
