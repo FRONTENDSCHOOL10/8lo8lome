@@ -149,8 +149,13 @@ export const usePriceListStore = create((set) => {
 
     // 결제 날짜 및 종료 날짜 계산
     const paymentDate = new Date(); // 현재 날짜
+
     const endDate = new Date(paymentDate); // 종료 날짜를 현재 날짜로 초기화
     endDate.setMonth(endDate.getMonth() + membershipDuration); // 선택한 개월 수만큼 더함
+
+    const timeDifference = endDate - paymentDate; // 밀리초 단위의 차이
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const dayData = days > 0 ? days - 1 : 0;
 
     // 결제 상품 이름 및 가격 생성
     const selectedProducts = Object.keys(selectedPricing).map((name) => {
@@ -194,11 +199,13 @@ export const usePriceListStore = create((set) => {
     // paymentData 배열에 객체 형태로 담기
     const paymentData = {
       gymId: gymId,
+      name: data.name,
       totalAmount: totalAmount,
       paymentDate: paymentDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
       products: selectedProducts,
       photo: photo,
+      dayData: dayData >= 0 ? dayData : 0, // 남은 일수를 'days'로 추가
     };
 
     try {
@@ -235,7 +242,7 @@ export const usePriceListStore = create((set) => {
     const user = await getData('users', userId);
     set(
       produce((draft) => {
-        draft.paymentHistory = user.paymentHistory;
+        draft.paymentHistory = user.paymentHistory || [];
       })
     );
   };
