@@ -6,6 +6,7 @@ import { oneOf } from 'prop-types';
 import { useLogoutStore } from '@/stores/logOutStore';
 import { useDeleteIdStore } from '@/stores/deleteIdStore';
 import { useFindPasswordStore } from '@/stores/findPasswordStore';
+import { usePriceListStore } from '@/stores/priceListStore';
 
 const statusValues = [
   'deleteId',
@@ -33,6 +34,10 @@ function AppStatusPage({ status }) {
   }));
   const { resetSignupState } = useFindPasswordStore((s) => ({
     resetSignupState: s.resetSignupState,
+  }));
+
+  const { resetPaymentState } = usePriceListStore((s) => ({
+    resetPaymentState: s.resetPaymentState,
   }));
 
   const refs = useRef([]);
@@ -89,6 +94,7 @@ function AppStatusPage({ status }) {
       subMessage = '건강한 몸을 만들 준비가 되었습니다!';
       linkText = '운동하러 가기';
       linkTo = '/main';
+      onClick = resetPaymentState;
       break;
     case 'notLogin':
       title = '로그인 이동 페이지';
