@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Allow: /public/
+Sitemap: http://daitgym.netlify.app/sitemap.xml
