@@ -8,6 +8,7 @@ import {
 import { memo, useEffect, useState } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { debounce } from '@/utils';
 import 'swiper/css';
 
 function TrainerDetail() {
@@ -47,6 +48,11 @@ function TrainerDetail() {
     loadTrainerDetails();
   }, [selectedTrainerId, fetchTrainerDetails]);
 
+  const debouncedHandleTrainerSwiperChange = debounce(
+    handleTrainerSwiperChange,
+    600
+  );
+
   return (
     <>
       <AppHeader>트레이너 정보</AppHeader>
@@ -64,7 +70,7 @@ function TrainerDetail() {
               initialSlide={trainerList.findIndex(
                 (trainerData) => trainerData.id === selectedTrainerId
               )}
-              onSlideChange={handleTrainerSwiperChange}
+              onSlideChange={debouncedHandleTrainerSwiperChange}
             >
               {trainerList.map((trainerData) => (
                 <SwiperSlide key={trainerData.id}>
