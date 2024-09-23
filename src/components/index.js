@@ -19,3 +19,4 @@ export { default as AppList } from './AppList.jsx';
 export { default as AppReviewList } from './AppReviewList.jsx';
 export { default as AppImageDisplay } from './AppImageDisplay.jsx';
 export { default as AppAccordion } from './AppAccordion.jsx';
+export { default as AppTrainerProfile } from './AppTrainerProfile.jsx';

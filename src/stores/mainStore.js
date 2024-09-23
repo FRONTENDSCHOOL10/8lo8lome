@@ -15,6 +15,7 @@ export const mainStore = create((set) => {
       isGymsLoaded: false,
       selectedFilters: [],
       gymData: {},
+      trainerList: {},
       trainerData: {},
       updatedFilters: [],
       wishList: [],
@@ -59,6 +60,9 @@ export const mainStore = create((set) => {
     userId: pb.authStore.model?.id || '',
     locationAddress: {},
     gymDetailLocation: {},
+    trainerDetailPath: '',
+    selectedTrainerId: '',
+    currentSwiperTrainerId: '',
   };
 
   // 검색어 입력 처리
@@ -685,19 +689,76 @@ export const mainStore = create((set) => {
 
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = data;
+          draft.searchInput.trainerList = data;
         })
       );
     } else {
       set(
         produce((draft) => {
-          draft.searchInput.trainerData = [];
+          draft.searchInput.trainerList = [];
         })
       );
     }
   };
 
-  const fetchTrainerDetails = async () => {};
+  // TrainerDetail페이지에서 데이터 패치하는 함수(접근 가능한 루트: 헬스장에서 접근, 헬스장 리뷰에서 접근, 리뷰관리에서 접근)
+  const fetchTrainerDetails = async (trainerId) => {
+    const { trainerDetailPath } = mainStore.getState();
+    const { trainerList } = mainStore.getState().searchInput;
+    let trainerData;
+
+    if (trainerDetailPath === 'users') {
+      trainerData = await getData('trainers', trainerId);
+    } else {
+      trainerData = trainerList.find((trainer) => trainer.id === trainerId);
+
+      if (!trainerData) {
+        return;
+      }
+    }
+
+    set(
+      produce((draft) => {
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
+
+  // 리뷰관리에서 트레이너 디테일로 접근하는 경우를 체크하기 위해 trainerDetailPath 값을 세팅하는 함수
+  const setTrainerDetailPath = (collectionName) => {
+    set(
+      produce((draft) => {
+        draft.trainerDetailPath = collectionName;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지로 이동시 선택한 trainer의 Id 값 저장하는 함수
+  const setSelectedTrainerId = (trainerId) => {
+    set(
+      produce((draft) => {
+        draft.selectedTrainerId = trainerId;
+        draft.currentSwiperTrainerId = trainerId;
+      })
+    );
+  };
+
+  // 트레이너 디테일 페이지에서 스와이퍼 슬라이드 시 해당 키 값 저장
+  const handleTrainerSwiperChange = (swiper) => {
+    const { trainerList } = mainStore.getState().searchInput;
+    const currentIndex = swiper.activeIndex;
+    const selectedTrainerId = trainerList[currentIndex]?.id;
+    const trainerData = trainerList.find(
+      (trainer) => trainer.id === selectedTrainerId
+    );
+
+    set(
+      produce((draft) => {
+        draft.currentSwiperTrainerId = selectedTrainerId;
+        draft.searchInput.trainerData = trainerData;
+      })
+    );
+  };
 
   return {
     ...INITIAL_STATE,
@@ -716,6 +777,9 @@ export const mainStore = create((set) => {
       getGymLocation,
       getTrainersFromGymData,
       fetchTrainerDetails,
+      setTrainerDetailPath,
+      setSelectedTrainerId,
+      handleTrainerSwiperChange,
     },
   };
 });
