@@ -17,12 +17,12 @@ function FindId() {
   return (
     <>
       <AppMeta
-        title="아이디 찾기 페이지"
-        description="아이디 찾기 페이지입니다."
+        title="이메일 찾기 페이지"
+        description="이메일 찾기 페이지입니다."
       />
-      <AppHeader>아이디 찾기</AppHeader>
-      <section className="px-s20 flex flex-col gap-5 my-s82">
-        <h2 className="sr-only">아이디 찾기 폼</h2>
+      <AppHeader>이메일 찾기</AppHeader>
+      <section className="px-s20 flex flex-col gap-5 my-s82 mt-[100px]">
+        <h2 className="sr-only">이메일 찾기 폼</h2>
         <PhoneNumberInput />
         {isVerificationCodeInput ? <VerificationCodeInput /> : null}
         {isShowEmail ? <EmailDisplay /> : null}

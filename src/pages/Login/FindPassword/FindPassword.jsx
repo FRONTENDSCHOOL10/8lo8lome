@@ -56,7 +56,7 @@ function FindPassword() {
           비밀번호 변경
         </AppButton>
         <Link to={'/findId'} className="text-center block text-f14">
-          아이디 찾기
+          이메일 찾기
         </Link>
       </section>
     </>
