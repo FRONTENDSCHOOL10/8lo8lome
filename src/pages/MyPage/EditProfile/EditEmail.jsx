@@ -1,7 +1,6 @@
 import { useState, memo } from 'react';
 import { AppButton, AppTextInput, AppAuthMessage } from '@/components';
 import { useMyPageStore } from '@/stores/myPageStore';
-import { EMAIL_REG } from '@/constant';
 
 function EditEmail() {
   const { checkEmailDuplicate, updateProfile, userData } = useMyPageStore(

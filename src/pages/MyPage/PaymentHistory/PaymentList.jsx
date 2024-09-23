@@ -17,7 +17,7 @@ PaymentList.propTypes = {
         })
       ).isRequired, // products도 필수로 설정
     })
-  ).isRequired,
+  ),
 };
 
 function PaymentList() {
@@ -28,6 +28,7 @@ function PaymentList() {
   useEffect(() => {
     getPaymentHistory();
   }, [getPaymentHistory]);
+
   return (
     <>
       <section
@@ -35,7 +36,7 @@ function PaymentList() {
         className="mt-[100px] p-s20 font-pretendard"
       >
         {paymentHistory.length === 0 ? (
-          <p>결제 내역이 없습니다.</p>
+          <p>결제내역이 없습니다.</p>
         ) : (
           <ul className="flex flex-col w-full ">
             {paymentHistory.map((item, index) => {
@@ -72,7 +73,7 @@ function PaymentList() {
                       {item.products.map((product, productIndex) => (
                         <div key={productIndex} className="mb-s6">
                           <p className="mb-s6">결제 상품: {product.name}</p>
-                          <p>결제금액: {item.totalAmount.toLocaleString()}원</p>
+                          <p>결제금액: {item.totalAmount}원</p>
                         </div>
                       ))}
                     </div>
