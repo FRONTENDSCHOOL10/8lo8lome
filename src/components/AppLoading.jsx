@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import AppSpinner from '@/components/AppSpinner';
 import { bool } from 'prop-types';
+import { memo } from 'react';
 
 AppLoading.propTypes = {
   isLoading: bool,
 };
-export default function AppLoading({ isLoading }) {
+function AppLoading({ isLoading }) {
   const [message, setMessage] = useState('로딩 중입니다 잠시만 기다려주세요.');
 
   useEffect(() => {
@@ -44,3 +45,5 @@ export default function AppLoading({ isLoading }) {
     </>
   );
 }
+
+export default memo(AppLoading);

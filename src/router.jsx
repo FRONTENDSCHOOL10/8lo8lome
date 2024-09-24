@@ -20,14 +20,10 @@ import ReviewSettings from '@/pages/MyPage/ReviewSettings/ReviewSettings';
 import WishList from '@/pages/MyPage/WishList/WishList';
 import Setting from '@/pages/MyPage/Setting/Setting';
 // Main페이지 하위 컴포넌트
-import Map from '@/pages/Main/Map/Map';
 import Filter from '@/pages/Main/Filter/Filter';
 import AppStatusPage from '@/components/AppStatusPage';
 import ChatRoom from '@/pages/Chat/ChatRoom';
-import GymDetail from '@/pages/Main/GymDetail/GymDetail';
 import Review from '@/pages/Main/Review/Review';
-import TrainerDetail from '@/pages/Main/TrainerDetail/TrainerDetail';
-import Price from '@/pages/Main/Price/Price';
 
 /**@type {import('react-router-dom').RouteObject[]} */
 const navigation = [
@@ -55,17 +51,44 @@ export const routes = createRoutesFromElements(
     <Route
       path="/main"
       lazy={async () => {
-        let { default: Main } = await import('./pages/Main/Main');
+        let { default: Main } = await import('@/pages/Main/Main');
         return { Component: Main };
       }}
     />
-    <Route path="/map" element={<Map />} />
-    <Route path="/main/:gymId" element={<GymDetail />} />
+    <Route
+      path="/map"
+      lazy={async () => {
+        let { default: Map } = await import('@/pages/Main/Map/Map');
+        return { Component: Map };
+      }}
+    />
+    <Route
+      path="/main/:gymId"
+      lazy={async () => {
+        let { default: GymDetail } = await import(
+          '@/pages/Main/GymDetail/GymDetail'
+        );
+        return { Component: GymDetail };
+      }}
+    />
     <Route path="/Review" element={<Review />} />
-    <Route path="/TrainerDetail" element={<TrainerDetail />} />
+    <Route
+      path="/TrainerDetail"
+      lazy={async () => {
+        let { default: TrainerDetail } = await import(
+          '@/pages/Main/TrainerDetail/TrainerDetail'
+        );
+        return { Component: TrainerDetail };
+      }}
+    />
     <Route path="/filter" element={<Filter />} />
-    <Route path="/price/:gymId" element={<Price />} />
-
+    <Route
+      path="/price/:gymId"
+      lazy={async () => {
+        let { default: Price } = await import('@/pages/Main/Price/Price');
+        return { Component: Price };
+      }}
+    />
     <Route
       path="/chat"
       lazy={async () => {

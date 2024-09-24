@@ -1,4 +1,5 @@
 import { string } from 'prop-types';
+import { memo } from 'react';
 import { NavLink } from 'react-router-dom';
 
 AppNavLink.propTypes = {
@@ -20,4 +21,4 @@ function AppNavLink({ className, ...restProps }) {
   );
 }
 
-export default AppNavLink;
+export default memo(AppNavLink);

@@ -44,6 +44,7 @@ function AppList({ items }) {
                 height={78}
                 style={{ width: '112px', height: '78px' }}
                 className="object-cover rounded"
+                loading="lazy"
               />
               <div className="flex flex-col w-full gap-2">
                 <h2 className="text-f16 font-bold">{item.name}</h2>
