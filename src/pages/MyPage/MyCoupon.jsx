@@ -27,9 +27,10 @@ function MyCoupon() {
     paymentHistory: s.paymentHistory,
     getPaymentHistory: s.getPaymentHistory,
   }));
+
   useEffect(() => {
     getPaymentHistory();
-  }, [getPaymentHistory]); // paymentHistpry에서 수정
+  }, [getPaymentHistory]);
 
   return (
     <section className="p-s20" aria-label="내 회원권 쿠폰" role="region">
@@ -47,7 +48,7 @@ function MyCoupon() {
             enabled: true,
             containerMessage: '다음 쿠폰',
           }}
-          keyboard={{ enabled: true, pageUpDown: true }} // typo 수정
+          keyboard={{ enabled: true, pageUpDown: true }}
           a11y={{
             paginationBulletMessage: '슬라이드 {{index}}',
           }}
@@ -55,16 +56,26 @@ function MyCoupon() {
           aria-label="쿠폰 슬라이더"
         >
           {paymentHistory.map((item, index) => (
-            <SwiperSlide key={index} aria-labelledby="내 회원권 정보">
+            <SwiperSlide key={index}>
               <ul className="flex flex-row rounded-md p-s20 bg-gradient-to-br from-mainColor to-green-900 h-s156">
                 <li className="flex flex-col text-base text-black">
-                  <p className="font-semibold text-f14 mb-s6">내 회원권</p>
+                  <h3
+                    className="font-semibold text-f14 mb-s6"
+                    id={`coupon-title-${index}`}
+                  >
+                    내 회원권
+                  </h3>
                   <div className="mb-s6">
-                    <p className="font-extrabold text-f20">
+                    <h4
+                      className="font-extrabold text-f20"
+                      id={`coupon-product-${index}`}
+                    >
                       {item.products[0].name}
-                    </p>
+                    </h4>
                   </div>
-                  <p className="text-f14">{item.name}</p>
+                  <p className="text-f14" id={`coupon-name-${index}`}>
+                    {item.name}
+                  </p>
                   <p className="font-bold text-f16 pt-s20">
                     {item.dayData}일 남음
                   </p>

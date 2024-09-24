@@ -12,7 +12,13 @@ AppImageDisplay.propTypes = {
   imgHeight: string,
 };
 
-function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
+function AppImageDisplay({
+  item,
+  ariaLabel = '',
+  className = '',
+  imgWidth,
+  imgHeight,
+}) {
   if (!item || item.photo.length === 0) {
     return '';
   }
@@ -24,7 +30,9 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
       <img
         src={imgUrl}
         alt=""
-        className={`max-h-[300px] object-cover bg-subBg rounded mt-s12 mx-s31`}
+        className={`object-contain bg-subBg rounded mt-s12 mx-s31`}
+        width={imgWidth}
+        height={imgHeight}
       />
     );
   }
@@ -40,7 +48,9 @@ function AppImageDisplay({ item, ariaLabel = '', className = '' }) {
             <img
               src={url}
               alt=""
-              className={`max-h-[300px] object-cover bg-subBg rounded`}
+              className={`object-contain bg-subBg rounded`}
+              width={imgWidth}
+              height={imgHeight}
             />
           </SwiperSlide>
         ))}

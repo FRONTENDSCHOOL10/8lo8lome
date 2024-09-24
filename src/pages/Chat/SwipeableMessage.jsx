@@ -66,6 +66,7 @@ function SwipeableMessage({ message, userId }) {
         <button
           className={`ml-4 bg-red-500 text-white px-3 py-1 mt-[-10px] rounded transform ${showDelete ? 'translate-x-0 opacity-100 static' : 'translate-x-[200px] opacity-0  absolute'} `}
           onClick={handleDelete}
+          aria-label="메시지 삭제"
         >
           <svg
             className="w-5 h-5 text-white"

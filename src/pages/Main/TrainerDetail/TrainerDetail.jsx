@@ -66,7 +66,7 @@ function TrainerDetail() {
         <>
           {trainerDetailPath === 'trainers' && trainerList.length > 1 ? (
             <Swiper
-              className="max-w-[340px]"
+              className=""
               initialSlide={trainerList.findIndex(
                 (trainerData) => trainerData.id === selectedTrainerId
               )}

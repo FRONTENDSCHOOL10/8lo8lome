@@ -63,6 +63,7 @@ function Login() {
       <main className="container flex flex-col gap-s20 pb-s20 mt-[110px]">
         <h2 className="sr-only">로그인 입력</h2>
         <fieldset className="w-full mb-s40">
+          <legend className="sr-only">로그인 폼</legend>
           <form
             action=""
             className=" flex flex-col gap-4"

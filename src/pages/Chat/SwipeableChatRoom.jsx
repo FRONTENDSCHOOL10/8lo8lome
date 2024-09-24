@@ -48,6 +48,7 @@ function SwipeableChatRoom({ chatRoom, onDelete }) {
         id={`delete-btn-${id}`}
         className={`absolute z-10 right-0 bg-red-500 px-5 py-2 rounded transition-all duration-300 transform ${isButtonVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}
         onClick={handleDelete}
+        aria-label="대화창 삭제"
       >
         <svg
           className="w-5 h-5 text-white"

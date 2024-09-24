@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function MyProfile() {
-  // 상태 선언: 유저 정보 저장
-  const { userData, fetchUserData } = useMyPageStore();
+  const { userData, fetchUserData } = useMyPageStore((s) => ({
+    userData: s.userData,
+    fetchUserData: s.fetchUserData,
+  }));
   useEffect(() => {
     fetchUserData();
   }, [fetchUserData]);
