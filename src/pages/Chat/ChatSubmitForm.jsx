@@ -42,7 +42,7 @@ function ChatSubmitForm() {
             메시지
           </label>
         </div>
-        <button type="submit">
+        <button type="submit" aria-label="메시지 전송">
           <svg
             className={`w-5 h-5 text-mainColor`}
             xmlns="http://www.w3.org/2000/svg"

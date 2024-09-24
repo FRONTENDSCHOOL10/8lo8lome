@@ -40,13 +40,13 @@ function GymDetailFooter() {
       <Link
         to={`/price/${gymId}`}
         aria-label="결제하기 링크"
-        className="rounded p-s12 text-f14 font-normal text-black bg-mainColor w-full text-center"
+        className="rounded p-s12 text-f14 font-semibold text-black bg-mainColor w-full  text-center"
       >
         결제하기
       </Link>
       <button
         onClick={handleCreateRoom}
-        className="rounded p-s12 text-f14 font-normal text-white bg-subBg border border-solid border-grayBorder w-full"
+        className="rounded p-s12 text-f14 font-semibold text-white bg-subBg border border-solid border-mainColor w-full"
       >
         헬스장 문의
       </button>

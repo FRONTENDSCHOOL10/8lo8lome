@@ -51,6 +51,11 @@ function Price() {
     return <AppStatusPage status="payment" />;
   }
 
+  const buttonClassName =
+    totalSum === 0
+      ? 'border border-solid text-mainColor border-mainColor bg-mainBg cursor-not-allowed '
+      : 'bg-mainColor cursor-pointer border-transparent';
+
   return (
     <>
       <AppMeta title={`결제 페이지`} description={`결제 페이지입니다.`} />
@@ -63,7 +68,6 @@ function Price() {
         >
           <PriceList data={pricingItems} health />
         </AppAccordion>
-
         <AppAccordion
           title="PT 가격 정보"
           isOpen={openPtAccordion}
@@ -95,7 +99,7 @@ function Price() {
         )}
         <button
           type="button"
-          className={`flex items-center justify-center py-s14 text-f12 rounded w-[calc(100%-2.5rem)] font-bold  text-black fixed z-10 bottom-[20px] left-1/2 -translate-x-1/2 ${totalSum === 0 ? 'border border-solid text-mainColor border-mainColor bg-mainBg cursor-not-allowed ' : 'bg-mainColor cursor-pointer border-transparent'}`}
+          className={`flex items-center justify-center py-s14 text-f12 rounded w-[calc(100%-2.5rem)] font-bold text-black fixed z-10 bottom-[20px] left-1/2 -translate-x-1/2 ${buttonClassName}`}
           onClick={submitPaymentButton}
         >
           {totalSum.toLocaleString()}원 결제하기

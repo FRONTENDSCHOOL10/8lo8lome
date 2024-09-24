@@ -30,11 +30,14 @@ function EditImage() {
         className="mb-10 border-b border-solid border-strokeBlack w-340px py-s30 mt-[100px]"
         onSubmit={handleSubmit}
       >
+        <label htmlFor="fileInput" className="sr-only">
+          프로필 사진 업로드
+        </label>
         <input
           ref={fileInputRef}
           id="fileInput"
           type="file"
-          style={{ display: 'none' }}
+          className="opacity-0 absolute w-0 h-0"
           onChange={handleProfileImageChange}
         />
         <div className="flex flex-row items-center">
@@ -49,7 +52,6 @@ function EditImage() {
               alt="내 프로필 사진"
               width={76}
               height={76}
-              style={{ width: '76px', height: '76px' }}
             />
             <svg
               role="icon"

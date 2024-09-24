@@ -73,7 +73,7 @@ export default function Map() {
             >
               <img
                 src={getPbImageURL(selectedGym)[0]}
-                alt={`${selectedGym.name} 헬스장 이미지`}
+                alt=""
                 width={100}
                 height={100}
                 className="rounded"

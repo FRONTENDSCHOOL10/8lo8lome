@@ -80,7 +80,7 @@ function TrainerList() {
             const imgUrlArray = Array.isArray(imgUrl) ? imgUrl : [imgUrl];
             return (
               <SwiperSlide key={index}>
-                <div className="p-5 bg-opacityWhite rounded-md flex flex-col items-center min-h-[220px] justify-around">
+                <div className="p-5 bg-subBg rounded-md flex flex-col items-center min-h-[220px] justify-around">
                   <span className="w-64px h-64px">
                     <img
                       className="object-cover rounded-full bg-black border-2 border-solid border-white"

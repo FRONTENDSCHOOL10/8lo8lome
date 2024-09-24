@@ -8,13 +8,13 @@ AppTrainerProfile.propTypes = {
 
 function AppTrainerProfile({ trainerData }) {
   return (
-    <section className="mt-[100px]">
+    <section className="mt-[100px] flex flex-col justify-center items-center">
       <AppImageDisplay
         item={trainerData}
         className="ml-s31"
-        imgHeight="h-s170"
+        imgWidth="340"
+        imgHeight="340"
       />
-
       <div className="mx-s31 py-s16 border-b border-solid border-strokeBlack flex flex-col gap-s10">
         <h2 className="text-f18 font-bold text-center">{trainerData.name}</h2>
         <div className="flex items-center justify-between gap-1">
