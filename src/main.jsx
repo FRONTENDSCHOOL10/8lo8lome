@@ -11,10 +11,8 @@ if (!container) {
 }
 
 createRoot(container).render(
-  // <StrictMode>
-  <>
+  <StrictMode>
     <App />
     <Toaster />
-  </>
-  // </StrictMode>
+  </StrictMode>
 );
