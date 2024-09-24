@@ -35,7 +35,7 @@
 
 ## 프로젝트 개요
 
-<div align="center" style="width: 600px; display: flex; flex-direction:column; justify-content: space-around; align-items:center;">
+<div align="center" style="width: 600px; display: flex; flex-direction:column; justify-content: center; align-items:center;">
 
 !["다있짐 로고"](home.png)
 내 주변 헬스장 가격, 한눈에 비교!
