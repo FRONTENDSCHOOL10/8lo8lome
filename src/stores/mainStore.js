@@ -90,7 +90,8 @@ export const mainStore = create((set) => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
 
-    const { searchWord, filterGyms } = mainStore.getState().searchInput;
+    const { searchWord, filteredGymsByDistance } =
+      mainStore.getState().searchInput;
 
     // 검색어가 없으면 필터 적용된 헬스장 리스트 반환
     if (!searchWord.trim()) return;
@@ -103,11 +104,13 @@ export const mainStore = create((set) => {
     );
 
     // 헬스장 이름, 주소, 일일권 가격이 검색어와 일치하는 헬스장 필터링
-    const filteredGyms = filterGyms.filter((gym) => {
+    const filteredGyms = filteredGymsByDistance.filter((gym) => {
       const gymName = gym.name.toLowerCase();
       const gymAddress = gym.address.toLowerCase();
       const gymOnedayPrice = gym.oneDayPrice; // 숫자 그대로 비교
+      const gymRating = gym.rating; // 헬스장 별점
 
+      console.log(gymRating);
       // 이름, 주소 또는 일일권 가격과 검색어 비교
       return (
         gymName.includes(searchLower) ||

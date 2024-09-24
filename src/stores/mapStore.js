@@ -90,10 +90,8 @@ export const useMapStore = create((set) => {
     );
 
     const container = document.getElementById('gymListMap');
-    if (!container) {
-      console.error('지도 컨테이너가 존재하지 않습니다.');
-      return;
-    }
+    if (!container) return;
+
     const options = {
       center: new window.kakao.maps.LatLng(currentLatitude, currentLongitude),
       level: 5,
