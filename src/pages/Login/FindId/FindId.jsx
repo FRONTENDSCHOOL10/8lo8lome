@@ -33,7 +33,7 @@ function FindId() {
           로그인 하러가기
         </Link>
         <Link to={'/findPassword'} className="text-center block text-f14">
-          비밀번호 찾기
+          비밀번호 변경
         </Link>
       </section>
     </>
