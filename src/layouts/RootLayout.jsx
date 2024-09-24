@@ -3,19 +3,38 @@ import { Suspense } from 'react';
 import { AppSpinner } from '@/components';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getStorageData } from '@/utils';
+import { getStorageData, removeStorageData } from '@/utils';
 
 function RootLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedLoginStatus = getStorageData('autoLogin');
-    if (storedLoginStatus) {
+    const autoLogin = getStorageData('autoLogin');
+    const pocketbaseAuth = getStorageData('pocketbase_auth');
+
+    if (autoLogin && pocketbaseAuth) {
       navigate('/main');
     } else {
       navigate('/');
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      const autoLogin = getStorageData('autoLogin');
+
+      if (!autoLogin) {
+        removeStorageData('pocketbase_auth');
+        removeStorageData('autoLogin');
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-mainBg flex flex-col text-white font-pretendard">
