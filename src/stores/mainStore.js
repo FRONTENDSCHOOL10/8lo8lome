@@ -108,9 +108,7 @@ export const mainStore = create((set) => {
       const gymName = gym.name.toLowerCase();
       const gymAddress = gym.address.toLowerCase();
       const gymOnedayPrice = gym.oneDayPrice; // 숫자 그대로 비교
-      const gymRating = gym.rating; // 헬스장 별점
 
-      console.log(gymRating);
       // 이름, 주소 또는 일일권 가격과 검색어 비교
       return (
         gymName.includes(searchLower) ||
