@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/952bb653-4c0c-4140-a599-90d500c4d6c0)# 8lo8lome 파이널 프로젝트
+# 8lo8lome 파이널 프로젝트
 
 ### [배포사이트](https://daitgym.netlify.app/main)
 
@@ -56,53 +56,39 @@
 ### 유저 서비스
 
 **회원가입 및 로그인**
-
-회원가입
-![image](https://github.com/user-attachments/assets/b88dfeb1-e2b9-44e7-92a3-60131bcb01cb)
-
-로그인
-![image](https://github.com/user-attachments/assets/e50e91d8-9a65-4597-b899-b74fa3b55892)
+![회원가입 및 로그인 gif](https://github.com/user-attachments/assets/3c1ebed4-8a69-4724-a7b7-9a040106ad9b)
 
 **이메일찾기, 비밀번호 변경**
-
-이메일 찾기
-![image](https://github.com/user-attachments/assets/ca5a25fb-0373-497f-a530-e0e39f547975)
-
-비밀번호 변경
-![image](https://github.com/user-attachments/assets/8276d1e3-4873-4713-95a3-84bc618e41f4)
+![이메일찾기_비밀번호변경](https://github.com/user-attachments/assets/91934c51-a883-48a6-82a4-1466e7ef3826)
 
 **로그아웃, 회원탈퇴**
-
-로그아웃
-![image](https://github.com/user-attachments/assets/a700b7a0-5019-41f2-9703-0c7193be0a2f)
-
-회원탈퇴
-![image](https://github.com/user-attachments/assets/438e4b57-2450-46a4-9d41-bd8721b275fc)
+![로그아웃_회원탈퇴](https://github.com/user-attachments/assets/d9021eaa-05e9-4efa-a47b-052d17bbde57)
 
 **프로필 이미지변경, 이메일 변경, 닉네임 변경**
+![프로필변경](https://github.com/user-attachments/assets/3dcc5d42-a50f-4d5b-88b0-1a92cc91df7f)
 
 ### 위치 서비스 및 필터
 
 **현재 위치를 기반으로 가장 가까운 헬스장을 보여주며 설정 위치를 변경도 가능합니다.**
-![image](https://github.com/user-attachments/assets/3bbdaa46-5076-4e92-a8e1-7076a9a9e6a8)
+![위치서비스](https://github.com/user-attachments/assets/28e1e325-d764-4bc6-bc2d-e799f5b1b53b)
 
 **검색과 필터를 사용하여 원하는 항목을 볼 수 있습니다**
-![image](https://github.com/user-attachments/assets/07af47a6-3733-43f6-984b-a73af282b8c6)
+![필터](https://github.com/user-attachments/assets/76a9ad7f-ed43-4451-8269-a531192f1fcf)
 
 ### 헬스장 상세 페이지
 
 **가격, 운영 시간, 트레이너 정보, 리뷰, 환불 규정 등을 확인할 수 있습니다.**
-![image](https://github.com/user-attachments/assets/c8f56775-aa63-4f1d-9421-8623e71c8cf5)
+![결제](https://github.com/user-attachments/assets/e0cc4dc3-aecd-4e46-88cf-95c267a9b3d5)
 
 ### 결제 기능
 
 **헬스장 이용권과 PT 이용권의 가격을 비교하고 선택할 수 있으며, 회원복 및 락커 요금도 선택한 개월 수에 맞게 추가됩니다. 결제 내역도 확인할 수 있습니다.**
-![image](https://github.com/user-attachments/assets/b181719f-6f6d-4bd9-9448-afddb57ebcc7)
+![결제](https://github.com/user-attachments/assets/e0cc4dc3-aecd-4e46-88cf-95c267a9b3d5)
 
 ### 채팅 기능
 
 **헬스장과 실시간 상담 기능을 제공하며, 채팅방 목록을 최신순으로 정렬하여 보여줍니다. 채팅방 삭제 및 채팅 내역 삭제도 가능합니다.**
-![image](https://github.com/user-attachments/assets/6a3c4514-b795-4972-b25f-ad99837cc158)
+
 
 ### 리뷰 관리
 
@@ -111,7 +97,7 @@
 ### 찜 기능
 
 **관심 있는 헬스장을 찜 목록에 추가 및 관리할 수 있으며, 찜한 헬스장은 언제든지 찜 해제 가능합니다.**
-![image](https://github.com/user-attachments/assets/4b55fb70-6da3-4d42-a59e-80972c22596c)
+![찜](https://github.com/user-attachments/assets/5386b545-4594-4f43-8fbf-fd239cf9fe2b)
 
 ---
 
