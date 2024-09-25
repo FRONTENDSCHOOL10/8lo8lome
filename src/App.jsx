@@ -1,4 +1,3 @@
-
 import router from '@/router';
 import { RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -10,5 +9,9 @@ function App() {
     </HelmetProvider>
   );
 }
+
+globalThis.addEventListener('vite:preloadError', () => {
+  location.reload();
+});
 
 export default App;
