@@ -37,6 +37,10 @@ export default function Map() {
     mapScript.onerror = () => {
       console.error('카카오 맵 스크립트 로드 실패');
     };
+
+    return () => {
+      document.head.removeChild(mapScript);
+    };
   }, []);
 
   useEffect(() => {

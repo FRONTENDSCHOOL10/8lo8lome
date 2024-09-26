@@ -7,20 +7,33 @@ import { mainStore } from '@/stores/mainStore';
 import { useEffect, memo } from 'react';
 
 function Main() {
-  const { getGymsList, isGymsLoaded, fetchWishList, gymListLoading } =
-    mainStore((s) => ({
-      getGymsList: s.handleMethod.getGymsList,
-      isGymsLoaded: s.searchInput.isGymsLoaded,
-      fetchWishList: s.handleMethod.fetchWishList,
-      gymListLoading: s.searchInput.gymListLoading,
-    }));
+  const {
+    getGymsList,
+    isGymsLoaded,
+    fetchWishList,
+    gymListLoading,
+    getCurrentLocation,
+  } = mainStore((s) => ({
+    getGymsList: s.handleMethod.getGymsList,
+    isGymsLoaded: s.searchInput.isGymsLoaded,
+    fetchWishList: s.handleMethod.fetchWishList,
+    gymListLoading: s.searchInput.gymListLoading,
+    getCurrentLocation: s.handleMethod.getCurrentLocation,
+  }));
 
   useEffect(() => {
     if (!isGymsLoaded && !gymListLoading) {
       getGymsList();
       fetchWishList();
+      getCurrentLocation();
     }
-  }, [isGymsLoaded, getGymsList, fetchWishList, gymListLoading]);
+  }, [
+    isGymsLoaded,
+    getGymsList,
+    fetchWishList,
+    gymListLoading,
+    getCurrentLocation,
+  ]);
 
   return (
     <>
