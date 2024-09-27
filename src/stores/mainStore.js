@@ -476,8 +476,6 @@ export const mainStore = create((set) => {
     }
   };
 
-  getCurrentLocation();
-
   // 주소 검색 스크립트 로딩
   const loadPostcodeScript = () => {
     return new Promise((resolve, reject) => {
