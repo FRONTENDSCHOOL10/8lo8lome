@@ -24,6 +24,9 @@ function LocationMap() {
     mapScript.onerror = () => {
       console.error('카카오 맵 스크립트 로드 실패');
     };
+    return () => {
+      document.head.removeChild(mapScript);
+    };
   }, []);
 
   // GymData 주소로 좌표 가져오기
