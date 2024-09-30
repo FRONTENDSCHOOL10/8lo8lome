@@ -38,18 +38,14 @@ function ChatRoomList() {
     fetchData(); // 초기 데이터 요청
 
     // 채팅방 업데이트 구독 설정
-    const chatRoomSubscription = pb
-      .collection('chatRooms')
-      .subscribe('*', fetchData);
-    const messageSubscription = pb
-      .collection('messages')
-      .subscribe('*', fetchData);
+    pb.collection('chatRooms').subscribe('*', fetchData);
+    pb.collection('messages').subscribe('*', fetchData);
 
     // 컴포넌트 언마운트 시 구독 해제
     return () => {
       isFetching = false; // 요청 중단
-      chatRoomSubscription.unsubscribe(); // 채팅방 구독 해제
-      messageSubscription.unsubscribe(); // 메시지 구독 해제
+      pb.collection('chatRooms').unsubscribe('*'); // 채팅방 구독 해제
+      pb.collection('messages').unsubscribe('*'); // 메시지 구독 해제
     };
   }, [setGymOwner, getChatRoomList]);
 
