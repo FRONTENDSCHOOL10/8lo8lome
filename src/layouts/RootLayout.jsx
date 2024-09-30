@@ -1,8 +1,6 @@
-import { Outlet } from 'react-router-dom';
-import { Suspense } from 'react';
+import { Outlet, ScrollRestoration, useNavigate } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
 import { AppSpinner } from '@/components';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { getStorageData, removeStorageData } from '@/utils';
 
 function RootLayout() {
@@ -43,6 +41,7 @@ function RootLayout() {
           <Outlet />
         </Suspense>
       </div>
+      <ScrollRestoration />
     </div>
   );
 }

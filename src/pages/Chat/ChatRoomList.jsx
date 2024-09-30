@@ -17,38 +17,45 @@ function ChatRoomList() {
     }));
 
   useEffect(() => {
+    let isFetching = false; // 데이터를 요청 중인지 확인하는 플래그 변수
+
     const fetchData = async () => {
+      if (isFetching) return; // 이미 요청 중이면 종료
+      isFetching = true; // 요청 시작
       setIsLoading(true);
+
       try {
         await setGymOwner(); // 헬스장 owner일때 채팅방 리스트 가져오기
         await getChatRoomList(); // 채팅방 목록 가져오기
-        setIsLoading(false); // 데이터 요청 완료
       } catch (error) {
         console.error('채팅방 데이터 가져오기 실패:', error);
+      } finally {
+        isFetching = false; // 요청이 끝났음을 알림
+        setIsLoading(false); // 데이터 요청 완료
       }
     };
 
-    fetchData();
+    fetchData(); // 초기 데이터 요청
 
     // 채팅방 업데이트 구독 설정
-    pb.collection('chatRooms').subscribe('*', async () => {
-      await fetchData();
-    });
-
-    pb.collection('messages').subscribe('*', async () => {
-      await fetchData(); // 메시지가 들어오면 채팅방 목록을 다시 가져옴
-    });
+    const chatRoomSubscription = pb
+      .collection('chatRooms')
+      .subscribe('*', fetchData);
+    const messageSubscription = pb
+      .collection('messages')
+      .subscribe('*', fetchData);
 
     // 컴포넌트 언마운트 시 구독 해제
     return () => {
-      pb.collection('chatRooms').unsubscribe('*');
-      pb.collection('messages').unsubscribe('*');
+      isFetching = false; // 요청 중단
+      chatRoomSubscription.unsubscribe(); // 채팅방 구독 해제
+      messageSubscription.unsubscribe(); // 메시지 구독 해제
     };
   }, [setGymOwner, getChatRoomList]);
 
   const handleDeleteChatRoom = async (id) => {
-    await deleteChatRoom(id); // 상태에서 채팅방 제거
-    await getChatRoomList(); // 최신 채팅방 목록 가져오기
+    await deleteChatRoom(id);
+    await getChatRoomList();
   };
 
   const chatRoomsList = chatRooms.length ? (

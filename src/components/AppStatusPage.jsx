@@ -130,8 +130,9 @@ function AppStatusPage({ status }) {
   }
 
   useEffect(() => {
+    const currentRefs = refs.current;
     if (status !== 'notLogin' || status !== '404') {
-      refs.current.forEach((el, index) => {
+      currentRefs.forEach((el, index) => {
         animate(
           el,
           {
@@ -142,6 +143,18 @@ function AppStatusPage({ status }) {
         );
       });
     }
+    return () => {
+      currentRefs.forEach((el) => {
+        animate(
+          el,
+          {
+            opacity: [1, 0],
+            transform: ['translateY(0)', 'translateY(50px)'],
+          },
+          { duration: 1 }
+        );
+      });
+    };
   }, [status]);
 
   return (

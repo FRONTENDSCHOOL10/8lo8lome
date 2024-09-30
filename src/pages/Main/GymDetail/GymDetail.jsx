@@ -19,20 +19,31 @@ function GymDetail() {
   }));
 
   useEffect(() => {
+    let ignore = true; // 마운트 상태 플래그
+
     const loadGymDetails = async () => {
       if (gymId) {
         try {
           await fetchGymDetails(gymId);
         } catch (error) {
           console.error('Error fetching gym details:', error);
-          setIsLoading(false);
+          if (ignore) {
+            setIsLoading(false); // 마운트된 경우에만 상태 업데이트
+          }
         } finally {
-          setIsLoading(false);
+          if (ignore) {
+            setIsLoading(false); // 마운트된 경우에만 상태 업데이트
+          }
         }
       }
     };
 
     loadGymDetails();
+
+    // 클린업 함수
+    return () => {
+      ignore = false; // 언마운트 시 플래그를 false로 설정
+    };
   }, [gymId, fetchGymDetails]);
 
   return (

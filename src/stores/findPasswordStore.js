@@ -109,12 +109,6 @@ export const useFindPasswordStore = create((set) => {
   const handlePasswordChangeButtonClick = async () => {
     const { id, newPassword, oldPassword, newPasswordConfirm } =
       useFindPasswordStore.getState().userData;
-    const isLogin = useFindPasswordStore.getState().isLogin;
-
-    if (!isLogin) {
-      console.error('사용자가 로그인되어 있지 않습니다.');
-      return;
-    }
 
     // 비밀번호 변경 요청
     try {
@@ -126,6 +120,7 @@ export const useFindPasswordStore = create((set) => {
 
       // 인증 토큰을 새로고침하고 저장된 데이터를 삭제
       pb.authStore.clear();
+      removeStorageData('pocketbase_auth');
       removeStorageData('autoLogin');
 
       set(
