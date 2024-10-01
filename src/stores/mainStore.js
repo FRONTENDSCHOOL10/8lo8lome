@@ -144,7 +144,6 @@ export const mainStore = create((set) => {
         draft.searchFilter[filtername][name] = !isSelected;
       })
     );
-
     updateCheckedFilters();
   };
 
@@ -189,7 +188,6 @@ export const mainStore = create((set) => {
 
     return filter;
   };
-
   // 편의시설 필터 처리 함수
   const applyAmenitiesFilter = (gym, filterNames) => {
     // 편의시설 데이터를 가져옵니다
@@ -338,7 +336,6 @@ export const mainStore = create((set) => {
         latitude,
         longitude
       );
-
       // 데이터 로드 완료
       set(
         produce((draft) => {
@@ -573,27 +570,32 @@ export const mainStore = create((set) => {
 
   const setWishList = async (target) => {
     const { name, checked } = target;
-    const { gymsList, wishList } = mainStore.getState().searchInput;
+    const { filterGyms, wishList } = mainStore.getState().searchInput;
+    const gym = filterGyms.find((gym) => gym.name === name);
+
+    if (!gym) {
+      console.log('헬스장을 찾을 수 없습니다.');
+      return;
+    }
+
+    const {
+      address,
+      photo,
+      id,
+      collectionId,
+      collectionName,
+      oneDayPrice,
+      rating,
+      wishListCount,
+    } = gym;
+
     set(
       produce((draft) => {
         draft.searchInput.wishListChecked[name] = checked;
 
         if (checked) {
-          // 체크된 경우, gymsList에서 해당 헬스장 찾기
-          const gym = gymsList.find((gym) => gym.name === name);
-
-          if (gym && !wishList.some((item) => item.name === name)) {
-            // 필요한 필드만 추출해서 wishList에 추가
-            const {
-              address,
-              photo,
-              id,
-              collectionId,
-              collectionName,
-              oneDayPrice,
-              rating,
-            } = gym;
-
+          // 체크된 경우 wishList에 추가
+          if (!wishList.some((item) => item.name === name)) {
             const gymData = {
               address,
               photo,
@@ -602,14 +604,14 @@ export const mainStore = create((set) => {
               collectionName,
               oneDayPrice,
               rating,
-              name, // name도 추가 (헬스장 이름)
+              name,
             };
             draft.searchInput.wishList.push(gymData);
           } else {
-            console.log('헬스장을 찾을 수 없거나 이미 wishList에 있음.');
+            console.log('이미 wishList에 있음.');
           }
         } else {
-          // 체크 해제된 경우, wishList에서 해당 헬스장 제거
+          // 체크 해제된 경우 wishList에서 제거
           draft.searchInput.wishList = wishList.filter(
             (item) => item.name !== name
           );
@@ -619,10 +621,35 @@ export const mainStore = create((set) => {
 
     try {
       const updatedWishList = mainStore.getState().searchInput.wishList;
+      const wishListChecked =
+        mainStore.getState().searchInput.wishListChecked[name];
       const userId = mainStore.getState().userId;
+
+      // PocketBase에 wishList 업데이트
       await updateData('users', userId, { wishList: updatedWishList });
+
+      // 체크 상태에 따라 wishListCount 업데이트
+      const updatedWishListCount = wishListChecked
+        ? wishListCount + 1
+        : wishListCount - 1;
+
+      // 해당 헬스장 데이터의 wishListCount 업데이트
+      set(
+        produce((draft) => {
+          const gymIndex = draft.searchInput.filterGyms.findIndex(
+            (gym) => gym.name === name
+          );
+          if (gymIndex !== -1) {
+            draft.searchInput.filterGyms[gymIndex].wishListCount =
+              updatedWishListCount;
+          }
+        })
+      );
+
+      // PocketBase에 해당 헬스장의 wishListCount 업데이트
+      await updateData('gyms', id, { wishListCount: updatedWishListCount });
     } catch (error) {
-      console.error('PocketBase에 wishList 업데이트 실패:', error);
+      console.error('PocketBase에 데이터 업데이트 실패:', error);
     }
   };
 
