@@ -2,6 +2,7 @@ import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import FilterLink from './FilterLink';
 import { useFilterStore } from '@/stores/filterStore';
+import { fetchGymsList } from '@/tanstackQuery/fetchGymsList';
 
 function FilterList() {
   const {
@@ -9,14 +10,14 @@ function FilterList() {
     locationLoading,
     getCurrentLocation,
     searchLocation,
-    getGymsList,
+    setFilteredGyms,
   } = mainStore((s) => ({
     getCurrentLocation: s.handleMethod.getCurrentLocation,
     selectedLocation: s.selectedLocation,
     locationLoading: s.locationLoading,
     searchLocation: s.handleMethod.searchLocation,
-    getGymsList: s.handleMethod.getGymsList,
     locationAddress: s.locationAddress,
+    setFilteredGyms: s.handleMethod.setFilteredGyms,
   }));
 
   const { handleSelectedFilters, updatedFilters } = useFilterStore((s) => ({
@@ -25,13 +26,17 @@ function FilterList() {
   }));
 
   useEffect(() => {
-    getCurrentLocation();
     handleSelectedFilters();
-  }, [getCurrentLocation, handleSelectedFilters]);
+  }, [handleSelectedFilters]);
 
   const handleCurrentLocation = () => {
     getCurrentLocation();
-    getGymsList();
+  };
+
+  const handleSearchLocation = async () => {
+    const { latitude, longitude } = await searchLocation();
+    const { filteredGyms } = await fetchGymsList({ latitude, longitude });
+    setFilteredGyms(filteredGyms);
   };
 
   return (
@@ -41,7 +46,7 @@ function FilterList() {
         <FilterLink />
       </div>
       <div className="flex gap-2 items-center mb-2">
-        <button type="button" onClick={searchLocation} title="위치 변경">
+        <button type="button" onClick={handleSearchLocation} title="위치 변경">
           <svg
             role="icon"
             aria-label="위치 변경 아이콘"
