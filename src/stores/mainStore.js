@@ -4,9 +4,9 @@ import { getAllData, getData, updateData } from '@/api/CRUD';
 import {
   geocodeAddress,
   getUserLocation,
-  getDistanceFromLatLonInKm,
   loadPostcodeScript,
   extractDistrict,
+  filterGymsByDistance,
 } from '@/utils';
 import axios from 'axios';
 import pb from '@/api/pb';
@@ -18,7 +18,6 @@ export const mainStore = create((set) => {
       gymsList: [],
       filterGyms: [],
       isGymsLoaded: false,
-      selectedFilters: [],
       gymData: {},
       trainerList: {},
       trainerData: {},
@@ -108,29 +107,6 @@ export const mainStore = create((set) => {
         draft.searchInput.gymData = gymData;
       })
     );
-  };
-
-  // 헬스장 리스트 필터링 및 정렬 함수
-  const filterGymsByDistance = async (gyms, userLat, userLon) => {
-    const gymsWithDistance = await Promise.all(
-      gyms.map(async (gym) => {
-        const { latitude, longitude } = await geocodeAddress(gym.address);
-        const distance = getDistanceFromLatLonInKm(
-          userLat,
-          userLon,
-          latitude,
-          longitude
-        );
-        return {
-          ...gym,
-          distance,
-        };
-      })
-    );
-
-    // 거리 기준으로 오름차순 정렬 (가장 가까운 헬스장부터)
-    const sortedGyms = gymsWithDistance.sort((a, b) => a.distance - b.distance);
-    return sortedGyms;
   };
 
   const getCurrentLocation = async () => {
