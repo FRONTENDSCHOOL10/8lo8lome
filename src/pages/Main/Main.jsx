@@ -5,35 +5,25 @@ import GymList from './GymList';
 import { AppNav, AppMeta } from '@/components';
 import { mainStore } from '@/stores/mainStore';
 import { useEffect, memo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchWishList } from '@/tanstackQuery/fetchWishList';
 
 function Main() {
-  const {
-    getGymsList,
-    isGymsLoaded,
-    fetchWishList,
-    gymListLoading,
-    getCurrentLocation,
-  } = mainStore((s) => ({
-    getGymsList: s.handleMethod.getGymsList,
-    isGymsLoaded: s.searchInput.isGymsLoaded,
-    fetchWishList: s.handleMethod.fetchWishList,
-    gymListLoading: s.searchInput.gymListLoading,
+  const { getCurrentLocation, isWishListLoaded } = mainStore((s) => ({
     getCurrentLocation: s.handleMethod.getCurrentLocation,
+    isWishListLoaded: s.searchInput.isWishListLoaded,
   }));
+  useQuery({
+    queryKey: ['wishList'],
+    queryFn: fetchWishList,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    enabled: !isWishListLoaded,
+  });
 
   useEffect(() => {
-    if (!isGymsLoaded && !gymListLoading) {
-      getGymsList();
-      fetchWishList();
-      getCurrentLocation();
-    }
-  }, [
-    isGymsLoaded,
-    getGymsList,
-    fetchWishList,
-    gymListLoading,
-    getCurrentLocation,
-  ]);
+    getCurrentLocation();
+  }, [getCurrentLocation]);
 
   return (
     <>
