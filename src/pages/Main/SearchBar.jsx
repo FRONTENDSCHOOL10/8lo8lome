@@ -1,15 +1,15 @@
 import { AppTextInput } from '@/components';
 import { memo } from 'react';
-import { mainStore } from '@/stores/mainStore';
 import { bool } from 'prop-types';
 import { useMapStore } from '@/stores/mapStore';
+import { useFilterStore } from '@/stores/filterStore';
 
 SearchBar.propTypes = {
   map: bool,
 };
 
 function SearchBar({ map }) {
-  const { handleSearchSubmit, handleSearchInput } = mainStore((s) => ({
+  const { handleSearchSubmit, handleSearchInput } = useFilterStore((s) => ({
     handleSearchSubmit: s.handleMethod.handleSearchSubmit,
     handleSearchInput: s.handleMethod.handleSearchInput,
   }));

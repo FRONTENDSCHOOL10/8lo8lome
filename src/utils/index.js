@@ -10,3 +10,8 @@ export * from './downloadImage.js';
 export * from './geocodeAddress.js';
 export * from './formatDate.js';
 export * from './getUserLocation.js';
+export * from './deg2rad.js';
+export * from './getDistanceFromLatLonInKm.js';
+export * from './loadPostcodeScript.js';
+export * from './extractDistrict.js';
+export * from './filterGymsByDistance.js';

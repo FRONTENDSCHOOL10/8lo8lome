@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { mainStore } from '@/stores/mainStore';
 import { AppCheckboxInput } from '@/components';
+import { useFilterStore } from '@/stores/filterStore';
 
 function Rating() {
-  const { handleCheckboxChange, rating } = mainStore((s) => ({
+  const { handleCheckboxChange, rating } = useFilterStore((s) => ({
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
     rating: s.searchFilter.rating,
   }));

@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { mainStore } from '@/stores/mainStore';
 import { AppCheckboxInput } from '@/components';
+import { useFilterStore } from '@/stores/filterStore';
 
 function HealthPrice() {
-  const { handleCheckboxChange, healthPrice } = mainStore((s) => ({
+  const { handleCheckboxChange, healthPrice } = useFilterStore((s) => ({
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
     healthPrice: s.searchFilter.healthPrice,
   }));
