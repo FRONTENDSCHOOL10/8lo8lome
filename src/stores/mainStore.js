@@ -6,7 +6,6 @@ import {
   getUserLocation,
   loadPostcodeScript,
   extractDistrict,
-  filterGymsByDistance,
 } from '@/utils';
 import axios from 'axios';
 import pb from '@/api/pb';
@@ -17,7 +16,7 @@ export const mainStore = create((set) => {
     searchInput: {
       gymsList: [],
       filterGyms: [],
-      isGymsLoaded: false,
+      isWishListLoaded: false,
       gymData: {},
       trainerList: {},
       trainerData: {},
@@ -45,58 +44,10 @@ export const mainStore = create((set) => {
     );
   };
 
-  // getGymsList 함수에서 위치를 매개변수로 받도록 수정
-  const getGymsList = async (latitude, longitude) => {
-    try {
-      // 로딩 중 상태를 설정하여 무한 루프 방지
-      set(
-        produce((draft) => {
-          draft.searchInput.gymListLoading = true; // 로딩 중 상태 추가
-        })
-      );
-
-      // 서버에서 헬스장 데이터 가져오기
-      const gyms = await getAllData('gyms', '-created');
-      // 위치가 없으면 현재 위치로 설정
-      if (!latitude || !longitude) {
-        const userLocation = await getUserLocation();
-        latitude = userLocation.latitude;
-        longitude = userLocation.longitude;
-
-        set(
-          produce((draft) => {
-            draft.locationAddress.latitude = latitude;
-            draft.locationAddress.longitude = longitude;
-          })
-        );
-      }
-
-      // 헬스장 목록 필터링
-      const filteredGyms = await filterGymsByDistance(
-        gyms,
-        latitude,
-        longitude
-      );
-      // 데이터 로드 완료
-      set(
-        produce((draft) => {
-          draft.searchInput.gymsList = gyms;
-          draft.searchInput.filteredGymsByDistance = filteredGyms;
-          draft.searchInput.filterGyms = filteredGyms;
-          draft.searchInput.isGymsLoaded = true; // 로드 완료
-          draft.searchInput.gymListLoading = false; // 로딩 상태 해제
-        })
-      );
-    } catch (error) {
-      console.error('헬스장 목록 업데이트 중 오류가 발생했습니다.', error);
-    }
-  };
-
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
   const fetchGymDetails = (gymId) => {
     // 현재 상태에서 gymsList 가져오기
     const { gymsList } = mainStore.getState().searchInput;
-
     // gymsList에서 gymId와 일치하는 헬스장 찾기
     const gymData = gymsList.find((gym) => gym.id === gymId);
 
@@ -109,6 +60,7 @@ export const mainStore = create((set) => {
     );
   };
 
+  // 헬스장 리스트 필터링 및 정렬 함수
   const getCurrentLocation = async () => {
     try {
       const { initializeMap } = useMapStore.getState();
@@ -158,73 +110,74 @@ export const mainStore = create((set) => {
   // 카카오 주소 검색 스크립트 URL
   const searchLocation = async () => {
     try {
-      // 주소 검색 스크립트 로드
-      await loadPostcodeScript();
+      await loadPostcodeScript(); // 주소 검색 스크립트 로드
+      return new Promise((resolve, reject) => {
+        // Promise 사용
+        window.daum.postcode.load(async () => {
+          try {
+            const { initializeMap } = useMapStore.getState();
+            new window.daum.Postcode({
+              oncomplete: async (data) => {
+                const address = data.address;
+                const district = extractDistrict(address);
 
-      // 카카오 주소 검색 API 초기화 및 오픈
-      window.daum.postcode.load(async () => {
-        try {
-          const { initializeMap } = useMapStore.getState();
-          new window.daum.Postcode({
-            oncomplete: async (data) => {
-              // 주소 선택 시 처리
-              const address = data.address;
-              const district = extractDistrict(address);
+                // 주소 업데이트
+                set(
+                  produce((draft) => {
+                    draft.selectedLocation = district;
+                    draft.locationLoading = false;
+                  })
+                );
 
-              // 상태 업데이트: 주소 및 로딩 상태
-              set(
-                produce((draft) => {
-                  draft.selectedLocation = district;
-                  draft.locationLoading = false;
-                })
-              );
+                // 주소로부터 좌표 가져오기
+                const selectedLocation = await geocodeAddress(address);
+                const { latitude, longitude } = selectedLocation;
 
-              // 주소로부터 좌표를 가져오기 위한 함수 호출
-              const selectedLocation = await geocodeAddress(address);
-              const { latitude, longitude } = selectedLocation;
+                // 좌표 저장
+                set(
+                  produce((draft) => {
+                    draft.locationAddress['latitude'] = latitude;
+                    draft.locationAddress['longitude'] = longitude;
+                  })
+                );
 
-              set(
-                produce((draft) => {
-                  draft.locationAddress['latitude'] = latitude;
-                  draft.locationAddress['longitude'] = longitude;
-                })
-              );
-
-              // 헬스장 목록 가져오기
-              await getGymsList(latitude, longitude);
-              initializeMap(selectedLocation, '설정위치');
-            },
-            onerror: (error) => {
-              console.error('주소 검색 중 오류가 발생했습니다.', error);
-              set(
-                produce((draft) => {
-                  draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-                  draft.locationLoading = false;
-                })
-              );
-            },
-          }).open();
-        } catch (error) {
-          console.error('주소 변환 중 오류가 발생했습니다.', error);
-          set(
-            produce((draft) => {
-              draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
-              draft.locationLoading = false;
-            })
-          );
-        }
+                // 지도를 초기화
+                initializeMap(selectedLocation, '설정위치');
+                // Promise를 통해 위도와 경도를 반환
+                resolve({ latitude, longitude });
+              },
+              onerror: (error) => {
+                console.error('주소 검색 중 오류 발생', error);
+                set(
+                  produce((draft) => {
+                    draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
+                    draft.locationLoading = false;
+                  })
+                );
+                reject(new Error('주소 검색 실패'));
+              },
+            }).open();
+          } catch (error) {
+            console.error('주소 변환 중 오류 발생', error);
+            set(
+              produce((draft) => {
+                draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
+                draft.locationLoading = false;
+              })
+            );
+            reject(error); // 오류 발생 시 Promise 거부
+          }
+        });
       });
     } catch (error) {
-      console.error(
-        '주소 검색을 위한 스크립트 로딩 중 오류가 발생했습니다.',
-        error
-      );
+      console.error('주소 검색 스크립트 로딩 중 오류 발생', error);
       set(
         produce((draft) => {
           draft.selectedLocation = '주소를 가져오는 데 실패했습니다.';
           draft.locationLoading = false;
         })
       );
+      throw error; // 외부에서 오류를 알리기 위해 throw
     }
   };
 
@@ -265,6 +218,7 @@ export const mainStore = create((set) => {
               oneDayPrice,
               rating,
               name,
+              wishListCount: wishListCount + 1,
             };
             draft.searchInput.wishList.push(gymData);
           } else {
@@ -313,32 +267,32 @@ export const mainStore = create((set) => {
     }
   };
 
-  const fetchWishList = async () => {
-    const { wishList } = mainStore.getState().searchInput;
+  // const fetchWishList = async () => {
+  //   const { wishList } = mainStore.getState().searchInput;
 
-    // 이미 wishList가 있다면 추가 요청을 하지 않음
-    if (wishList.length > 0) {
-      console.log('이미 불러온 wishList 사용');
-      return;
-    }
+  //   // 이미 wishList가 있다면 추가 요청을 하지 않음
+  //   if (wishList.length > 0) {
+  //     console.log('이미 불러온 wishList 사용');
+  //     return wishList; // wishList 반환
+  //   }
 
-    try {
-      const userId = mainStore.getState().userId;
-      const userData = await getData('users', userId);
-      const wishList = userData.wishList || [];
+  //   try {
+  //     const userId = mainStore.getState().userId;
+  //     const userData = await getData('users', userId);
+  //     const wishList = userData.wishList || [];
 
-      set(
-        produce((draft) => {
-          draft.searchInput.wishList = wishList;
-          wishList.forEach((gym) => {
-            draft.searchInput.wishListChecked[gym.name] = true;
-          });
-        })
-      );
-    } catch (error) {
-      console.error('유저 wishList 가져오기 실패:', error);
-    }
-  };
+  //     set(
+  //       produce((draft) => {
+  //         draft.searchInput.wishList = wishList;
+  //         wishList.forEach((gym) => {
+  //           draft.searchInput.wishListChecked[gym.name] = true;
+  //         });
+  //       })
+  //     );
+  //   } catch (error) {
+  //     console.error('유저 wishList 가져오기 실패:', error);
+  //   }
+  // };
 
   // 헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
   const getGymLocation = async (address) => {
@@ -443,11 +397,9 @@ export const mainStore = create((set) => {
     ...INITIAL_STATE,
     handleMethod: {
       fetchGymDetails,
-      getGymsList,
       getCurrentLocation,
       searchLocation,
       setWishList,
-      fetchWishList,
       getGymLocation,
       getTrainersFromGymData,
       fetchTrainerDetails,
