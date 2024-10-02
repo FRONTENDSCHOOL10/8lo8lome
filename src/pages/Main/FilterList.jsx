@@ -1,25 +1,27 @@
 import { memo, useEffect } from 'react';
 import { mainStore } from '@/stores/mainStore';
 import FilterLink from './FilterLink';
+import { useFilterStore } from '@/stores/filterStore';
 
 function FilterList() {
   const {
-    updatedFilters,
     selectedLocation,
     locationLoading,
     getCurrentLocation,
     searchLocation,
-    handleSelectedFilters,
     getGymsList,
   } = mainStore((s) => ({
-    updatedFilters: s.searchInput.updatedFilters,
     getCurrentLocation: s.handleMethod.getCurrentLocation,
     selectedLocation: s.selectedLocation,
     locationLoading: s.locationLoading,
     searchLocation: s.handleMethod.searchLocation,
-    handleSelectedFilters: s.handleMethod.handleSelectedFilters,
     getGymsList: s.handleMethod.getGymsList,
     locationAddress: s.locationAddress,
+  }));
+
+  const { handleSelectedFilters, updatedFilters } = useFilterStore((s) => ({
+    handleSelectedFilters: s.handleMethod.handleSelectedFilters,
+    updatedFilters: s.updatedFilters,
   }));
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { mainStore } from '@/stores/mainStore';
 import { AppCheckboxInput } from '@/components';
+import { useFilterStore } from '@/stores/filterStore';
 
 function PtPrice() {
-  const { handleCheckboxChange, ptPrice } = mainStore((s) => ({
+  const { handleCheckboxChange, ptPrice } = useFilterStore((s) => ({
     handleCheckboxChange: s.handleMethod.handleCheckboxChange,
     ptPrice: s.searchFilter.ptPrice,
   }));
