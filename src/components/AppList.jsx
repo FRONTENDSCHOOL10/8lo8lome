@@ -55,16 +55,19 @@ function AppList({ items }) {
               </div>
             </Link>
             <div className="flex flex-col justify-between text-[0.625rem] gap-1 items-end">
-              <AppCheckboxInput
-                label={`${item.name} 찜하기 체크박스`}
-                isHiddenLabel
-                name={item.name}
-                isChecked={wishListChecked[item.name]}
-                onChange={setWishList}
-                unCheckedSvgId="heart-unclick"
-                checkedSvgId="heart-click"
-                checkedColor="text-red-500"
-              />
+              <div className="flex items-center gap-1">
+                <AppCheckboxInput
+                  label={`${item.name} 찜하기 체크박스`}
+                  isHiddenLabel
+                  name={item.name}
+                  isChecked={wishListChecked[item.name]}
+                  onChange={setWishList}
+                  unCheckedSvgId="heart-unclick"
+                  checkedSvgId="heart-click"
+                  checkedColor="text-red-500"
+                />
+                <span className="text-f12">{item.wishListCount}</span>
+              </div>
               <AppRating gymData={item} className="text-f12" />
             </div>
           </li>

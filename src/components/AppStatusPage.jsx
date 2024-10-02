@@ -143,18 +143,6 @@ function AppStatusPage({ status }) {
         );
       });
     }
-    return () => {
-      currentRefs.forEach((el) => {
-        animate(
-          el,
-          {
-            opacity: [1, 0],
-            transform: ['translateY(0)', 'translateY(50px)'],
-          },
-          { duration: 1 }
-        );
-      });
-    };
   }, [status]);
 
   return (
