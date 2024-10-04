@@ -10,14 +10,14 @@ function FilterList() {
     locationLoading,
     getCurrentLocation,
     searchLocation,
-    setFilteredGyms,
+    setNearbyGyms,
   } = mainStore((s) => ({
     getCurrentLocation: s.handleMethod.getCurrentLocation,
     selectedLocation: s.selectedLocation,
     locationLoading: s.locationLoading,
     searchLocation: s.handleMethod.searchLocation,
     locationAddress: s.locationAddress,
-    setFilteredGyms: s.handleMethod.setFilteredGyms,
+    setNearbyGyms: s.handleMethod.setNearbyGyms,
   }));
 
   const { handleSelectedFilters, updatedFilters } = useFilterStore((s) => ({
@@ -36,7 +36,7 @@ function FilterList() {
   const handleSearchLocation = async () => {
     const { latitude, longitude } = await searchLocation();
     const { nearbyGyms } = await fetchGymsList({ latitude, longitude });
-    setFilteredGyms(nearbyGyms);
+    setNearbyGyms(nearbyGyms);
   };
 
   return (

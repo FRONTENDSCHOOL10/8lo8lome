@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { mainStore } from './mainStore';
 
 export const useFilterStore = create((set) => {
-  const { setFilteredGyms } = mainStore.getState().handleMethod;
+  const { setNearbyGyms } = mainStore.getState().handleMethod;
   const INITIAL_STATE = {
     searchWord: '',
     updatedFilters: [],
@@ -53,7 +53,7 @@ export const useFilterStore = create((set) => {
     if (!value.trim()) {
       const { filteredGymsByDistance } = mainStore.getState().searchInput;
 
-      setFilteredGyms(filteredGymsByDistance);
+      setNearbyGyms(filteredGymsByDistance);
     }
   };
 
@@ -82,7 +82,7 @@ export const useFilterStore = create((set) => {
       );
     });
     // 필터링된 헬스장 리스트 업데이트
-    setFilteredGyms(filteredGyms);
+    setNearbyGyms(filteredGyms);
   };
 
   const handleCheckboxChange = (target) => {
@@ -208,7 +208,7 @@ export const useFilterStore = create((set) => {
         draft.checkedFilters = checkedFilters;
       })
     );
-    setFilteredGyms(filteredGyms);
+    setNearbyGyms(filteredGyms);
   };
 
   const handleSelectedFilters = () => {
