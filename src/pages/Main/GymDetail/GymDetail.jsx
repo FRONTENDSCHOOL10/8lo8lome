@@ -12,37 +12,34 @@ import GymDetailFooter from './GymDetailFooter';
 
 function GymDetail() {
   const { gymId } = useParams();
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [isLoading, setIsLoading] = useState(true);
   const { fetchGymDetails, gymData } = mainStore((s) => ({
     fetchGymDetails: s.handleMethod.fetchGymDetails,
     gymData: s.searchInput.gymData,
   }));
 
   useEffect(() => {
-    let ignore = true; // 마운트 상태 플래그
-
+    let ignore = false;
     const loadGymDetails = async () => {
       if (gymId) {
+        setIsLoading(true);
         try {
           await fetchGymDetails(gymId);
-        } catch (error) {
-          console.error('Error fetching gym details:', error);
-          if (ignore) {
-            setIsLoading(false); // 마운트된 경우에만 상태 업데이트
+          if (!ignore) {
+            setIsLoading(false);
           }
-        } finally {
-          if (ignore) {
-            setIsLoading(false); // 마운트된 경우에만 상태 업데이트
+        } catch (error) {
+          if (!ignore) {
+            setIsLoading(false);
+            console.error('Error fetching gym details:', error);
           }
         }
       }
     };
-
     loadGymDetails();
 
-    // 클린업 함수
     return () => {
-      ignore = false; // 언마운트 시 플래그를 false로 설정
+      ignore = true;
     };
   }, [gymId, fetchGymDetails]);
 
