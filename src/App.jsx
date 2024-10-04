@@ -9,9 +9,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // 쿼리의 기본 옵션 설정 (예: 자동 리페치, 캐시 유지 시간 등)
-      staleTime: 1000 * 60 * 5, // 5분 동안 데이터가 신선하다고 간주
-      cacheTime: 1000 * 60 * 10, // 10분 동안 캐시 유지
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 10,
     },
     mutations: {
       onError: (error) => {
