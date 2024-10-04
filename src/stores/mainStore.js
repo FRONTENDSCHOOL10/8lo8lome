@@ -15,7 +15,7 @@ export const mainStore = create((set) => {
   const INITIAL_STATE = {
     searchInput: {
       gymsList: [],
-      filterGyms: [],
+      nearbyGyms: [],
       isWishListLoaded: false,
       gymData: {},
       trainerList: {},
@@ -39,7 +39,7 @@ export const mainStore = create((set) => {
   const setFilteredGyms = (gyms) => {
     set(
       produce((draft) => {
-        draft.searchInput.filterGyms = gyms;
+        draft.searchInput.nearbyGyms = gyms;
       })
     );
   };
@@ -47,9 +47,9 @@ export const mainStore = create((set) => {
   // GymDetail에서 아이디가 일치하는 데이터 값을 가져오는 함수
   const fetchGymDetails = (gymId) => {
     // 현재 상태에서 gymsList 가져오기
-    const { gymsList } = mainStore.getState().searchInput;
+    const { nearbyGyms } = mainStore.getState().searchInput;
     // gymsList에서 gymId와 일치하는 헬스장 찾기
-    const gymData = gymsList.find((gym) => gym.id === gymId);
+    const gymData = nearbyGyms.find((gym) => gym.id === gymId);
 
     if (!gymData) return;
 
@@ -266,33 +266,6 @@ export const mainStore = create((set) => {
       console.error('PocketBase에 데이터 업데이트 실패:', error);
     }
   };
-
-  // const fetchWishList = async () => {
-  //   const { wishList } = mainStore.getState().searchInput;
-
-  //   // 이미 wishList가 있다면 추가 요청을 하지 않음
-  //   if (wishList.length > 0) {
-  //     console.log('이미 불러온 wishList 사용');
-  //     return wishList; // wishList 반환
-  //   }
-
-  //   try {
-  //     const userId = mainStore.getState().userId;
-  //     const userData = await getData('users', userId);
-  //     const wishList = userData.wishList || [];
-
-  //     set(
-  //       produce((draft) => {
-  //         draft.searchInput.wishList = wishList;
-  //         wishList.forEach((gym) => {
-  //           draft.searchInput.wishListChecked[gym.name] = true;
-  //         });
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.error('유저 wishList 가져오기 실패:', error);
-  //   }
-  // };
 
   // 헬스장 디테일 페이지에서 gymData의 주소를 받으면 Kakao Geocoding API를 이용해 좌표로 변환해 주는 함수
   const getGymLocation = async (address) => {

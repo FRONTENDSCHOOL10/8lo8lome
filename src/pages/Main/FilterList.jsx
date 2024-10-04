@@ -35,8 +35,8 @@ function FilterList() {
 
   const handleSearchLocation = async () => {
     const { latitude, longitude } = await searchLocation();
-    const { filteredGyms } = await fetchGymsList({ latitude, longitude });
-    setFilteredGyms(filteredGyms);
+    const { nearbyGyms } = await fetchGymsList({ latitude, longitude });
+    setFilteredGyms(nearbyGyms);
   };
 
   return (
