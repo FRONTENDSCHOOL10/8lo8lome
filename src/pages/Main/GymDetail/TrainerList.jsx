@@ -55,8 +55,7 @@ function TrainerList() {
   return (
     <section className="mx-s31">
       <h3 className="text-f18 font-bold mb-s10">트레이너 정보</h3>
-
-      {isLoading ? (
+      {isLoading || !trainerList ? (
         <AppLoading isLoading={isLoading} />
       ) : (
         <Swiper
