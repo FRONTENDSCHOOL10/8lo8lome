@@ -14,8 +14,8 @@ export const fetchGymsList = async ({ latitude, longitude }) => {
   }
 
   // 헬스장 목록 필터링
-  const filteredGyms = await filterGymsByDistance(gyms, latitude, longitude);
+  const nearbyGyms = await filterGymsByDistance(gyms, latitude, longitude);
 
   // 필터링된 헬스장 데이터를 반환
-  return { gyms, filteredGyms, latitude, longitude };
+  return { gyms, nearbyGyms, latitude, longitude };
 };
