@@ -22,7 +22,6 @@ function GymDetail() {
     let ignore = false;
     const loadGymDetails = async () => {
       if (gymId) {
-        setIsLoading(true);
         try {
           await fetchGymDetails(gymId);
           if (!ignore) {
@@ -43,23 +42,27 @@ function GymDetail() {
     };
   }, [gymId, fetchGymDetails]);
 
+  if (isLoading) {
+    return <AppLoading isLoading={isLoading} />;
+  }
+
+  if (!gymData) {
+    return <div>데이터가 존재하지 않습니다.</div>;
+  }
+
   return (
     <>
       <AppHeader navigation>{gymData?.name}</AppHeader>
       <div className="flex flex-col gap-s20">
-        {isLoading ? (
-          <AppLoading isLoading={isLoading} />
-        ) : (
-          <>
-            <GymDetailHeader />
-            <PriceList />
-            <AmenitiesList />
-            <LocationMap />
-            <TrainerList />
-            <Refundpolicy />
-            <GymDetailFooter />
-          </>
-        )}
+        <>
+          <GymDetailHeader />
+          <PriceList />
+          <AmenitiesList />
+          <LocationMap />
+          <TrainerList />
+          <Refundpolicy />
+          <GymDetailFooter />
+        </>
       </div>
     </>
   );
