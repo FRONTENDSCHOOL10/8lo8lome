@@ -6,28 +6,30 @@ function AmenitiesList() {
     gymData: s.searchInput.gymData,
   }));
 
+  // 로딩 중일 때는 null을 반환하거나 로딩 메시지 표시
+  if (!gymData || !gymData.amenities) {
+    return null;
+  }
+
   const amenitiesType = {
-    parking: ['주차장', 'park'],
-    wifi: ['WIFI', 'wifi'],
-    showerRoom: ['샤워실', 'shower'],
-    locker: ['개인락커', 'locker'],
     clothes: ['운동복', 'shirt'],
     gxRoom: ['GX룸', 'group'],
+    locker: ['개인락커', 'locker'],
+    parking: ['주차장', 'park'],
+    showerRoom: ['샤워실', 'shower'],
+    wifi: ['WIFI', 'wifi'],
   };
 
   return (
     <section className="mx-s31">
       <h3 className="text-f18 font-bold pb-[0.8125rem]">편의시설</h3>
-
       <ul className="flex gap-s12 justify-center py-[0.5625rem] px-10 flex-wrap">
         {Object.keys(amenitiesType).map((key) => {
           const getAmenityColor = gymData.amenities[key]
             ? 'mainColor'
             : 'white';
           const getSvgColor = gymData.amenities[key] ? '#16efa4' : '#ffffff';
-
           const getAmenityLabel = gymData.amenities[key] ? '보유' : '미보유';
-
           return (
             <li
               key={key}
