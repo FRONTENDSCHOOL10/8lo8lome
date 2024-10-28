@@ -20,6 +20,14 @@ function GymDetailHeader() {
     일: 'sundayHours',
   };
 
+  if (
+    !gymData ||
+    !gymData?.operatingHours?.weekDayHours ||
+    !gymData?.operatingHours?.weekendHours
+  ) {
+    return null;
+  }
+
   return (
     <section className="mx-s31 mt-[100px]">
       <AppImageDisplay
