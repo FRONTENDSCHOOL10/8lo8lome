@@ -23,6 +23,10 @@ function PriceList() {
     '30회': '30Sessions',
   };
 
+  if (!gymData || !gymData.priceList) {
+    return null;
+  }
+
   const isPriceAllNull = (priceType) => {
     return Object.values(gymData[priceType]).every((value) => value === null);
   };
